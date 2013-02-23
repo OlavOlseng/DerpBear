@@ -5,6 +5,11 @@
 *.war
 *.ear
 
+# Other shizzwazz
 *.project
 *.settings/
+*.classpath
+*.log
 
+# Folders #
+bin/
