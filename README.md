@@ -10,6 +10,7 @@ Contents:
 1. External libraries
 
 Required libs:
+	
 	From LWJGL:
 		lwjgl.jar
 		lwjgl_util.jar
@@ -21,4 +22,5 @@ Required libs:
 		jbox2d-library-2.1.2.3-jar-with-dependencies.jar
 	
 Optional libs:
+	
 	sl4j-simple-1.7.2.jar
