@@ -13,7 +13,7 @@ public abstract class BaseGame{
 	private long lastFPS;
 	String title = "DerpBear Pre-Alpha 0.0";
 	DisplayMode dm;
-	private Color clearColor = new Color(255,255,255);
+	private Color clearColor = new Color(0,0,0);
 	
 	
 
@@ -46,11 +46,16 @@ public abstract class BaseGame{
 		long lastUpdate = getTime();
 		lastFPS = getTime();
 		while(!Display.isCloseRequested()){
+//			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			
 			GL11.glClearColor((float)this.clearColor.getRed()/255.0f, (float)this.clearColor.getGreen()/255.0f, (float)this.clearColor.getBlue()/255.0f, 1.0f);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			
 			dt = getTime() - lastUpdate;
 			lastUpdate = getTime();
 			updateFPS();
 			onTick((float)dt/1000.0f);
+			
 			
 			Display.update();
 			Display.sync(fps);

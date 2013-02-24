@@ -95,7 +95,6 @@ public class LineDrawer extends Node {
 			vertexResize = true;
 			internalColorBuffer = BufferUtils.createFloatBuffer(numVertices);
 		}
-		
 		for(Float val: vertices){
 			internalVertexBuffer.put(val);
 		}
@@ -115,11 +114,15 @@ public class LineDrawer extends Node {
 	}
 	
 	public void clear(){
+		vertices.clear();
+		colors.clear();
 		numVertices = 0;
 		numColors = 0;
 		needsUpdate = true;
 	}
-	public void Render(Pipeline pipeline){
+	
+	@Override
+	public void render(Pipeline pipeline){
 		if(needsUpdate)
 			update();
 		mvpBuffer.clear();
@@ -135,7 +138,7 @@ public class LineDrawer extends Node {
 		//glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());
 		glUniform1f(shader.getUniform(Uniform.MVP), getDepth());
 		glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
-		glDrawArrays(GL_LINES, 0, numVertices);
+		glDrawArrays(GL_LINES, 0, numVertices+1);
 		
 		
 		
