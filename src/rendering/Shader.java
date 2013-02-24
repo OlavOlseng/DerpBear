@@ -34,7 +34,16 @@ public class Shader {
 			System.out.println("Error on compiling fragment shader");
 		glGetAttachedShaders(program, BufferUtils.createIntBuffer(1), shaders);
 		System.out.println("Fragment shader log:\n" + getShaderLog(shaders.get(1)));
-		glLinkProgram(program);	
+		glLinkProgram(program);
+		
+		int status = glGetProgrami(program, GL_LINK_STATUS);
+		if(status != 0){
+			System.out.println("Link ok");
+		}else{
+			System.out.println("Link failed");
+			String log = glGetProgramInfoLog(program, 512);
+			System.out.println(log);
+		}
 		
 		attributes = new int[Attribute.values().length];
 		uniforms = new int[Uniform.values().length];
@@ -80,7 +89,7 @@ public class Shader {
 		int status = glGetShaderi(shader, GL_COMPILE_STATUS);
 		glAttachShader(program, shader);
 		
-		return status == GL_TRUE;
+		return status != 0;
 	}
 	private String readFile(String fileName){
 		StringBuilder builder = new StringBuilder();

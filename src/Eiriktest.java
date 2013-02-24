@@ -30,11 +30,19 @@ import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.util.ResourceLoader;
 
 import rendering.Attribute;
+import rendering.LineDrawer;
 import rendering.MatrixUtil;
+import rendering.Node;
 import rendering.Pipeline;
 import rendering.ProgramManager;
 import rendering.Shader;
 import rendering.Sprite;
+import rendering.SpriteBatch;
+import rendering.Tile;
+import rendering.TileAtlas;
+import rendering.TileGrid;
+import rendering.TileGridRenderer;
+import rendering.TileType;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -44,8 +52,12 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Eiriktest {
 
+	
 	public static void main(String[] args) throws LWJGLException, InterruptedException {
-		Display.setDisplayMode(new DisplayMode(400, 400));
+		
+		int SCREEN_WIDTH = 1280;
+		int SCREEN_HEIGHT = 720;
+		Display.setDisplayMode(new DisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT));
 		Display.create(new PixelFormat());
 		Matrix4f mat = new Matrix4f();
 		Matrix4f.setIdentity(mat);
@@ -56,11 +68,13 @@ public class Eiriktest {
 		
 		
 		
-		glViewport(0, 0, 400, 400);
+		
+		
+		glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		Shader shader = ProgramManager.getShader("sprite2DShader");
 		Texture tex = null;
 		try {
-			tex = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/square.png"),true);
+			tex = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/tileAtlas.png"),true);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,32 +84,78 @@ public class Eiriktest {
 		sprite.setWidth(100);
 		sprite.setHeight(150);
 		Pipeline pipeline = new Pipeline();
-		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, 400, 0, 400));
+		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT));
 		
 		
-		long lasTime = System.nanoTime();
-		long deltaTime;
+		
 		sprite.setPosition(200, 200);
 		Keyboard.create();
+		
+		SpriteBatch batch = new SpriteBatch(tex,5000);
+		
+		for (int i =0 ;i <100 ; i++){
+			
+			Node node = new Node();
+			
+			node.setPosition(i % 200, i % 200);
+			node.setSize(2000, 2000);
+			
+			batch.addSprite(node);
+			
+		}
+		
+		
+		Texture atlas = null;
+		try {
+			atlas = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/tileAtlas.png"),true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		TileAtlas tileAtlas = new TileAtlas(atlas, 2, 2);
+		
+		TileGrid grid =  new TileGrid(10, 10);
+		
+		for(int x = 0; x<10; x++){
+			for (int y = 0; y<10;y++){
+				grid.setTile(x, y, new Tile(TileType.GRASS));
+			}
+			
+		}
+		
+		grid.setTile(5, 5, new Tile(TileType.NONE));
+		grid.setTile(2, 2, new Tile(TileType.DIRT));
+		grid.setTile(2, 3, new Tile(TileType.GRAVEL));
+		grid.setTile(2, 4, new Tile(TileType.PLANKS));
+		TileGridRenderer tileGridRenderer = new TileGridRenderer(tileAtlas, grid);
+		tileGridRenderer.setSize(1000, 1000);
+		tileGridRenderer.setPosition(0, 0);
+		
+		
+		long lasTime = System.currentTimeMillis();
+		long deltaTime;
+		
+		LineDrawer lineDrawer  = new LineDrawer(200);
+		lineDrawer.addLine(0.0f, 0.0f, 500.0f, 500.0f, 1.0f, 0.0f, 0.0f);
+		//glEnable(GL_DEPTH_TEST);
 		
 		while(!Display.isCloseRequested()){
 			
 			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT );
+			glClear(GL_COLOR_BUFFER_BIT);
 			Keyboard.getEventKeyState();
-			//ttf.drawString(0, 0, "hello");
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-				sprite.move(1, 0);
-			sprite.render(pipeline);
-			Display.sync(60);
-			sprite.rotate(0.01f);
-			Display.swapBuffers();
+		
+			lineDrawer.Render(pipeline);
+			
+			
 			Keyboard.poll();
-			deltaTime = System.nanoTime() - lasTime;
-			lasTime = System.nanoTime();
+			deltaTime = System.currentTimeMillis() - lasTime;
+			lasTime = System.currentTimeMillis();
 			
-			System.out.println(1000.0/(deltaTime*Math.pow(10, -6)));
 			
+			//System.out.println(1000.0/(deltaTime));
+			Display.swapBuffers();
+			Display.sync(60);
 			
 		}
 		

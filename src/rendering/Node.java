@@ -15,18 +15,40 @@ public class Node {
 	protected Matrix4f modelMatrix;
 	protected Vector3f rotationAxis;
 
+	protected int height;
+	protected int width;
+	private float depth;
+	
 	public Node(){
 		position = new Vector2f();
 		modelMatrix = new Matrix4f();
 		rotationAxis = new Vector3f(0,0,1);
 		scale = new Vector3f(1,1,1);
+		this.width = 1;
+		this.height = 1;
 		
 		
 	}
-	
+	public void setSize(float width,float height){
+		
+		setWidth(width);
+		setHeight(height);
+		
+	}
+	public void setWidth(float width){
+		
+		
+		setScaleX(width/(float)this.width);
+		this.width = (int)width;
+	}
+	public void setHeight(float height){
+		setScaleY(height/(float)this.height);
+		this.height = (int)this.height;
+	}
 	public void scale(float x,float y){
 		scale.x += x;
 		scale.y += y;
+		
 		
 	}
 	public void move(float x,float y){
@@ -73,6 +95,15 @@ public class Node {
 		this.scale.y = y;
 		
 	}
+	
+	public float getDepth() {
+		return depth;
+	}
+	public void setDepth(float depth) {
+		this.depth = depth;
+	}
+	
+	
 	public void render(Pipeline pipeline){
 		
 		

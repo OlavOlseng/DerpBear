@@ -1,37 +1,34 @@
 package rendering;
 
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL20.*;
+
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL13.*;
-
 import org.newdawn.slick.opengl.Texture;
 
-public class Sprite extends Node {
+public class SpriteBatch {
 	private Shader shader;
 	private Texture texture;
-	
+	private ArrayList<Node> sprites;
 	private Buffer vertexBuffer;
 	private Buffer texCoordBuffer;
 	private FloatBuffer mvpBuffer;
 	private Matrix4f mvp;
-	
-	public Sprite(Texture texture){
-		
-		setWidth(2);
-		setHeight(2);
+	public SpriteBatch(Texture texture,int initalCapacity){
+		sprites = new ArrayList<Node>(initalCapacity);
 		
 		mvp = new Matrix4f();
 		mvpBuffer = BufferUtils.createFloatBuffer(16);
-		
 		
 		shader = ProgramManager.getShader("sprite2DShader");
 		shader.bindAttribute(Attribute.COORD2D);
@@ -65,30 +62,37 @@ public class Sprite extends Node {
 		vertexBuffer.setData(vertices);
 		texCoordBuffer.setData(texCoords);
 	}
+	public void addSprite(Node node){
+		
+		sprites.add(node);
+	}
 	
-	
-	
-	@Override
 	public void render(Pipeline pipeline){
-		mvpBuffer.clear();		
+				
 		shader.bind();
+		
+		glActiveTexture(GL_TEXTURE0);
+		texture.bind();
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD2D));
 		texCoordBuffer.bindTo(shader.getAttribute(Attribute.TEXCOOR2D));
 		
-		Matrix4f projection = pipeline.getProjectionMatrix();
-		Matrix4f modelMatrix = getModelMatrix();
+		for (Node  sprite :sprites){
+			mvpBuffer.clear();
+			Matrix4f projection = pipeline.getProjectionMatrix();
+			Matrix4f modelMatrix = sprite.getModelMatrix();
+			Matrix4f.mul(projection, modelMatrix, mvp);
+			mvp.store(mvpBuffer);
+			mvpBuffer.flip();
+			glUniform1f(shader.getUniform(Uniform.DEPTH), sprite.getDepth());
+			glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
+			glDrawArrays(GL_TRIANGLES, 0, 12);
+		}
 		
-		Matrix4f.mul(projection, modelMatrix, mvp);
-		mvp.store(mvpBuffer);
 		
-		mvpBuffer.flip();
-		glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());
-		glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
-		glActiveTexture(GL_TEXTURE0);
-		texture.bind();
-		glDrawArrays(GL_TRIANGLES, 0, 12);
 		
 		
 		
 	}
+	
+	
 }
