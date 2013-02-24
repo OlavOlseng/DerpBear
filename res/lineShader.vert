@@ -9,6 +9,6 @@ void main(){
 
 	f_color =color3d;
 	gl_Position = mvp*vec4(coord2d.xy,0.0,1.0);
-	gl_position.z = depth;
+	gl_Position.z = depth;
 
 }
