@@ -8,10 +8,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 
 public abstract class BaseGame{
-	Thread loop;
-	private int fps, currentFPS,screenWidth,screenHeight;
+	
+	private int fps, currentFPS, screenWidth, screenHeight;
 	private long lastFPS;
-	String title = "DerpBear Pre-Alpha 0.0";
+	String title = "DerpBear Pre-Alpha 0.0.1";
 	DisplayMode dm;
 	private Color clearColor = new Color(0,0,0);
 	

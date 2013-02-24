@@ -61,7 +61,6 @@ public class dbDebugDraw extends DebugDraw{
 	@Override
 	public void drawSolidPolygon(Vec2[] vertices, int vertexCount, Color3f color) {
 		// TODO Auto-generated method stub
-		System.out.println("poly");
 	    int[] xInts = xIntsPool.get(vertexCount);
 	    int[] yInts = yIntsPool.get(vertexCount);
 
