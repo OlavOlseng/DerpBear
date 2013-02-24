@@ -10,6 +10,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.IntArray;
 
 import rendering.LineDrawer;
+import util.GameConstants;
 
 public class dbDebugDraw extends DebugDraw{
 
@@ -46,8 +47,8 @@ public class dbDebugDraw extends DebugDraw{
 		 	getWorldToScreenToOut(p1, sp1);
 		    getWorldToScreenToOut(p2, sp2);
 
-
-		    ldr.addLine(sp1.x, sp1.y, sp2.x, sp2.y,color.x,color.y,color.z);
+		  
+		    ldr.addLine(sp1.x*GameConstants.PIXELSCALE, sp1.y*GameConstants.PIXELSCALE, sp2.x*GameConstants.PIXELSCALE, sp2.y*GameConstants.PIXELSCALE,color.x,color.y,color.z);
 		 
 		
 	}

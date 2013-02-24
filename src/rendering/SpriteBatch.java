@@ -30,7 +30,7 @@ public class SpriteBatch {
 		mvp = new Matrix4f();
 		mvpBuffer = BufferUtils.createFloatBuffer(16);
 		
-		shader = ProgramManager.getShader("sprite2DShader");
+		shader = ResourceManager.getShader("sprite2DShader");
 		shader.bindAttribute(Attribute.COORD2D);
 		shader.bindAttribute(Attribute.TEXCOOR2D);
 		shader.bindUniform(Uniform.MVP);
@@ -70,7 +70,6 @@ public class SpriteBatch {
 	public void render(Pipeline pipeline){
 				
 		shader.bind();
-		
 		glActiveTexture(GL_TEXTURE0);
 		texture.bind();
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD2D));

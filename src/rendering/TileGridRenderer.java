@@ -39,7 +39,7 @@ public class TileGridRenderer extends Node {
 		
 		mvp = new Matrix4f();
 		mvpBuffer = BufferUtils.createFloatBuffer(16);
-		shader = ProgramManager.getShader("tileGridShader");
+		shader = ResourceManager.getShader("tileGridShader");
 		
 		shader.bindUniform(Uniform.MVP);
 		shader.bindUniform(Uniform.DEPTH);

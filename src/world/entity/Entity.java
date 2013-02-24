@@ -17,6 +17,7 @@ import rendering.Node;
 import rendering.Pipeline;
 
 import util.DepthLevel;
+import util.GameConstants;
 import world.GameWorld;
 
 public abstract class Entity {
@@ -28,7 +29,12 @@ public abstract class Entity {
 	protected Node node;
 	
 	public Entity(DepthLevel dpt){
-		//setDepth(dpt);
+		this(dpt,new Node());
+		
+	}
+	public Entity(DepthLevel dpt,Node node){
+		this.node = node;
+		setDepth(dpt);
 	}
 	
 	protected void addToWorld(GameWorld w){
@@ -50,14 +56,31 @@ public abstract class Entity {
 	public void setDepth(DepthLevel dpt) {
 		this.dpt = dpt;
 		//TODO add node depth;
-		node.setDepth(dpt.getDepth());
+			node.setDepth(dpt.getDepth());
 		
 	}
 	
 	public Node getNode() {
 		return node;
 	}
-	
+	public void setNode(Node node)
+	{
+		this.node = node;
+		this.node.setDepth(dpt.getDepth());
+		
+		
+	}
 	public abstract void render();
-	public abstract void update(float dt);
+	public void update(float dt){
+		
+		onUpdate(dt);
+		
+		Transform transform =  b.getTransform();
+		node.setPosition(transform.position.x*GameConstants.PIXELSCALE, transform.position.y*GameConstants.PIXELSCALE);
+		node.setOrientation(transform.getAngle());
+		
+		
+		
+	}
+	public abstract void onUpdate(float dt);
 }

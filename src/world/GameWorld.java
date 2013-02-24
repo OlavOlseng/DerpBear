@@ -41,7 +41,7 @@ public class GameWorld {
 		entities = new ArrayList<Entity>();
 		actors = new ArrayList<Actor>();
 		velocityIterations = 8;
-		positionIterations = 4;
+		positionIterations = 3;
 		
 		test(100);
 	}
@@ -65,11 +65,11 @@ public class GameWorld {
 //		test.getBody().setAngularVelocity(10.0f);
 //		
 		Box megabox = new Box(this, new Vec2(12,16), 5, 5, 0, 1000.0f);
-		megabox.getBody().applyLinearImpulse(new Vec2(1000000, 0), megabox.getBody().getPosition());
+		megabox.getBody().applyLinearImpulse(new Vec2(1000, 0), megabox.getBody().getPosition());
 		for (int x = 0; x < s; x++) {
 			for (int y = 0; y < s; y++) {
 				Box b = new Box(this, new Vec2(x+20f, y+15f), 0.5f, 0.5f, x*y/16, 1.0f);
-				b.getBody().applyLinearImpulse(new Vec2(-1000, 0), b.getBody().getPosition());
+				b.getBody().applyLinearImpulse(new Vec2(-10, 0), b.getBody().getPosition());
 			}
 		}
 	}
@@ -97,9 +97,10 @@ public class GameWorld {
 	
 	public void update(float dt) {
 		world.step(dt, velocityIterations, positionIterations);
-//		for(Entity ent : entities) {
-//			System.out.println("X:\t" + ent.getTransform().position.x + "\tY:\t" + ent.getTransform().position.y );
-//		}
+		for(Entity ent : entities) {
+			ent.update(dt);
+			
+		}
 	}
 	
 }
