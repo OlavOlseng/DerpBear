@@ -41,7 +41,7 @@ public class BodyFactory {
 		
 		FixtureDef fDef = new FixtureDef(); 
 		fDef.shape = ps;
-		fDef.density = width*height/mass;
+		fDef.density = mass/(width*height);
 		
 		return fDef;
 	}
@@ -52,7 +52,7 @@ public class BodyFactory {
 		
 		FixtureDef def = new FixtureDef(); 
 		def.shape = cs;
-		def.density = (float) ((Math.PI)*(Math.pow(radius,2.0)/mass));
+		def.density = (float) (mass/((Math.PI)*(Math.pow(radius,2.0))));
 		
 		return def;
 	}

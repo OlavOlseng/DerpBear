@@ -60,13 +60,16 @@ public class GameWorld {
 		new Wall(this, floorWidth, 1, new Vec2(46.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
 		new Wall(this, floorWidth, 1, new Vec2(4.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
 		
-		TestActor test = new TestActor(this, new Vec2(5.0f, 15.0f), 0);
-		test.getBody().setLinearVelocity(new Vec2(5.0f, 0));
-		test.getBody().setAngularVelocity(3.0f);
-		
+//		TestActor test = new TestActor(this, new Vec2(5.0f, 15.0f), 10);
+//		test.getBody().setLinearVelocity(new Vec2(5.0f, 1.0f));
+//		test.getBody().setAngularVelocity(10.0f);
+//		
+		Box megabox = new Box(this, new Vec2(12,16), 5, 5, 0, 1000.0f);
+		megabox.getBody().applyLinearImpulse(new Vec2(1000000, 0), megabox.getBody().getPosition());
 		for (int x = 0; x < s; x++) {
 			for (int y = 0; y < s; y++) {
-				new Box(this, new Vec2(x+15f, y+15f), 0.35f, 0.35f, x*y/16, 1);
+				Box b = new Box(this, new Vec2(x+20f, y+15f), 0.5f, 0.5f, x*y/16, 1.0f);
+				b.getBody().applyLinearImpulse(new Vec2(-1000, 0), b.getBody().getPosition());
 			}
 		}
 	}

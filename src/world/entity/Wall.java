@@ -13,7 +13,7 @@ public class Wall extends Entity{
 		// TODO Auto-generated constructor stub
 		bDef = BodyFactory.createStaticBodyDef(position, rotation);
 		fDef = BodyFactory.createBox(0, width/2, height/2);
-		fDef.restitution = 1.2f;
+		fDef.restitution = 0.7f;
 		fDef.friction = 0.8f;
 		addToWorld(w);
 		

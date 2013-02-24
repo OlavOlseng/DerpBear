@@ -12,11 +12,11 @@ public class Box extends Entity{
 		super(DepthLevel.ACTOR_LVL);
 		this.bDef = BodyFactory.createDynamicBodyDef(position, rotation);
 		
-		bDef.linearDamping = (1.0f / (20.0f / mass) + 2.0f) / 0.95f;
-		bDef.angularDamping = 1.9f;
+		bDef.linearDamping = (mass / (10000.0f) + 1.5f);
+		bDef.angularDamping = (mass / (500.0f) + 1.2f);
 		
 		this.fDef = BodyFactory.createBox(mass, width/2, height/2);
-		fDef.restitution = 0.8f;
+		fDef.restitution = 0.68f;
 		
 		this.addToWorld(w);
 		
