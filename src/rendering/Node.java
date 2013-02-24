@@ -59,7 +59,7 @@ public class Node {
 	}
 	public void setHeight(float height){
 		setScaleY(height/(float)this.height);
-		this.height = (int)this.height;
+		this.height = (int)height;
 		didChange = true;
 	}
 	public void scale(float x,float y){
@@ -167,7 +167,20 @@ public class Node {
 		this.didChange = didChange;
 	}
 
-	
+	public String toString(){
+		
+		StringBuilder builder = new StringBuilder(50);
+		builder.append("Position:");
+		builder.append(position);
+		builder.append("orientation:");
+		builder.append(orientation);
+		builder.append("Width:");
+		builder.append(this.width);
+		builder.append("Height:");
+		builder.append(this.height);
+		return builder.toString();
+		
+	}
 	public Matrix4f getModelMatrix(){
 		if(didChange){
 			didChange = false;

@@ -33,7 +33,7 @@ public class Sprite extends Node {
 		mvpBuffer = BufferUtils.createFloatBuffer(16);
 		
 		
-		shader = ProgramManager.getShader("sprite2DShader");
+		shader = ResourceManager.getShader("sprite2DShader");
 		shader.bindAttribute(Attribute.COORD2D);
 		shader.bindAttribute(Attribute.TEXCOOR2D);
 		shader.bindUniform(Uniform.MVP);

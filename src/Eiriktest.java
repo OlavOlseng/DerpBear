@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.common.Vec2;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -38,7 +40,8 @@ import rendering.LineDrawer;
 import rendering.MatrixUtil;
 import rendering.Node;
 import rendering.Pipeline;
-import rendering.ProgramManager;
+
+import rendering.ResourceManager;
 import rendering.Shader;
 import rendering.Sprite;
 import rendering.SpriteBatch;
@@ -47,6 +50,9 @@ import rendering.TileAtlas;
 import rendering.TileGrid;
 import rendering.TileGridRenderer;
 import rendering.TileType;
+import world.GameWorld;
+import world.dbDebugDraw;
+import world.entity.Box;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -60,6 +66,12 @@ public class Eiriktest extends BaseGame {
 	Pipeline pipeline;
 	Node rootNode;
 	Sprite sprite;
+	
+	public static final float PIXELSCALE = 32/2;
+	
+	GameWorld world;
+	LineDrawer ldr;
+	dbDebugDraw dbgDraw;
 	public Eiriktest() {
 		super(60,1280,720);
 		init();
@@ -140,10 +152,16 @@ public class Eiriktest extends BaseGame {
 		lineDrawer  = new LineDrawer(200);
 		lineDrawer.addLine(0.0f, 0.0f, 500.0f, 500.0f, 1.0f, 0.0f, 0.0f);
 		
-		rootNode.addChild(lineDrawer);
+		//rootNode.addChild(lineDrawer);
 		rootNode.addChild(sprite);
-		//rootNode.move(200, 100);
+		ldr = new LineDrawer(100000);
 		
+		dbgDraw = new dbDebugDraw(ldr);
+		world  = new GameWorld();
+		world.getPhysWorld().setDebugDraw(dbgDraw);
+		dbgDraw.setFlags(DebugDraw.e_shapeBit);
+		rootNode.addChild(ldr);
+		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
 		
 		//lineDrawer.move(100, 100);
 	}
@@ -151,13 +169,25 @@ public class Eiriktest extends BaseGame {
 	
 	@Override
 	public void onTick(float dt) {
+		
+	
+		
+		world.update(dt);
+		world.render(pipeline);
+		rootNode.render(pipeline);
+		ldr.clear();
+		
+		
+		
 		// TODO Auto-generated method stub
 		//glEnable(GL_DEPTH_TEST);
-			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			
 		
+			
+			
+			
 			//lineDrawer.render(pipeline);
-			rootNode.render(pipeline);
+			
 			//rootNode.rotate(0.1f);
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
 				sprite.move(-1, 0);
@@ -184,8 +214,24 @@ public class Eiriktest extends BaseGame {
 
 		    }
 			
+			if(Mouse.isButtonDown(0)){
+				
+
+				Sprite square = new Sprite(ResourceManager.getTexture("PNG", "grass.png"));
+				square.setSize(5, 5);
+				rootNode.addChild(square);
+				Box box = new Box(world,square, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 5, 5, 0, 1);
+				Vec2 dir = new Vec2(dx,dy);
+				dir.normalize();
+				dir.x *=50;
+				dir.y *=50;
+				box.getBody().applyLinearImpulse(dir, new Vec2(0,0));
+				
+				
+				
+			}
 			
-			
+			rootNode.render(pipeline);
 			//System.out.println(1000.0/(deltaTime));
 			pipeline.clear();
 			

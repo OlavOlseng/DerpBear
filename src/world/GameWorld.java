@@ -43,7 +43,7 @@ public class GameWorld {
 		velocityIterations = 8;
 		positionIterations = 4;
 		
-		test(100);
+		//test(100);
 	}
 	
 	
@@ -94,9 +94,10 @@ public class GameWorld {
 	
 	public void update(float dt) {
 		world.step(dt, velocityIterations, positionIterations);
-//		for(Entity ent : entities) {
-//			System.out.println("X:\t" + ent.getTransform().position.x + "\tY:\t" + ent.getTransform().position.y );
-//		}
+		for(Entity ent : entities) {
+			ent.update(dt);
+			
+		}
 	}
 	
 }

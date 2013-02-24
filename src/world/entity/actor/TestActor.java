@@ -23,7 +23,7 @@ public class TestActor extends Actor{
 	}
 
 	@Override
-	public void update(float dt) {
+	public void onUpdate(float dt) {
 		// TODO Auto-generated method stub
 		
 	}

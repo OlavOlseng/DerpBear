@@ -49,7 +49,7 @@ public class LineDrawer extends Node {
 		vertexBuffer.setData(internalVertexBuffer);
 		colorBuffer.setData(internalColorBuffer);
 		
-		shader = ProgramManager.getShader("lineShader");
+		shader = ResourceManager.getShader("lineShader");
 		shader.bindAttribute(Attribute.COLOR3D);
 		shader.bindAttribute(Attribute.COORD2D);
 		shader.bindUniform(Uniform.MVP);
