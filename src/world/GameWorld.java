@@ -11,6 +11,7 @@ import org.jbox2d.dynamics.World;
 
 import world.entity.Box;
 import world.entity.Entity;
+import world.entity.actor.Actor;
 
 
 public class GameWorld {
@@ -20,6 +21,7 @@ public class GameWorld {
 	int velocityIterations;
 	int positionIterations;
 	ArrayList<Entity> entities;
+	ArrayList<Actor> actors;
 	
 	
 	public GameWorld() {
@@ -46,13 +48,20 @@ public class GameWorld {
 		}
 	}
 	
-	public void addEntity(Entity ent) {
+	public void add(Entity ent) {
 		entities.add(ent);
 	}
 	
-	public void deleteEntity(Entity ent) {
-		entities.remove(ent);
+	public void add(Actor act) {
+		actors.add(act);
+	}
+	
+	public void delete(Entity ent) {
 		world.destroyBody(ent.getBody());
+	}
+	
+	public void delete(Actor act) {
+		world.destroyBody(act.getBody());
 	}
 	
 	public void update(float dt) {
