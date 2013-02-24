@@ -53,6 +53,7 @@ public class LineDrawer extends Node {
 		shader.bindAttribute(Attribute.COLOR3D);
 		shader.bindAttribute(Attribute.COORD2D);
 		shader.bindUniform(Uniform.MVP);
+		shader.bindUniform(Uniform.DEPTH);
 		
 		mvp = new Matrix4f();
 		mvpBuffer = BufferUtils.createFloatBuffer(16);
@@ -132,6 +133,7 @@ public class LineDrawer extends Node {
 		mvp.store(mvpBuffer);
 		mvpBuffer.flip();
 		//glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());
+		glUniform1f(shader.getUniform(Uniform.MVP), getDepth());
 		glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
 		glDrawArrays(GL_LINES, 0, numVertices);
 		
