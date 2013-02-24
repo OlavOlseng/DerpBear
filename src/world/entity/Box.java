@@ -24,5 +24,4 @@ public class Box extends Entity{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
