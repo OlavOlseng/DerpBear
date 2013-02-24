@@ -16,15 +16,15 @@ import rendering.Pipeline;
 
 import world.entity.Box;
 import world.entity.Entity;
+import world.entity.Wall;
 import world.entity.actor.Actor;
+import world.entity.actor.TestActor;
 
 
 public class GameWorld {
 
 	//DEBUG STUFF
-	LineDrawer ldr;
-	dbDebugDraw dbgDraw;
-	Pipeline pipeline;
+	
 	
 	Vec2 g;
 	World world;
@@ -33,23 +33,15 @@ public class GameWorld {
 	ArrayList<Entity> entities;
 	ArrayList<Actor> actors;
 	
-	public static final float PIXELSCALE = 32;
+	
 	
 	public GameWorld() {
-		g = new Vec2(0.0f, -9.0f);
+		g = new Vec2(0.0f, -0.0f);
 		world = new World(g, true);
 		entities = new ArrayList<Entity>();
+		actors = new ArrayList<Actor>();
 		velocityIterations = 8;
 		positionIterations = 4;
-		
-		pipeline = new Pipeline();
-		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, 1280, 0, 720));
-		ldr = new LineDrawer(10000);
-		ldr.setScale(PIXELSCALE, PIXELSCALE);
-		dbgDraw = new dbDebugDraw(ldr);
-		world.setDebugDraw(dbgDraw);
-		
-		dbgDraw.setFlags(DebugDraw.e_shapeBit);
 		
 		test(100);
 	}
@@ -61,9 +53,20 @@ public class GameWorld {
 	
 	public void test(int ents) {
 		int s = (int)(Math.sqrt(ents)); 
+		
+		float floorWidth = 30;
+		new Wall(this, floorWidth, 1, new Vec2(floorWidth/2 + 10, 3.0f), 0.0f);
+		new Wall(this, floorWidth, 1, new Vec2(floorWidth/2 + 10, 32.0f), 0.0f);
+		new Wall(this, floorWidth, 1, new Vec2(46.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
+		new Wall(this, floorWidth, 1, new Vec2(4.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
+		
+		TestActor test = new TestActor(this, new Vec2(5.0f, 15.0f), 0);
+		test.getBody().setLinearVelocity(new Vec2(5.0f, 0));
+		test.getBody().setAngularVelocity(3.0f);
+		
 		for (int x = 0; x < s; x++) {
 			for (int y = 0; y < s; y++) {
-				new Box(this, new Vec2(x+5f, y+5f), 0.5f, 0.5f, x*y/10, 10);
+				new Box(this, new Vec2(x+15f, y+15f), 0.35f, 0.35f, x*y/16, 1);
 			}
 		}
 	}
@@ -84,10 +87,9 @@ public class GameWorld {
 		world.destroyBody(act.getBody());
 	}
 	
-	public void render() {
+	public void render(Pipeline pipeline) {
 		world.drawDebugData();
-		ldr.render(pipeline);
-		ldr.clear();
+		
 	}
 	
 	public void update(float dt) {
