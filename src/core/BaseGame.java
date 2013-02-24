@@ -69,5 +69,5 @@ public abstract class BaseGame implements Runnable{
 		return currentFPS;
 	}
 	
-	public abstract void onTick(double dt);
+	public abstract void onTick(float dt);
 }
