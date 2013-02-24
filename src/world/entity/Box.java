@@ -11,7 +11,7 @@ public class Box extends Entity{
 	public Box(GameWorld w, Vec2 position, float width, float height, float rotation, float mass) {
 		super(DepthLevel.ACTOR_LVL);
 		this.bDef = BodyFactory.createDynamicBodyDef(position, rotation);
-		this.fDef = BodyFactory.createBox(mass, width, height);
+		this.fDef = BodyFactory.createBox(mass, width/2, height/2);
 		this.addToWorld(w);
 	}
 	

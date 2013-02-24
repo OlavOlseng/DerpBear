@@ -47,7 +47,7 @@ public class dbDebugDraw extends DebugDraw{
 		    getWorldToScreenToOut(p2, sp2);
 
 
-		    ldr.addLine((int) sp1.x, (int) sp1.y, (int) sp2.x, (int) sp2.y,color.x,color.y,color.z);
+		    ldr.addLine(sp1.x, sp1.y, sp2.x, sp2.y,color.x,color.y,color.z);
 		 
 		
 	}

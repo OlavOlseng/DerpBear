@@ -8,8 +8,7 @@ public class TestGame extends BaseGame{
 	GameWorld world;
 	
 	public TestGame(int fps) {
-		super(fps, 800, 600);
-		
+		super(fps, 1280, 720);
 	}
 	
 	@Override

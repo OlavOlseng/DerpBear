@@ -33,6 +33,7 @@ public class GameWorld {
 	ArrayList<Entity> entities;
 	ArrayList<Actor> actors;
 	
+	public static final float PIXELSCALE = 32;
 	
 	public GameWorld() {
 		g = new Vec2(0.0f, -9.0f);
@@ -42,9 +43,9 @@ public class GameWorld {
 		positionIterations = 4;
 		
 		pipeline = new Pipeline();
-		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, 800, 0, 600));
+		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, 1280, 0, 720));
 		ldr = new LineDrawer(10000);
-		ldr.setScale(10, 10);
+		ldr.setScale(PIXELSCALE, PIXELSCALE);
 		dbgDraw = new dbDebugDraw(ldr);
 		world.setDebugDraw(dbgDraw);
 		
@@ -61,8 +62,8 @@ public class GameWorld {
 	public void test(int ents) {
 		int s = (int)(Math.sqrt(ents)); 
 		for (int x = 0; x < s; x++) {
-			for (int y = 1; y + 1 < s; y++) {
-				new Box(this, new Vec2(x+10, y+10), 0.20f, 0.20f, 0, 10);
+			for (int y = 0; y < s; y++) {
+				new Box(this, new Vec2(x+5f, y+5f), 0.5f, 0.5f, x*y/10, 10);
 			}
 		}
 	}
