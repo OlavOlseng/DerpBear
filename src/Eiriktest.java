@@ -140,14 +140,7 @@ public class Eiriktest extends BaseGame {
 	@Override
 	public void onTick(float dt) {
 		// TODO Auto-generated method stub
-		
-		
-
-		
 		//glEnable(GL_DEPTH_TEST);
-		
-		
-			
 			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 		
