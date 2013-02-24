@@ -151,7 +151,7 @@ public class Eiriktest extends BaseGame {
 			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 		
-			lineDrawer.Render(pipeline);
+			lineDrawer.render(pipeline);
 			
 			
 			

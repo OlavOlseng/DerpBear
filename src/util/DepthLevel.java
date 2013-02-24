@@ -13,7 +13,7 @@ public enum DepthLevel {
 		this.i = i;
 	}
 	
-	float getLevel() {
+	public float getDepth() {
 		return i;
 	}
 }

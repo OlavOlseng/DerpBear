@@ -14,6 +14,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 
 import rendering.Node;
+import rendering.Pipeline;
 
 import util.DepthLevel;
 import world.GameWorld;
@@ -27,7 +28,7 @@ public abstract class Entity {
 	protected Node node;
 	
 	public Entity(DepthLevel dpt){
-		this.dpt = dpt;
+		//setDepth(dpt);
 	}
 	
 	protected void addToWorld(GameWorld w){
@@ -49,10 +50,12 @@ public abstract class Entity {
 	public void setDepth(DepthLevel dpt) {
 		this.dpt = dpt;
 		//TODO add node depth;
+		node.setDepth(dpt.getDepth());
+		
 	}
 	
-	public Transform getTransform() {
-		return b.getTransform();
+	public Node getNode() {
+		return node;
 	}
 	
 	public abstract void render();
