@@ -1,24 +1,25 @@
 package core;
 
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-public abstract class BaseGame implements Runnable{
+public abstract class BaseGame{
 	Thread loop;
 	private int fps, currentFPS;
 	private long lastFPS;
 	String title = "DerpBear Pre-Alpha 0.0";
-
+	DisplayMode dm;
+	
 	public BaseGame(int fps){
 		this.fps = fps;
 	}
 
 	public void init(){
 		try {
-			Display.setDisplayMode(new DisplayMode(800, 600));
+			dm = new DisplayMode(800,600);
+			Display.setDisplayMode(dm);
 			Display.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -29,20 +30,20 @@ public abstract class BaseGame implements Runnable{
 	}
 
 
-	@Override
 	public void run() {
-		float dt;
-		float lastUpdate = getTime();
+		long dt;
+		long lastUpdate = getTime();
 		lastFPS = getTime();
 		while(!Display.isCloseRequested()){
+			
 			dt = getTime() - lastUpdate;
-
-			updateFPS();
-			onTick(dt);
-
 			lastUpdate = getTime();
+			updateFPS();
+			onTick((float)dt/1000.0f);
+			
 			Display.update();
 			Display.sync(fps);
+			
 		}
 		exit();
 	}

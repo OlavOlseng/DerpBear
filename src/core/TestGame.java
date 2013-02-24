@@ -1,5 +1,6 @@
 package core;
 
+
 import world.GameWorld;
 
 public class TestGame extends BaseGame{
@@ -14,6 +15,10 @@ public class TestGame extends BaseGame{
 	@Override
 	public void onTick(float dt) {
 		world.update(dt);
+	}
+	
+	public void debugDraw() {
+		
 	}
 	
 	public static void main(String argv[]) {

@@ -22,9 +22,15 @@ public abstract class Entity {
 		w.addEntity(this);
 	}
 	
+	public Body getBody() {
+		return b;
+	}
+	
 	public Transform getTransform() {
 		return b.getTransform();
 	}
+	
+	
 	
 	public abstract void render();
 	public abstract void update(float dt);
