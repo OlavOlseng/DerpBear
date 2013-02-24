@@ -67,7 +67,7 @@ public class Sprite extends Node {
 	}
 	
 	
-	
+	private Matrix4f tempModelMatrix = new Matrix4f();
 	@Override
 	public void render(Pipeline pipeline){
 		mvpBuffer.clear();		
@@ -75,10 +75,11 @@ public class Sprite extends Node {
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD2D));
 		texCoordBuffer.bindTo(shader.getAttribute(Attribute.TEXCOOR2D));
 		
-		Matrix4f projection = pipeline.getProjectionMatrix();
-		Matrix4f modelMatrix = getModelMatrix();
 		
-		Matrix4f.mul(projection, modelMatrix, mvp);
+		Matrix4f modelMatrix = getModelMatrix();
+		Matrix4f.load(modelMatrix, tempModelMatrix);
+		Matrix4f.mul(pipeline.getWorldTransForm(), modelMatrix, modelMatrix);
+		Matrix4f.mul(pipeline.getViewXProjectionMatrix(), modelMatrix, mvp);
 		mvp.store(mvpBuffer);
 		
 		mvpBuffer.flip();
@@ -87,6 +88,7 @@ public class Sprite extends Node {
 		glActiveTexture(GL_TEXTURE0);
 		texture.bind();
 		glDrawArrays(GL_TRIANGLES, 0, 12);
+		Matrix4f.load(tempModelMatrix, modelMatrix);
 		
 		
 		

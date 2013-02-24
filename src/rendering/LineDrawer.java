@@ -93,7 +93,7 @@ public class LineDrawer extends Node {
 		
 		if(numVertices  >= internalVertexBuffer.capacity()){
 			vertexResize = true;
-			internalColorBuffer = BufferUtils.createFloatBuffer(numVertices);
+			internalVertexBuffer = BufferUtils.createFloatBuffer(numVertices);
 		}
 		for(Float val: vertices){
 			internalVertexBuffer.put(val);
@@ -121,6 +121,7 @@ public class LineDrawer extends Node {
 		needsUpdate = true;
 	}
 	
+	private Matrix4f tempModelMatrix = new Matrix4f();
 	@Override
 	public void render(Pipeline pipeline){
 		if(needsUpdate)
@@ -130,15 +131,19 @@ public class LineDrawer extends Node {
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD2D));
 		colorBuffer.bindTo(shader.getAttribute(Attribute.COLOR3D));
 		
-		Matrix4f projection = pipeline.getProjectionMatrix();
+		
 		Matrix4f modelMatrix = getModelMatrix();
-		Matrix4f.mul(projection, modelMatrix, mvp);
+		Matrix4f.load(modelMatrix, tempModelMatrix);
+		Matrix4f.mul(pipeline.getWorldTransForm(), modelMatrix, modelMatrix);
+		Matrix4f.mul(pipeline.getViewXProjectionMatrix(), modelMatrix, mvp);
 		mvp.store(mvpBuffer);
 		mvpBuffer.flip();
 		//glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());
 		glUniform1f(shader.getUniform(Uniform.MVP), getDepth());
 		glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
-		glDrawArrays(GL_LINES, 0, numVertices+1);
+		glDrawArrays(GL_LINES, 0, numVertices);
+		
+		Matrix4f.load(tempModelMatrix, modelMatrix);
 		
 		
 		

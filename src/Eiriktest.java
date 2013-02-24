@@ -9,6 +9,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +20,7 @@ import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -56,6 +58,8 @@ public class Eiriktest extends BaseGame {
 
 	LineDrawer lineDrawer;
 	Pipeline pipeline;
+	Node rootNode;
+	Sprite sprite;
 	public Eiriktest() {
 		super(60,1280,720);
 		init();
@@ -66,7 +70,7 @@ public class Eiriktest extends BaseGame {
 	@Override
 	public void setup() {
 		// TODO Auto-generated method stub
-		
+		rootNode = new Node();
 		
 		Texture tex = null;
 		try {
@@ -76,16 +80,18 @@ public class Eiriktest extends BaseGame {
 			e.printStackTrace();
 		}
 		
-		Sprite sprite = new Sprite(tex);
+		 sprite = new Sprite(tex);
 		sprite.setWidth(100);
 		sprite.setHeight(150);
 		pipeline = new Pipeline();
 		
 		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, this.getScreenWidth(), 0, this.getScreenHeight()));
+		Matrix4f view = new Matrix4f();
+		view.translate(new Vector2f(-10.0f,0.0f));
+		pipeline.setViewMatrix(view);
 		
 		
-		
-		sprite.setPosition(200, 200);
+		sprite.setPosition(1000, 200);
 		
 		
 		SpriteBatch batch = new SpriteBatch(tex,5000);
@@ -134,6 +140,12 @@ public class Eiriktest extends BaseGame {
 		lineDrawer  = new LineDrawer(200);
 		lineDrawer.addLine(0.0f, 0.0f, 500.0f, 500.0f, 1.0f, 0.0f, 0.0f);
 		
+		rootNode.addChild(lineDrawer);
+		rootNode.addChild(sprite);
+		//rootNode.move(200, 100);
+		
+		
+		//lineDrawer.move(100, 100);
 	}
 
 	
@@ -144,12 +156,38 @@ public class Eiriktest extends BaseGame {
 			glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 		
-			lineDrawer.render(pipeline);
+			//lineDrawer.render(pipeline);
+			rootNode.render(pipeline);
+			//rootNode.rotate(0.1f);
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+				sprite.move(-1, 0);
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+				sprite.move(1, 0);
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+				sprite.move(0, 1);
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+				sprite.move(0, -1);
+			}
+			
+			float dx = Mouse.getX()- sprite.getPosition().x;
+			
+			float dy = Mouse.getY() - sprite.getPosition().y;
+			
+			if (dx<0) {
+				sprite.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
+		    }else{
+		    	sprite.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
+		        
+
+		    }
 			
 			
 			
 			//System.out.println(1000.0/(deltaTime));
-			
+			pipeline.clear();
 			
 		
 		

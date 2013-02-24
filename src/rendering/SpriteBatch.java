@@ -70,7 +70,6 @@ public class SpriteBatch {
 	public void render(Pipeline pipeline){
 				
 		shader.bind();
-		
 		glActiveTexture(GL_TEXTURE0);
 		texture.bind();
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD2D));
