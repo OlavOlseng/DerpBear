@@ -54,22 +54,25 @@ public class GameWorld {
 	public void test(int ents) {
 		int s = (int)(Math.sqrt(ents)); 
 		
-		float floorWidth = 30;
-		new Wall(this, floorWidth, 1, new Vec2(floorWidth/2 + 10, 3.0f), 0.0f);
-		new Wall(this, floorWidth, 1, new Vec2(floorWidth/2 + 10, 32.0f), 0.0f);
-		new Wall(this, floorWidth, 1, new Vec2(46.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
-		new Wall(this, floorWidth, 1, new Vec2(4.0f, floorWidth/2 + 3.0f), (float)Math.PI/2.0f);
+		float floorWidth = 700;
+		new Wall(this, floorWidth, 20, new Vec2(400, 550), 0.0f);
+		new Wall(this, floorWidth, 20, new Vec2(400, 50), 0.0f);
+		floorWidth = 500;
+		new Wall(this, floorWidth, 20, new Vec2(50, 300), (float)Math.PI/2.0f);
+		new Wall(this, floorWidth, 20, new Vec2(750, 300), (float)Math.PI/2.0f);
 		
 //		TestActor test = new TestActor(this, new Vec2(5.0f, 15.0f), 10);
 //		test.getBody().setLinearVelocity(new Vec2(5.0f, 1.0f));
 //		test.getBody().setAngularVelocity(10.0f);
 //		
-		Box megabox = new Box(this, new Vec2(12,16), 5, 5, 0, 1000.0f);
-		megabox.getBody().applyLinearImpulse(new Vec2(1000, 0), megabox.getBody().getPosition());
+		Box megabox = new Box(this, new Vec2(200,300), 32*4, 32*4, 0, 1000.0f);
+//		megabox.getBody().applyLinearImpulse(new Vec2(100000, 0), megabox.getBody().getPosition());
+		
+		float boxSide = 10;
 		for (int x = 0; x < s; x++) {
 			for (int y = 0; y < s; y++) {
-				Box b = new Box(this, new Vec2(x+20f, y+15f), 0.5f, 0.5f, x*y/16, 1.0f);
-				b.getBody().applyLinearImpulse(new Vec2(-10, 0), b.getBody().getPosition());
+				Box b = new Box(this, new Vec2(x*32 + 300, y*32+150), boxSide, boxSide, x*y/16, 1.0f);
+				b.getBody().applyLinearImpulse(new Vec2(-100, 0), b.getBody().getPosition());
 			}
 		}
 	}
