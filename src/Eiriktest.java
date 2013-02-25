@@ -50,6 +50,7 @@ import rendering.TileAtlas;
 import rendering.TileGrid;
 import rendering.TileGridRenderer;
 import rendering.TileType;
+import util.DepthLevel;
 import world.GameWorld;
 import world.dbDebugDraw;
 import world.entity.Box;
@@ -214,6 +215,7 @@ public class Eiriktest extends BaseGame {
 
 		    }
 			
+			
 			if(Mouse.isButtonDown(0)){
 				
 
@@ -221,11 +223,12 @@ public class Eiriktest extends BaseGame {
 				square.setSize(5, 5);
 				rootNode.addChild(square);
 				Box box = new Box(world,square, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 5, 5, 0, 1);
+				box.setDepth(DepthLevel.ACTOR_LVL);
 				Vec2 dir = new Vec2(dx,dy);
 				dir.normalize();
 				dir.x *=50;
 				dir.y *=50;
-				box.getBody().applyLinearImpulse(dir, new Vec2(0,0));
+				box.getBody().applyLinearImpulse(dir, box.getBody().getPosition());
 				
 				
 				
