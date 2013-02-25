@@ -39,7 +39,6 @@ public class TestGame extends BaseGame{
 		pipeline = new Pipeline();
 		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, 800, 0, 600));
 		ldr = new LineDrawer(100000);
-		ldr.setScale(PIXELSCALE, PIXELSCALE);
 		dbgDraw = new dbDebugDraw(ldr);
 		
 		
