@@ -45,6 +45,7 @@ public class TileGridRenderer extends Node {
 		shader.bindUniform(Uniform.DEPTH);
 		shader.bindUniform(Uniform.STEP_SIZE_X);
 		shader.bindUniform(Uniform.STEP_SIZE_Y);
+		shader.bindUniform(Uniform.TILES_Y);
 		shader.bindAttribute(Attribute.COORD3D);
 		
 		internalVertexBuffer = BufferUtils.createIntBuffer(grid.getNumTiles()*3*6);
@@ -66,18 +67,19 @@ public class TileGridRenderer extends Node {
 				if(type == 0)
 					continue;
 				
-				vertices[i++] = x;vertices[i++] = y;vertices[i++] = type;
-				vertices[i++] = x+1;vertices[i++] = y;vertices[i++] = type;
-				vertices[i++] = x;vertices[i++] = y+1;vertices[i++] = type;
+				vertices[i++] = x;vertices[i++] = y;vertices[i++] = type-1;
+				vertices[i++] = x+1;vertices[i++] = y;vertices[i++] = type-1;
+				vertices[i++] = x;vertices[i++] = y+1;vertices[i++] = type-1;
 				
-				vertices[i++] = x;vertices[i++] = y+1;vertices[i++] = type;
-				vertices[i++] = x+1;vertices[i++] = y;vertices[i++] = type;
-				vertices[i++] = x+1;vertices[i++] = y+1;vertices[i++] = type;
+				vertices[i++] = x;vertices[i++] = y+1;vertices[i++] = type-1;
+				vertices[i++] = x+1;vertices[i++] = y;vertices[i++] = type-1;
+				vertices[i++] = x+1;vertices[i++] = y+1;vertices[i++] = type-1;
 				
 				
 				
 			}
 		}
+		
 		
 		internalVertexBuffer.put(vertices);
 		internalVertexBuffer.flip();
@@ -103,8 +105,9 @@ public class TileGridRenderer extends Node {
 		mvpBuffer.flip();
 		glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());
 		glUniformMatrix4(shader.getUniform(Uniform.MVP), false,mvpBuffer);
-		glUniform1f(shader.getUniform(Uniform.STEP_SIZE_X),- 1.0f/tileAtlas.getTilesX());
+		glUniform1f(shader.getUniform(Uniform.STEP_SIZE_X), 1.0f/tileAtlas.getTilesX());
 		glUniform1f(shader.getUniform(Uniform.STEP_SIZE_Y), 1.0f/tileAtlas.getTilesY());
+		glUniform1f(shader.getUniform(Uniform.TILES_Y), tileAtlas.getTilesY());
 		glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.getSize());
 
 		

@@ -26,10 +26,7 @@ public class Wall extends Entity{
 		
 	}
 
-	@Override
-	public void render() {
-		// TODO Auto-generated method stub
-	}
+	
 
 	@Override
 	public void onUpdate(float dt) {

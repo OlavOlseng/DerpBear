@@ -9,6 +9,9 @@ public class TileGrid {
 		grid = new Tile[tilesX*tilesY];
 		this.tilesX = tilesX;
 		this.tilesY = tilesY;
+		for(int i = 0; i < grid.length;i++){
+			grid[i] = new Tile(TileType.NONE);
+		}
 	}
 	
 	public void setTile(int x,int y,Tile tile){

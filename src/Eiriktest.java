@@ -54,6 +54,10 @@ import util.DepthLevel;
 import world.GameWorld;
 import world.dbDebugDraw;
 import world.entity.Box;
+import world.entity.Entity;
+import world.entity.actor.Actor;
+import world.entity.actor.Player;
+import world.entity.actor.TestActor;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -67,7 +71,9 @@ public class Eiriktest extends BaseGame {
 	Pipeline pipeline;
 	Node rootNode;
 	Sprite sprite;
-	
+	TestActor boxActor;
+	Entity player;
+	TileGridRenderer ground;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -83,20 +89,32 @@ public class Eiriktest extends BaseGame {
 	@Override
 	public void setup() {
 		// TODO Auto-generated method stub
+		
+		world  = new GameWorld();
+		ldr = new LineDrawer(100000);
+		
+		dbgDraw = new dbDebugDraw(ldr);
+		
+		dbgDraw.setFlags(DebugDraw.e_shapeBit);
+		world.getPhysWorld().setDebugDraw(dbgDraw);
+		
 		rootNode = new Node();
 		
 		Texture tex = null;
 		try {
-			tex = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/tileAtlas.png"),true);
+			tex = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/tileAtlas.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		 sprite = new Sprite(tex);
-		sprite.setWidth(100);
-		sprite.setHeight(150);
+		sprite.setPosition(200, 200);
+		sprite.setWidth(40);
+		sprite.setHeight(40);
 		pipeline = new Pipeline();
+		boxActor = new TestActor(world, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 0.0f);
+		boxActor.setNode(sprite);
 		
 		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, this.getScreenWidth(), 0, this.getScreenHeight()));
 		Matrix4f view = new Matrix4f();
@@ -123,31 +141,33 @@ public class Eiriktest extends BaseGame {
 		
 		Texture atlas = null;
 		try {
-			atlas = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/tileAtlas.png"),true);
+			atlas = TextureLoader.getTexture("PNG",ResourceLoader.getResourceAsStream("res/testAtlas.png"),true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		TileAtlas tileAtlas = new TileAtlas(atlas, 2, 2);
 		
-		TileGrid grid =  new TileGrid(10, 10);
+		TileGrid grid =  new TileGrid(50, 50);
 		
-		for(int x = 0; x<10; x++){
-			for (int y = 0; y<10;y++){
-				grid.setTile(x, y, new Tile(TileType.GRASS));
+		for(int x = 0; x<50; x++){
+			for (int y = 0; y<50;y++){
+				grid.setTile(x, y, new Tile(TileType.DIRT));
 			}
 			
 		}
 		
-		grid.setTile(5, 5, new Tile(TileType.NONE));
-		grid.setTile(2, 2, new Tile(TileType.DIRT));
-		grid.setTile(2, 3, new Tile(TileType.GRAVEL));
-		grid.setTile(2, 4, new Tile(TileType.PLANKS));
-		TileGridRenderer tileGridRenderer = new TileGridRenderer(tileAtlas, grid);
-		tileGridRenderer.setSize(1000, 1000);
-		tileGridRenderer.setPosition(0, 0);
+	
+		grid.setTile(5, 5, new Tile(TileType.GRASS));
+		grid.setTile(5, 6, new Tile(TileType.GRASS));
+		grid.setTile(4, 5, new Tile(TileType.GRASS));
+		grid.setTile(5, 4, new Tile(TileType.GRASS));
+		grid.setTile(6, 5, new Tile(TileType.GRASS));
+		ground= new TileGridRenderer(tileAtlas, grid);
+		ground.setSize(50*64, 50*64);
+		ground.setPosition(0, 0);
 		
-		
+		ground.setDepth(DepthLevel.BACKGROUND_LVL.getDepth());
 		
 		
 		lineDrawer  = new LineDrawer(200);
@@ -155,15 +175,15 @@ public class Eiriktest extends BaseGame {
 		
 		//rootNode.addChild(lineDrawer);
 		rootNode.addChild(sprite);
-		ldr = new LineDrawer(100000);
-		
-		dbgDraw = new dbDebugDraw(ldr);
-		world  = new GameWorld();
-		world.getPhysWorld().setDebugDraw(dbgDraw);
-		dbgDraw.setFlags(DebugDraw.e_shapeBit);
 		rootNode.addChild(ldr);
 		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
-		
+		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
+		Sprite playerSprite = new Sprite(playerTex);
+		rootNode.addChild(playerSprite);
+		playerSprite.setPosition(100, 100);
+		playerSprite.setSize(32, 32);
+		player = new Player(DepthLevel.ACTOR_LVL,playerSprite);
+		world.add(player);
 		//lineDrawer.move(100, 100);
 	}
 
@@ -175,32 +195,18 @@ public class Eiriktest extends BaseGame {
 		
 		world.update(dt);
 		world.render(pipeline);
-		rootNode.render(pipeline);
-		ldr.clear();
 		
-		
-		
-		// TODO Auto-generated method stub
-		//glEnable(GL_DEPTH_TEST);
-			
-		
-			
-			
-			
-			//lineDrawer.render(pipeline);
-			
-			//rootNode.rotate(0.1f);
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-				sprite.move(-1, 0);
+				player.move(-1*dt, 0);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-				sprite.move(1, 0);
+				player.move(1*dt, 0);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-				sprite.move(0, 1);
+				player.move(0, 1*dt);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-				sprite.move(0, -1);
+				player.move(0, -1*dt);
 			}
 			
 			float dx = Mouse.getX()- sprite.getPosition().x;
@@ -208,10 +214,11 @@ public class Eiriktest extends BaseGame {
 			float dy = Mouse.getY() - sprite.getPosition().y;
 			
 			if (dx<0) {
-				sprite.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
+				
+				player.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
 		    }else{
-		    	sprite.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
-		        
+		    	
+		    	player.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
 
 		    }
 			
@@ -234,13 +241,17 @@ public class Eiriktest extends BaseGame {
 				
 			}
 			
+			
+			ground.render(pipeline);
+			
 			rootNode.render(pipeline);
+			
 			//System.out.println(1000.0/(deltaTime));
 			pipeline.clear();
 			
 		
 		
-		
+			ldr.clear();
 	}
 
 	

@@ -23,15 +23,11 @@ public class TileAtlas {
 	public int getTilesY() {
 		return tilesY;
 	}
-	public void setTilesY(int tilesY) {
-		this.tilesY = tilesY;
-	}
+	
 	public int getTilesX() {
 		return tilesX;
 	}
-	public void setTilesX(int tilesX) {
-		this.tilesX = tilesX;
-	}
+	
 	
 	
 	

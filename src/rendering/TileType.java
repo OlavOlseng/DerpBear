@@ -2,7 +2,7 @@ package rendering;
 
 public enum TileType {
 	
-	NONE(0),GRASS(1),DIRT(2),PLANKS(3),GRAVEL(4);
+	NONE(0),GRASS(2),DIRT(1),PLANKS(4),GRAVEL(3);
 	
 	private int type;
 	TileType(int type){
