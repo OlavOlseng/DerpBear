@@ -70,7 +70,9 @@ public abstract class Entity {
 		
 		
 	}
+	
 	public abstract void render();
+	
 	public void update(float dt){
 		
 		onUpdate(dt);
@@ -82,5 +84,6 @@ public abstract class Entity {
 		
 		
 	}
+	
 	public abstract void onUpdate(float dt);
 }

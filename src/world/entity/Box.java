@@ -24,7 +24,7 @@ public class Box extends Entity{
 		
 		this.bDef = BodyFactory.createDynamicBodyDef(position, rotation);
 		
-		bDef.linearDamping = (mass / (10000.0f) + 1.5f);
+		bDef.linearDamping = (mass / (8000.0f) + 1.7f);
 		bDef.angularDamping = (mass / (500.0f) + 1.2f);
 		
 		this.fDef = BodyFactory.createBox(mass, width/2, height/2);
