@@ -18,5 +18,5 @@ public abstract class Component {
 	}
 
 	public abstract void receiveMessage(ComponentMessage message);
-	public abstract void onUpdate(GameObject gameObject, double dt);
+	public abstract void onUpdate(GameObject gameObject, float dt);
 }

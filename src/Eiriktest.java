@@ -74,7 +74,7 @@ public class Eiriktest extends BaseGame {
 	LineDrawer ldr;
 	dbDebugDraw dbgDraw;
 	public Eiriktest() {
-		super(60,1280,720);
+		super(1000,1280,720);
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -190,18 +190,6 @@ public class Eiriktest extends BaseGame {
 		world.update(dt);
 		world.render(pipeline);
 		
-//			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-//				player.move(-1*dt, 0);
-//			}
-//			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-//				player.move(1*dt, 0);
-//			}
-//			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-//				player.move(0, 1*dt);
-//			}
-//			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-//				player.move(0, -1*dt);
-//			}
 			
 			float dx = Mouse.getX()- sprite.getPosition().x;
 			
