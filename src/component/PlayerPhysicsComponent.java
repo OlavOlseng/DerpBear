@@ -1,7 +1,6 @@
 package component;
 
-import world.entity.Entity;
-import world.gameObject.GameObject;
+import world.gameobject.GameObject;
 import component.base.Component;
 import component.container.ComponentMessage;
 
@@ -22,6 +21,5 @@ public class PlayerPhysicsComponent extends Component {
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 }

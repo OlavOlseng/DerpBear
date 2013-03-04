@@ -1,41 +1,38 @@
-package world.gameObject;
+/*
+ * This class contains everything that you can add to the physicsworld and render.
+ * For objects needing gamelogic see actor.
+ * 
+ * REMARKS:
+ * 
+  */
 
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.FixtureDef;
+package world.gameobject;
 
-import component.base.Component;
-import component.base.ControllerComponent;
-import component.base.GraphicsComponent;
-import component.base.PhysicsComponent;
 import component.container.ComponentContainer;
 
-public class GameObject {
-	private ComponentContainer container;
-	private PhysicsComponent physicsComponent;
-	private ControllerComponent controllerComponent;
-	private GraphicsComponent graphicsComponent;
-	private Body body;
-	private FixtureDef fixtureDef;
-	private BodyDef bodyDef;
+public abstract class GameObject {
 	
-	public GameObject(PhysicsComponent physicsComponent, ControllerComponent controllerComponent, GraphicsComponent graphicsComponent){
-		
-		this.graphicsComponent = graphicsComponent;
-		this.physicsComponent = physicsComponent;
-		this.controllerComponent = controllerComponent;
-		container = new ComponentContainer();
-		container.addComponent(graphicsComponent);
-		container.addComponent(controllerComponent);
-		container.addComponent(physicsComponent);
-		
+	protected boolean toBeRemoved;
+	protected Transform transform;
+	ComponentContainer componentContainer;
+	
+	public GameObject(Transform t){
+		toBeRemoved = false;
+		this.transform = t;
+		componentContainer = new ComponentContainer(); 
 	}
 	
-	public void update(double dt){
-		for (Component component: container){
-			component.onUpdate(this, dt);
-			
-		}
+	public Transform getTransform() {
+		return this.transform;
 	}
 	
+	public void update(float dt){
+		onUpdate(dt);
+	}
+	
+	public boolean isToBeRemoved() {
+		return toBeRemoved;
+	}
+	
+	public abstract void onUpdate(float dt);
 }

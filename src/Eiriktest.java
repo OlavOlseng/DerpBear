@@ -53,11 +53,7 @@ import rendering.TileType;
 import util.DepthLevel;
 import world.GameWorld;
 import world.dbDebugDraw;
-import world.entity.Box;
-import world.entity.Entity;
-import world.entity.actor.Actor;
-import world.entity.actor.Player;
-import world.entity.actor.TestActor;
+import world.gameobject.GameObject;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -71,8 +67,6 @@ public class Eiriktest extends BaseGame {
 	Pipeline pipeline;
 	Node rootNode;
 	Sprite sprite;
-	TestActor boxActor;
-	Actor player;
 	TileGridRenderer ground;
 	public static final float PIXELSCALE = 32/2;
 	
@@ -113,8 +107,8 @@ public class Eiriktest extends BaseGame {
 		sprite.setWidth(40);
 		sprite.setHeight(40);
 		pipeline = new Pipeline();
-		boxActor = new TestActor(world, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 0.0f);
-		boxActor.setNode(sprite);
+//		boxActor = new TestActor(world, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 0.0f);
+//		boxActor.setNode(sprite);
 		
 		pipeline.setProjectionMatrix(MatrixUtil.getOrthographicProjection(0, this.getScreenWidth(), 0, this.getScreenHeight()));
 		Matrix4f view = new Matrix4f();
@@ -176,14 +170,14 @@ public class Eiriktest extends BaseGame {
 		//rootNode.addChild(lineDrawer);
 		rootNode.addChild(sprite);
 		rootNode.addChild(ldr);
-		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
+//		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
 		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
 		Sprite playerSprite = new Sprite(playerTex);
 		rootNode.addChild(playerSprite);
 		playerSprite.setPosition(100, 100);
 		playerSprite.setSize(32, 32);
 		//player = new Entity(graphicsComponent, physicsComponent)
-		world.add(player);
+//		world.add(player);
 		//lineDrawer.move(100, 100);
 	}
 
@@ -196,31 +190,31 @@ public class Eiriktest extends BaseGame {
 		world.update(dt);
 		world.render(pipeline);
 		
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-				player.move(-1*dt, 0);
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-				player.move(1*dt, 0);
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-				player.move(0, 1*dt);
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-				player.move(0, -1*dt);
-			}
+//			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+//				player.move(-1*dt, 0);
+//			}
+//			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+//				player.move(1*dt, 0);
+//			}
+//			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+//				player.move(0, 1*dt);
+//			}
+//			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+//				player.move(0, -1*dt);
+//			}
 			
 			float dx = Mouse.getX()- sprite.getPosition().x;
 			
 			float dy = Mouse.getY() - sprite.getPosition().y;
 			
-			if (dx<0) {
-				
-				player.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
-		    }else{
-		    	
-		    	player.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
-
-		    }
+//			if (dx<0) {
+//				
+//				player.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
+//		    }else{
+//		    	
+//		    	player.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
+//
+//		    }
 			
 			
 			if(Mouse.isButtonDown(0)){
@@ -229,13 +223,13 @@ public class Eiriktest extends BaseGame {
 				Sprite square = new Sprite(ResourceManager.getTexture("PNG", "grass.png"));
 				square.setSize(5, 5);
 				rootNode.addChild(square);
-				Box box = new Box(world,square, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 5, 5, 0, 1);
-				box.setDepth(DepthLevel.ACTOR_LVL);
+//				Box box = new Box(world,square, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 5, 5, 0, 1);
+//				box.setDepth(DepthLevel.ACTOR_LVL);
 				Vec2 dir = new Vec2(dx,dy);
 				dir.normalize();
 				dir.x *=50;
 				dir.y *=50;
-				box.getBody().applyLinearImpulse(dir, box.getBody().getPosition());
+//				box.getBody().applyLinearImpulse(dir, box.getBody().getPosition());
 				
 				
 				

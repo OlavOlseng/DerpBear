@@ -1,8 +1,7 @@
 package component.base;
 
 
-import world.entity.Entity;
-import world.gameObject.GameObject;
+import world.gameobject.GameObject;
 import component.container.ComponentContainer;
 import component.container.ComponentMessage;
 
