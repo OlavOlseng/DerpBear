@@ -7,6 +7,8 @@ import java.nio.FloatBuffer;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -33,6 +35,10 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.util.ResourceLoader;
 
+import component.PlayerInputComponent;
+import component.base.GraphicsComponent;
+import component.base.PhysicsComponent;
+
 import core.BaseGame;
 
 import rendering.Attribute;
@@ -51,9 +57,12 @@ import rendering.TileGrid;
 import rendering.TileGridRenderer;
 import rendering.TileType;
 import util.DepthLevel;
+import util.GameConstants;
+import world.BodyFactory;
 import world.GameWorld;
 import world.dbDebugDraw;
 import world.gameobject.GameObject;
+import world.gameobject.Transform;
 
 
 import static org.lwjgl.opengl.GL11.*;
@@ -73,8 +82,9 @@ public class Eiriktest extends BaseGame {
 	GameWorld world;
 	LineDrawer ldr;
 	dbDebugDraw dbgDraw;
+	
 	public Eiriktest() {
-		super(1000,1280,720);
+		super(60,1280,720);
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -86,6 +96,7 @@ public class Eiriktest extends BaseGame {
 		
 		world  = new GameWorld();
 		ldr = new LineDrawer(100000);
+		ldr.setDepth(DepthLevel.TOP_LVL.getDepth());
 		
 		dbgDraw = new dbDebugDraw(ldr);
 		
@@ -119,18 +130,6 @@ public class Eiriktest extends BaseGame {
 		sprite.setPosition(1000, 200);
 		
 		
-		SpriteBatch batch = new SpriteBatch(tex,5000);
-		
-		for (int i =0 ;i <100 ; i++){
-			
-			Node node = new Node();
-			
-			node.setPosition(i % 200, i % 200);
-			node.setSize(2000, 2000);
-			
-			batch.addSprite(node);
-			
-		}
 		
 		
 		Texture atlas = null;
@@ -168,14 +167,25 @@ public class Eiriktest extends BaseGame {
 		lineDrawer.addLine(0.0f, 0.0f, 500.0f, 500.0f, 1.0f, 0.0f, 0.0f);
 		
 		//rootNode.addChild(lineDrawer);
+		sprite.setDepth(DepthLevel.ACTOR_LVL.getDepth());
 		rootNode.addChild(sprite);
 		rootNode.addChild(ldr);
 //		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
 		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
 		Sprite playerSprite = new Sprite(playerTex);
-		rootNode.addChild(playerSprite);
-		playerSprite.setPosition(100, 100);
+		
+		
 		playerSprite.setSize(32, 32);
+		BodyDef def = new BodyDef();
+		def.type = BodyType.KINEMATIC;
+		
+		
+		GameObject player = new GameObject(new Transform(5,5), new PlayerInputComponent());
+		PhysicsComponent pComponent = new PhysicsComponent(world,player, BodyFactory.createBox(1.0f, 16.0f/GameConstants.PIXELSCALE,  16.0f/GameConstants.PIXELSCALE), def);
+		player.addComponent(pComponent);
+		player.addComponent(new GraphicsComponent(playerSprite, pipeline));
+		world.add(player);
+		
 		//player = new Entity(graphicsComponent, physicsComponent)
 //		world.add(player);
 		//lineDrawer.move(100, 100);
@@ -229,6 +239,7 @@ public class Eiriktest extends BaseGame {
 			rootNode.render(pipeline);
 			
 			//System.out.println(1000.0/(deltaTime));
+			//ldr.render(pipeline);
 			pipeline.clear();
 			
 		

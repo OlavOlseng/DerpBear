@@ -5,12 +5,14 @@ import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
 
+import component.container.ComponentMessage;
+
 import util.GameConstants;
 import world.GameWorld;
 import world.gameobject.GameObject;
 import world.gameobject.Transform;
 
-public abstract class PhysicsComponent extends Component {
+public class PhysicsComponent extends Component {
 	
 	protected Body body;
 	protected FixtureDef fixtureDef;
@@ -18,15 +20,18 @@ public abstract class PhysicsComponent extends Component {
 	protected GameWorld world;
 	protected GameObject owner;
 	
-	public PhysicsComponent(GameWorld w, GameObject owner, FixtureDef fDef, BodyDef bDef) {
+	public PhysicsComponent(GameWorld w, GameObject owner,FixtureDef fDef, BodyDef bDef) {
 		this.fixtureDef = fDef;
 		this.bodyDef = bDef;
 		this.owner = owner;
+	
 		this.world = w;
+		addToWorld(owner);
 		owner.setPhysicsSimulated(this);
 	}
 	
-	public void addToWorld(){
+	public void addToWorld(GameObject owner){
+		
 		//You need to instantiate the bodydef and fixturedef before calling this function
 		if(body != null)
 			throw (new IllegalStateException("Body already in simulation!"));
@@ -54,12 +59,18 @@ public abstract class PhysicsComponent extends Component {
 	}	
 	
 	@Override
-	public void onUpdate(GameObject gameObject, double dt) {
-		Transform t = owner.getTransform();
+	public void onUpdate(GameObject gameObject, float dt) {
+		Transform t = gameObject.getTransform();
 		Vec2 p = body.getPosition();
 		
 		t.orientation = body.getAngle();
 		t.x = p.x * GameConstants.PIXELSCALE; 
 		t.y = p.y * GameConstants.PIXELSCALE;
+	}
+
+	@Override
+	public void receiveMessage(ComponentMessage message) {
+		// TODO Auto-generated method stub
+		
 	}
 }

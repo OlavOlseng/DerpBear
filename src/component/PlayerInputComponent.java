@@ -22,19 +22,15 @@ public class PlayerInputComponent extends InputComponent {
 	@Override
 	public void onUpdate(GameObject gameObject, float dt) {
 		
-		while(Keyboard.next()){
-			switch (Keyboard.getEventKey()) {
-			case Keyboard.KEY_LEFT: gameObject.move(-1.0f*dt, 0.0f);
-				break;
-			case Keyboard.KEY_RIGHT: gameObject.move(1.0f*dt, 0.0f);
-				break;
-			case Keyboard.KEY_UP: gameObject.move(0.0f, 1.0f*dt);
-				break;
-			case Keyboard.KEY_DOWN: gameObject.move(0.0f, -1.0f*dt);
-				break;
-			default:
-				break;
-			}	
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			gameObject.move(-50.0f*dt, 0.0f);
+		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+			gameObject.move(50.0f*dt, 0.0f);
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP))
+			gameObject.move(0.0f, 50.0f*dt);
+		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+			gameObject.move(0.0f, -50.0f*dt);
+		
 			
 		//	float dx = Mouse.getX()- sprite.getPosition().x;
 			
@@ -42,7 +38,7 @@ public class PlayerInputComponent extends InputComponent {
 			
 			
 			
-		}
+		
 		
 		
 		

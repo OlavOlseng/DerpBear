@@ -11,8 +11,8 @@ import component.container.ComponentMessage;
 
 public class PlayerPhysicsComponent extends PhysicsComponent {
 
-	public PlayerPhysicsComponent(GameWorld w, GameObject owner, FixtureDef fDef, BodyDef bDef){
-		super(w, owner, fDef, bDef);
+	public PlayerPhysicsComponent(GameWorld w,GameObject owner, FixtureDef fDef, BodyDef bDef){
+		super(w, owner,fDef, bDef);
 		
 	}
 	@Override
@@ -22,7 +22,7 @@ public class PlayerPhysicsComponent extends PhysicsComponent {
 	}
 
 	@Override
-	public void onUpdate(GameObject gameObject, double dt) {
+	public void onUpdate(GameObject gameObject, float dt) {
 		// TODO Auto-generated method stub
 		
 	}

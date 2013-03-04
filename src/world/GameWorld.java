@@ -18,7 +18,7 @@ public class GameWorld {
 	ArrayList<GameObject> gameObjects;
 	
 	public GameWorld() {
-		g = new Vec2(0.0f, 0.0f);
+		g = new Vec2(1.0f, 1.0f);
 		world = new World(g, true);
 		gameObjects = new ArrayList<GameObject>();
 		velocityIterations = 8;

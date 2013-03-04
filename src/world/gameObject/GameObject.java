@@ -8,10 +8,11 @@
 
 package world.gameobject;
 
+import component.base.Component;
 import component.base.PhysicsComponent;
 import component.container.ComponentContainer;
 
-public abstract class GameObject {
+public class GameObject {
 	
 	protected boolean toBeRemoved;
 	protected Transform transform;
@@ -19,13 +20,19 @@ public abstract class GameObject {
 	protected boolean physicsSimulated;
 	protected PhysicsComponent physicsComponent;
 	
-	public GameObject(Transform t){
+	public GameObject(Transform t,Component ...components){
 		toBeRemoved = false;
-		physicsSimulated = true;
+		physicsSimulated = false;
 		this.transform = t;
 		componentContainer = new ComponentContainer(); 
+		
+		for(int i = 0; i<components.length; i++)
+			componentContainer.addComponent(components[i]);
 	}
 	
+	public void addComponent(Component component){
+		componentContainer.addComponent(component);
+	}
 	public void move(float dx, float dy) {
 		transform.x += dx;
 		transform.y += dy;
@@ -61,7 +68,11 @@ public abstract class GameObject {
 	}
 	
 	public void update(float dt){
-		onUpdate(dt);
+		
+		
+		for(Component component:componentContainer ){
+			component.onUpdate(this, dt);
+		}
 	}
 	
 	public boolean isToBeRemoved() {
@@ -77,7 +88,7 @@ public abstract class GameObject {
 		return physicsSimulated; 
 	}
 	
-	public abstract void onUpdate(float dt);
+
 	
 	
 }

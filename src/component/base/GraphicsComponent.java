@@ -31,7 +31,7 @@ public class GraphicsComponent extends Component {
 	public void onUpdate(GameObject gameObject, float dt) {
 		
 		Transform transform = gameObject.getTransform();
-		sprite.setPosition(transform.x*GameConstants.PIXELSCALE, transform.y*GameConstants.PIXELSCALE);
+		sprite.setPosition(transform.x, transform.y);
 		sprite.setOrientation(transform.orientation);
 		sprite.render(pipeline);
 		

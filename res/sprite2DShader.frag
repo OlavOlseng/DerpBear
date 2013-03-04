@@ -8,5 +8,5 @@ void main()
 	vec4 color = texture2D(tex,f_texcoord.xy);
 	if(color.x == 1.0 && color.y == 1.0 && color.z == 1.0)
 		discard;
-	gl_FragColor = texture2D(tex,f_texcoord.xy);
+	gl_FragColor = color;
 }
