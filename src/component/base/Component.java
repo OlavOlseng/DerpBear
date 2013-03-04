@@ -2,6 +2,7 @@ package component.base;
 
 
 import world.entity.Entity;
+import world.gameObject.GameObject;
 import component.container.ComponentContainer;
 import component.container.ComponentMessage;
 
@@ -18,5 +19,5 @@ public abstract class Component {
 	}
 
 	public abstract void receiveMessage(ComponentMessage message);
-	public abstract void onUpdate(Entity entity, double dt);
+	public abstract void onUpdate(GameObject gameObject, double dt);
 }

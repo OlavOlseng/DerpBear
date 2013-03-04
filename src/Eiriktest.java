@@ -72,7 +72,7 @@ public class Eiriktest extends BaseGame {
 	Node rootNode;
 	Sprite sprite;
 	TestActor boxActor;
-	Entity player;
+	Actor player;
 	TileGridRenderer ground;
 	public static final float PIXELSCALE = 32/2;
 	
@@ -182,7 +182,7 @@ public class Eiriktest extends BaseGame {
 		rootNode.addChild(playerSprite);
 		playerSprite.setPosition(100, 100);
 		playerSprite.setSize(32, 32);
-		player = new Player(DepthLevel.ACTOR_LVL,playerSprite);
+		//player = new Entity(graphicsComponent, physicsComponent)
 		world.add(player);
 		//lineDrawer.move(100, 100);
 	}

@@ -21,7 +21,6 @@ public class TestActor extends Actor{
 	@Override
 	public void render() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

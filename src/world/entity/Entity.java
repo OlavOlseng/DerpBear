@@ -26,27 +26,26 @@ import util.DepthLevel;
 import util.GameConstants;
 import world.GameWorld;
 
-public class Entity {
+public abstract class Entity {
 	
 	protected Body b;
 	protected FixtureDef fDef;
 	protected BodyDef bDef;
 	protected DepthLevel dpt;
 	protected Node node;
-	private PhysicsComponent physicsComponent;
-	private GraphicsComponent graphicsComponent;
-	private ComponentContainer container;
+
 	
 
-	public Entity(GraphicsComponent graphicsComponent, PhysicsComponent physicsComponent){	
-		container = new ComponentContainer();
-		this.physicsComponent = physicsComponent;
-		this.graphicsComponent = graphicsComponent;
-		container.addComponent(graphicsComponent);
-		container.addComponent(physicsComponent);
-	
+
+	public Entity(DepthLevel dpt,Component ...components){
+		
+		this(dpt,new Node());
+
 	}
-	
+	public Entity(DepthLevel dpt,Node node){
+		this.node = node;
+		setDepth(dpt);
+	}
 	protected void addToWorld(GameWorld w){
 		//You need to instantiate the bodydef and fixturedef before calling this function
 		b = w.getPhysWorld().createBody(bDef);
@@ -72,14 +71,32 @@ public class Entity {
 	public void setPosition(Vec2 position){
 		b.setTransform(position, b.getAngle());
 	}
-	public void update(float dt){
-		
-		physicsComponent.onUpdate(this, dt);
-		graphicsComponent.onUpdate(this, dt);
-		
-		
+
+	public void setNode(Node node)
+	{
+		this.node = node;
+		this.node.setDepth(dpt.getDepth());
 		
 		
 	}
+	
+	
+	public void setDepth(DepthLevel depth){
+		this.dpt = depth;
+	}
+	public DepthLevel getDepth() {
+		return dpt;
+	}
+
+	
+	public abstract void render();
+	
+
+	public void update(float dt){
+		onUpdate(dt);
+		
+	}
+
+	public abstract void onUpdate(float dt);
 
 }

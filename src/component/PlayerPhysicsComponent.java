@@ -1,6 +1,7 @@
 package component;
 
 import world.entity.Entity;
+import world.gameObject.GameObject;
 import component.base.Component;
 import component.container.ComponentMessage;
 
@@ -17,7 +18,7 @@ public class PlayerPhysicsComponent extends Component {
 	}
 
 	@Override
-	public void onUpdate(Entity entity, double dt) {
+	public void onUpdate(GameObject gameObject, double dt) {
 		// TODO Auto-generated method stub
 		
 	}

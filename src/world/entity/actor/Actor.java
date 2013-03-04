@@ -25,10 +25,9 @@ public abstract class Actor extends Entity{
 	private Vec2 velocity;
 	
 	
-	public Actor(GraphicsComponent graphicsComponent, PhysicsComponent physicsComponent, ControllerComponent controllerComponent){
-		super(graphicsComponent,physicsComponent);
+	public Actor(DepthLevel dpt) {
+		super(dpt);
 		dead = false;
-		velocity = new Vec2();
 	}
 	
 	@Override
