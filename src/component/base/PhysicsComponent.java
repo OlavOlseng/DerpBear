@@ -4,6 +4,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.contacts.ContactEdge;
 
 import component.container.ComponentMessage;
 
@@ -19,26 +20,36 @@ public class PhysicsComponent extends Component {
 	protected BodyDef bodyDef;
 	protected GameWorld world;
 	protected GameObject owner;
+	protected boolean allowSleep;
 	
 	public PhysicsComponent(GameWorld w, GameObject owner,FixtureDef fDef, BodyDef bDef) {
+		this(w, owner, fDef, bDef, true);
+	}
+	
+	public PhysicsComponent(GameWorld w, GameObject owner,FixtureDef fDef, BodyDef bDef,boolean allowSleep) {
 		this.fixtureDef = fDef;
 		this.bodyDef = bDef;
 		this.owner = owner;
-	
 		this.world = w;
+		this.allowSleep = allowSleep;
+		bDef.allowSleep = allowSleep;
 		addToWorld(owner);
 		owner.setPhysicsSimulated(this);
 	}
 	
-	public void addToWorld(GameObject owner){
+	public Body getBody(){
+		return body;
 		
+	}
+	private void addToWorld(GameObject owner){	
 		//You need to instantiate the bodydef and fixturedef before calling this function
-		if(body != null)
-			throw (new IllegalStateException("Body already in simulation!"));
 		
 		body = world.getPhysWorld().createBody(bodyDef);
 		body.createFixture(fixtureDef);
+		Transform ownerTransform = owner.getTransform();
+		body.setTransform(new Vec2(ownerTransform.x/GameConstants.PIXELSCALE,ownerTransform.y/GameConstants.PIXELSCALE), ownerTransform.orientation);
 		body.setUserData(owner);
+		
 	}
 	
 	public void removeFromWorld() {

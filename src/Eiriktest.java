@@ -9,6 +9,7 @@ import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -35,7 +36,9 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.util.ResourceLoader;
 
+import component.KinematicPhysicsComponent;
 import component.PlayerInputComponent;
+import component.SensorComponent;
 import component.base.GraphicsComponent;
 import component.base.PhysicsComponent;
 
@@ -177,15 +180,43 @@ public class Eiriktest extends BaseGame {
 		
 		playerSprite.setSize(32, 32);
 		BodyDef def = new BodyDef();
-		def.type = BodyType.KINEMATIC;
+		def.type = BodyType.DYNAMIC;
+		
 		
 		
 		GameObject player = new GameObject(new Transform(5,5), new PlayerInputComponent());
-		PhysicsComponent pComponent = new PhysicsComponent(world,player, BodyFactory.createBox(1.0f, 16.0f/GameConstants.PIXELSCALE,  16.0f/GameConstants.PIXELSCALE), def);
+		PhysicsComponent pComponent = new KinematicPhysicsComponent(world,player, BodyFactory.createBox(1.0f, 16.0f/GameConstants.PIXELSCALE,  16.0f/GameConstants.PIXELSCALE), def);
 		player.addComponent(pComponent);
+		player.setPosition(200, 200);
 		player.addComponent(new GraphicsComponent(playerSprite, pipeline));
 		world.add(player);
 		
+		
+		GameObject wall = new GameObject(new Transform(200,200));
+		BodyDef wallDef =  new BodyDef();
+		
+		wallDef.type = BodyType.STATIC;
+		PhysicsComponent wallPhysics =new PhysicsComponent(world, wall, BodyFactory.createBox(0.0f, 20.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), wallDef);
+		wall.addComponent(wallPhysics);
+		
+		world.add(wall);
+		
+		
+		
+		for(int i = 0; i< 20;i++){
+			Sprite blockSprite = new Sprite(playerTex);
+			
+			blockSprite.setSize(16, 16);
+			GameObject block = new GameObject(new Transform(i*30,i*30));
+			
+			BodyDef bdef = new BodyDef();
+			bdef.type = BodyType.DYNAMIC;
+			PhysicsComponent pcomp = new PhysicsComponent(world, block, BodyFactory.createCircle(2.0f, 8.0f/GameConstants.PIXELSCALE), bdef,true);
+			block.addComponent(pcomp);
+			block.addComponent(new GraphicsComponent(blockSprite,pipeline));
+			world.add(block);
+			
+		}
 		//player = new Entity(graphicsComponent, physicsComponent)
 //		world.add(player);
 		//lineDrawer.move(100, 100);
@@ -234,12 +265,13 @@ public class Eiriktest extends BaseGame {
 			}
 			
 			
-			ground.render(pipeline);
+			//ground.render(pipeline);
 			
-			rootNode.render(pipeline);
+			//rootNode.render(pipeline);
 			
 			//System.out.println(1000.0/(deltaTime));
-			//ldr.render(pipeline);
+			ldr.render(pipeline);
+			
 			pipeline.clear();
 			
 		

@@ -2,14 +2,18 @@ package world;
 
 import java.util.ArrayList;
 
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.contacts.Contact;
 
 import rendering.Pipeline;
 
 import world.gameobject.GameObject;
 
-public class GameWorld {
+public class GameWorld implements ContactListener  {
 
 	Vec2 g;
 	World world;
@@ -18,11 +22,12 @@ public class GameWorld {
 	ArrayList<GameObject> gameObjects;
 	
 	public GameWorld() {
-		g = new Vec2(1.0f, 1.0f);
+		g = new Vec2(0.0f, 0.0f);
 		world = new World(g, true);
 		gameObjects = new ArrayList<GameObject>();
 		velocityIterations = 8;
 		positionIterations = 3;
+		world.setContactListener(this);
 		
 //		test(100);
 	}
@@ -76,5 +81,33 @@ public class GameWorld {
 		for(GameObject ent : gameObjects) {
 			ent.update(dt);
 		}
+	}
+
+
+	@Override
+	public void beginContact(Contact arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void endContact(Contact arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void postSolve(Contact arg0, ContactImpulse arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void preSolve(Contact arg0, Manifold arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }

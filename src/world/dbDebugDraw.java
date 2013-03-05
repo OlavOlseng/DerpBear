@@ -8,6 +8,7 @@ import org.jbox2d.common.OBBViewportTransform;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.pooling.arrays.IntArray;
+import org.jbox2d.pooling.arrays.Vec2Array;
 
 import rendering.LineDrawer;
 import util.GameConstants;
@@ -18,16 +19,32 @@ public class dbDebugDraw extends DebugDraw{
 	private final Vec2 temp = new Vec2();
   private final static IntArray xIntsPool = new IntArray();
   private final static IntArray yIntsPool = new IntArray();
-	
+  private final static Vec2Array vecPool = new Vec2Array();
 	public dbDebugDraw(LineDrawer ldr) {
 		super(new OBBViewportTransform());
 		// TODO Auto-generated constructor stub
 		this.ldr = ldr;
 	}
 
+	
+	
+	
+	private Vec2 temp1 = new Vec2();
+	private Vec2 temp2 = new Vec2();
 	@Override
-	public void drawCircle(Vec2 arg0, float arg1, Color3f arg2) {
-		// TODO Auto-generated method stub
+	public void drawCircle(Vec2 center, float radius, Color3f color) {
+		
+	
+		Vec2[] points = vecPool.get(20);
+		
+		generateCirle(center, radius, points, 20);
+		
+		for(int i = 0; i < points.length-1;i++){
+			
+			drawSegment(points[i], points[i+1], color);
+		}
+		
+		drawSegment(points[19], points[0], color);
 		
 	}
 
@@ -46,7 +63,7 @@ public class dbDebugDraw extends DebugDraw{
 		
 		 	getWorldToScreenToOut(p1, sp1);
 		    getWorldToScreenToOut(p2, sp2);
-
+		
 		  
 		    ldr.addLine(sp1.x*GameConstants.PIXELSCALE, sp1.y*GameConstants.PIXELSCALE, sp2.x*GameConstants.PIXELSCALE, sp2.y*GameConstants.PIXELSCALE,color.x,color.y,color.z);
 		 
@@ -54,9 +71,9 @@ public class dbDebugDraw extends DebugDraw{
 	}
 
 	@Override
-	public void drawSolidCircle(Vec2 arg0, float arg1, Vec2 arg2, Color3f arg3) {
+	public void drawSolidCircle(Vec2 center, float radius, Vec2 arg2, Color3f arg3) {
 		// TODO Auto-generated method stub
-		
+		drawCircle(center, radius, arg3);
 	}
 
 	@Override
