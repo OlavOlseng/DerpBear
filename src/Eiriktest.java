@@ -39,6 +39,11 @@ import org.newdawn.slick.util.ResourceLoader;
 
 
 import core.BaseGame;
+import entitysystem.Entity;
+import entitysystem.EntityFactory;
+import entitysystem.EntityManager;
+import entitysystem.RenderSystem;
+import entitysystem.component.RenderComponent;
 
 import rendering.Attribute;
 import rendering.LineDrawer;
@@ -76,6 +81,7 @@ public class Eiriktest extends BaseGame {
 	Node rootNode;
 	Sprite sprite;
 	TileGridRenderer ground;
+	RenderSystem renderSystem;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -178,6 +184,15 @@ public class Eiriktest extends BaseGame {
 		BodyDef def = new BodyDef();
 		def.type = BodyType.DYNAMIC;
 		
+		EntityManager manager = new EntityManager();
+		EntityFactory factory = new EntityFactory(manager);
+		
+		
+		
+		Entity empty = factory.createEmptyEntity();
+		RenderComponent renderComponent = new RenderComponent(playerSprite);
+		manager.addComponentToEntity(renderComponent, empty);
+		renderSystem = new RenderSystem(manager, factory, pipeline);
 		
 		
 		
@@ -211,30 +226,11 @@ public class Eiriktest extends BaseGame {
 //		    }
 			
 			
-			if(Mouse.isButtonDown(0)){
-				
-
-				Sprite square = new Sprite(ResourceManager.getTexture("PNG", "grass.png"));
-				square.setSize(5, 5);
-				rootNode.addChild(square);
-//				Box box = new Box(world,square, new Vec2(sprite.getPosition().x,sprite.getPosition().y), 5, 5, 0, 1);
-//				box.setDepth(DepthLevel.ACTOR_LVL);
-				Vec2 dir = new Vec2(dx,dy);
-				dir.normalize();
-				dir.x *=50;
-				dir.y *=50;
-//				box.getBody().applyLinearImpulse(dir, box.getBody().getPosition());
-				
-				
-				
-			}
+		
 			
 			
-			ground.render(pipeline);
+			renderSystem.update(dt);
 			
-			//rootNode.render(pipeline);
-			
-			//System.out.println(1000.0/(deltaTime));
 			ldr.render(pipeline);
 			
 			pipeline.clear();

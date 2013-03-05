@@ -1,11 +1,11 @@
 package entitysystem;
 
-public abstract class System {
+public abstract class BaseSystem {
 
 	private EntityManager entityManager;
 	private EntityFactory entityFactory;
 	
-	public System(EntityManager entityManager,EntityFactory entityFactory){
+	public BaseSystem(EntityManager entityManager,EntityFactory entityFactory){
 		this.entityManager = entityManager;
 		this.entityFactory = entityFactory;
 	}

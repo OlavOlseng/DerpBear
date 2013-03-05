@@ -1,6 +1,9 @@
 package entitysystem;
 
-public class Entity {
+import entitysystem.component.Component;
+import entitysystem.component.RenderComponent;
+
+public class Entity  {
 
 	private Long eid;
 	private EntityManager entityManager;
@@ -13,6 +16,11 @@ public class Entity {
 	public Long getEID(){
 		return this.eid;
 		
+	}
+	
+	public Component getComponentOfType(Class type){
+		
+		return entityManager.getComponentOfClassForEntity(type, this);
 	}
 	
 	

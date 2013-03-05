@@ -1,6 +1,7 @@
 package entitysystem;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
 
@@ -30,10 +31,11 @@ public class EntityManager {
 	}
 	
 	public void addComponentToEntity(Component component,Entity entity){
+		System.out.println(component.getClass().getName());
 		HashMap<Long, Component> components = componentsByClass.get(component.getClass().getName());
 		if(components == null){
 			components = new HashMap<Long, Component>();
-			componentsByClass.put(component.getClass().toString(), components);
+			componentsByClass.put(component.getClass().getName(), components);
 		}
 		components.put(entity.getEID(), component);
 	}
@@ -43,7 +45,21 @@ public class EntityManager {
 		return componentsByClass.get(type.getName()).get(entity.getEID());
 	}
 	
+	public Collection<Component> getAllComponentsOfClass(Class type){
+		HashMap<Long, Component> components = componentsByClass.get(type.getName());
+		if(components != null)
+		return components.values();
+		
+		return null;
+	}
+	
 	public void removeEntity(Entity entity){
+		for(HashMap<Long, Component> components : componentsByClass.values()){
+			
+			if(components.get(entity.getEID()) != null){
+				components.remove(entity.getEID());
+			}
+		}
 		
 	}
 	
