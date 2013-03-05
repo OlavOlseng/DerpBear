@@ -2,8 +2,13 @@ package entitysystem;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import entitysystem.component.Component;
 
@@ -31,7 +36,6 @@ public class EntityManager {
 	}
 	
 	public void addComponentToEntity(Component component,Entity entity){
-		System.out.println(component.getClass().getName());
 		HashMap<Long, Component> components = componentsByClass.get(component.getClass().getName());
 		if(components == null){
 			components = new HashMap<Long, Component>();
@@ -74,5 +78,43 @@ public class EntityManager {
 		}else{
 			return new ArrayList<Entity>();
 		}
+	}
+	
+	public ArrayList<Entity> getAllEntitiesPossesingComponentsOfClass(Class ...types){
+		
+		ArrayList<HashMap<Long, Component>> components = new ArrayList<HashMap<Long,Component>>(types.length);
+		
+		for(int i = 0; i< types.length; i++){
+			HashMap<Long, Component> componentMap = componentsByClass.get(types[i].getName());
+			if(componentMap != null)
+				components.add(componentMap);
+		}
+		
+		java.util.Collections.sort(components, new HashMapComparator());
+		
+		Set<Long> currentKeySet = new HashSet<Long>();
+		currentKeySet.addAll(components.get(0).keySet());
+		
+		for(int i = 1; i< components.size();i++){
+			Set<Long> nextKeySet = components.get(i).keySet();
+			currentKeySet.retainAll(nextKeySet);
+		}
+		
+		ArrayList<Entity> retval = new ArrayList<>(currentKeySet.size());
+		
+		for(Long eid:currentKeySet){
+			retval.add(entities.get(eid));
+		}
+		return retval;
+	}
+	
+	private class HashMapComparator implements Comparator<HashMap<Long, Component>>{
+
+		@Override
+		public int compare(HashMap<Long, Component> o1,HashMap<Long, Component> o2) {
+	
+			return o1.size() - o2.size();
+		}
+		
 	}
 }

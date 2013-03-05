@@ -1,5 +1,5 @@
 package entitysystem.component;
 
-public class TransformComponent {
+public class TransformComponent extends Component {
 
 }

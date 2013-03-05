@@ -44,6 +44,7 @@ import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
 import entitysystem.RenderSystem;
 import entitysystem.component.RenderComponent;
+import entitysystem.component.TransformComponent;
 
 import rendering.Attribute;
 import rendering.LineDrawer;
@@ -192,9 +193,11 @@ public class Eiriktest extends BaseGame {
 		Entity empty = factory.createEmptyEntity();
 		RenderComponent renderComponent = new RenderComponent(playerSprite);
 		manager.addComponentToEntity(renderComponent, empty);
+		manager.addComponentToEntity(new TransformComponent(), empty);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		
-		
+
+	
 		
 		
 		
