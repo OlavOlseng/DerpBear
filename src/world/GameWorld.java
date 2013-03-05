@@ -11,7 +11,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 import rendering.Pipeline;
 
-import world.gameobject.GameObject;
+
 
 public class GameWorld implements ContactListener  {
 
@@ -19,12 +19,12 @@ public class GameWorld implements ContactListener  {
 	World world;
 	int velocityIterations;
 	int positionIterations;
-	ArrayList<GameObject> gameObjects;
+
 	
 	public GameWorld() {
 		g = new Vec2(0.0f, 0.0f);
 		world = new World(g, true);
-		gameObjects = new ArrayList<GameObject>();
+		
 		velocityIterations = 8;
 		positionIterations = 3;
 		world.setContactListener(this);
@@ -64,23 +64,14 @@ public class GameWorld implements ContactListener  {
 //		}
 //	}
 	
-	public void add(GameObject go) {
-		gameObjects.add(go);
-	}
 	
-	public void delete(GameObject go) {
-		gameObjects.remove(go);
-	}
 	
 	public void render(Pipeline pipeline) {
 		world.drawDebugData();
 	}
 	
 	public void update(float dt) {
-		world.step(dt, velocityIterations, positionIterations);
-		for(GameObject ent : gameObjects) {
-			ent.update(dt);
-		}
+	
 	}
 
 

@@ -36,11 +36,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.opengl.renderer.SGL;
 import org.newdawn.slick.util.ResourceLoader;
 
-import component.KinematicPhysicsComponent;
-import component.PlayerInputComponent;
-import component.SensorComponent;
-import component.base.GraphicsComponent;
-import component.base.PhysicsComponent;
+
 
 import core.BaseGame;
 
@@ -64,7 +60,7 @@ import util.GameConstants;
 import world.BodyFactory;
 import world.GameWorld;
 import world.dbDebugDraw;
-import world.gameobject.GameObject;
+
 import world.gameobject.Transform;
 
 
@@ -184,39 +180,9 @@ public class Eiriktest extends BaseGame {
 		
 		
 		
-		GameObject player = new GameObject(new Transform(5,5), new PlayerInputComponent());
-		PhysicsComponent pComponent = new KinematicPhysicsComponent(world,player, BodyFactory.createBox(1.0f, 16.0f/GameConstants.PIXELSCALE,  16.0f/GameConstants.PIXELSCALE), def);
-		player.addComponent(pComponent);
-		player.setPosition(200, 200);
-		player.addComponent(new GraphicsComponent(playerSprite, pipeline));
-		world.add(player);
-		
-		
-		GameObject wall = new GameObject(new Transform(200,200));
-		BodyDef wallDef =  new BodyDef();
-		
-		wallDef.type = BodyType.STATIC;
-		PhysicsComponent wallPhysics =new PhysicsComponent(world, wall, BodyFactory.createBox(0.0f, 20.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), wallDef);
-		wall.addComponent(wallPhysics);
-		
-		world.add(wall);
 		
 		
 		
-		for(int i = 0; i< 20;i++){
-			Sprite blockSprite = new Sprite(playerTex);
-			
-			blockSprite.setSize(16, 16);
-			GameObject block = new GameObject(new Transform(i*30,i*30));
-			
-			BodyDef bdef = new BodyDef();
-			bdef.type = BodyType.DYNAMIC;
-			PhysicsComponent pcomp = new PhysicsComponent(world, block, BodyFactory.createCircle(2.0f, 8.0f/GameConstants.PIXELSCALE), bdef,true);
-			block.addComponent(pcomp);
-			block.addComponent(new GraphicsComponent(blockSprite,pipeline));
-			world.add(block);
-			
-		}
 		//player = new Entity(graphicsComponent, physicsComponent)
 //		world.add(player);
 		//lineDrawer.move(100, 100);
@@ -228,8 +194,7 @@ public class Eiriktest extends BaseGame {
 		
 	
 		
-		world.update(dt);
-		world.render(pipeline);
+		
 		
 			
 			float dx = Mouse.getX()- sprite.getPosition().x;
@@ -265,7 +230,7 @@ public class Eiriktest extends BaseGame {
 			}
 			
 			
-			//ground.render(pipeline);
+			ground.render(pipeline);
 			
 			//rootNode.render(pipeline);
 			
