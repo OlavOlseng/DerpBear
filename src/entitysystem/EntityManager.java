@@ -5,7 +5,6 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 import entitysystem.component.Component;
-import entitysystem.component.ComponentType;
 
 public class EntityManager {
 	private HashMap<Long, Entity> entities;

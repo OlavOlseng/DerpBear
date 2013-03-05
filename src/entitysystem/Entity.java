@@ -2,7 +2,7 @@ package entitysystem;
 
 public class Entity {
 
-	private long eid;
+	private Long eid;
 	private EntityManager entityManager;
 	
 	public Entity(long eid,EntityManager entityManager){
@@ -10,7 +10,7 @@ public class Entity {
 		this.entityManager = entityManager;
 	}
 	
-	public long getEID(){
+	public Long getEID(){
 		return this.eid;
 		
 	}
