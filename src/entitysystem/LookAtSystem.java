@@ -46,9 +46,8 @@ public class LookAtSystem extends BaseSystem {
 			if(physics != null){
 				Body body = physics.getBody();
 				body.setTransform(body.getPosition(),angle);
-			}else{
-				trans.orientation = angle;
 			}
+			trans.orientation = angle;
 			
 			
 	}
