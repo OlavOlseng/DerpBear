@@ -43,9 +43,11 @@ import core.BaseGame;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
+import entitysystem.LookAtSystem;
 import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
 import entitysystem.ScenerySystem;
+import entitysystem.component.LookAtComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
@@ -90,6 +92,7 @@ public class Eiriktest extends BaseGame {
 	RenderSystem renderSystem;
 	PlayerMoveSystem playerMoveSystem;
 	ScenerySystem physicsSystem;
+	LookAtSystem lookAtSystem;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -187,7 +190,7 @@ public class Eiriktest extends BaseGame {
 		rootNode.addChild(sprite);
 		rootNode.addChild(ldr);
 //		world.add(new Box(world, new Vec2(200, 200), 20, 20, 0, 1));
-		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
+		Texture playerTex = ResourceManager.getTexture("PNG", "square.png");
 		Sprite playerSprite = new Sprite(playerTex);
 		
 		
@@ -205,15 +208,18 @@ public class Eiriktest extends BaseGame {
 		//manager.addComponentToEntity(renderComponent, empty);
 		manager.addComponentToEntity(new TransformComponent(), empty);
 		manager.addComponentToEntity(new PlayerComponent(), empty);
-		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(100.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), 0f), BodyFactory.createBox(10.0f, 16/GameConstants.PIXELSCALE, 16/GameConstants.PIXELSCALE)), empty);
+		manager.addComponentToEntity(new LookAtComponent(), empty);
+		manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
+		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(100.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), 0f), BodyFactory.createBox(10.0f, 16.0f/GameConstants.PIXELSCALE, 16.0f/GameConstants.PIXELSCALE)), empty);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 		physicsSystem = new ScenerySystem(manager,factory);
+		lookAtSystem = new LookAtSystem(manager, factory);
 		
 		Entity groundE = factory.createEmptyEntity();
 		manager.addComponentToEntity(new TransformComponent(), groundE);
 		manager.addComponentToEntity(new RenderComponent(ground), groundE);
-	
+		
 		
 		
 		
@@ -231,27 +237,18 @@ public class Eiriktest extends BaseGame {
 		
 		
 			
-			float dx = Mouse.getX()- sprite.getPosition().x;
 			
-			float dy = Mouse.getY() - sprite.getPosition().y;
-			
-//			if (dx<0) {
-//				
-//				player.setOrientation((float)Math.atan(dy/dx) + 3.14f/2);
-//		    }else{
-//		    	
-//		    	player.setOrientation((float)Math.atan(dy/dx) - 3.14f/2);
-//
-//		    }
+
 			
 			
 		
 			
 			world.update(dt);
-			//renderSystem.update(dt);
 			playerMoveSystem.update(dt);
-			//physicsSystem.update(dt);
+			lookAtSystem.update(dt);
+			physicsSystem.update(dt);
 			world.render(pipeline);
+			renderSystem.update(dt);
 			ldr.render(pipeline);
 			
 			pipeline.clear();

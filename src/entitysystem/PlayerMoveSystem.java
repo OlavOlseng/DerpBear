@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
+import entitysystem.component.LookAtComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
@@ -20,12 +22,10 @@ public class PlayerMoveSystem  extends BaseSystem{
 
 	@Override
 	public void update(float dt) {
-		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class);
+		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class, LookAtComponent.class);
 		
 		for(Entity ent:entities){
-			
 			PhysicsComponent physics = (PhysicsComponent) ent.getComponentOfType(PhysicsComponent.class);
-			
 			Body body = physics.getBody();
 		
 			body.setLinearDamping(4.5f);
@@ -45,6 +45,9 @@ public class PlayerMoveSystem  extends BaseSystem{
 				body.applyForce(new Vec2(0.0f, -500.0f), body.getPosition());
 			}
 			
+			
+			LookAtComponent lookAt =  (LookAtComponent) ent.getComponentOfType(LookAtComponent.class);
+			lookAt.lookAt(Mouse.getX(), Mouse.getY());
 			
 			
 		}
