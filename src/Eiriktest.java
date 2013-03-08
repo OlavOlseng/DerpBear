@@ -29,6 +29,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import org.newdawn.slick.Game;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
@@ -44,6 +45,8 @@ import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
 import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
+import entitysystem.ScenerySystem;
+import entitysystem.component.PhysicsComponent;
 import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
 import entitysystem.component.TransformComponent;
@@ -86,6 +89,7 @@ public class Eiriktest extends BaseGame {
 	TileGridRenderer ground;
 	RenderSystem renderSystem;
 	PlayerMoveSystem playerMoveSystem;
+	ScenerySystem physicsSystem;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -198,11 +202,13 @@ public class Eiriktest extends BaseGame {
 		
 		Entity empty = factory.createEmptyEntity();
 		RenderComponent renderComponent = new RenderComponent(playerSprite);
-		manager.addComponentToEntity(renderComponent, empty);
+		//manager.addComponentToEntity(renderComponent, empty);
 		manager.addComponentToEntity(new TransformComponent(), empty);
 		manager.addComponentToEntity(new PlayerComponent(), empty);
+		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(100.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), 0f), BodyFactory.createBox(10.0f, 16/GameConstants.PIXELSCALE, 16/GameConstants.PIXELSCALE)), empty);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
+		physicsSystem = new ScenerySystem(manager,factory);
 		
 	
 		
@@ -238,9 +244,11 @@ public class Eiriktest extends BaseGame {
 			
 		
 			
-			
-			renderSystem.update(dt);
-			
+			world.update(dt);
+			//renderSystem.update(dt);
+			playerMoveSystem.update(dt);
+			//physicsSystem.update(dt);
+			world.render(pipeline);
 			ldr.render(pipeline);
 			
 			pipeline.clear();
