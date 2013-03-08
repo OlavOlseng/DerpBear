@@ -15,7 +15,7 @@ import entitysystem.component.TransformComponent;
 
 public class ScenerySystem extends BaseSystem{
 
-	Class zis = PhysicsComponent.class;
+	Class phyComp = PhysicsComponent.class;
 	
 	public ScenerySystem(EntityManager entityManager,
 			EntityFactory entityFactory) {
@@ -25,23 +25,16 @@ public class ScenerySystem extends BaseSystem{
 
 	@Override
 	public void update(float dt) {
-		// TODO Auto-generated method stub
 		ArrayList<Entity> l = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, TransformComponent.class);
 		float ps = GameConstants.PIXELSCALE;
+		
 		for (Entity ent : l) {
 			Transform t = ((TransformComponent) (ent.getComponentOfType(TransformComponent.class))).getTransform();
-			
-			Body b = ((PhysicsComponent) (ent.getComponentOfType(zis))).getBody();
-			b.setLinearDamping(0.85f);
+			Body b = ((PhysicsComponent) (ent.getComponentOfType(phyComp))).getBody();
 			
 			t.x = b.getPosition().x * ps;
 			t.y = b.getPosition().y * ps;
 			t.orientation = b.getAngle();
-			b.setAngularVelocity(3);
-			Vec2 force = new Vec2((600/GameConstants.PIXELSCALE -b.getPosition().x),(450/GameConstants.PIXELSCALE - b.getPosition().y));
-			force.normalize();
-			force.mulLocal(1000*dt);
-			b.applyLinearImpulse(force, b.getPosition());
 		}
 	}
 }
