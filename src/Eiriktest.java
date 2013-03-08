@@ -97,7 +97,7 @@ public class Eiriktest extends BaseGame {
 	dbDebugDraw dbgDraw;
 	
 	public Eiriktest() {
-		super(60,1280,720);
+		super(100,1280,720);
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -210,6 +210,9 @@ public class Eiriktest extends BaseGame {
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 		physicsSystem = new ScenerySystem(manager,factory);
 		
+		Entity groundE = factory.createEmptyEntity();
+		manager.addComponentToEntity(new TransformComponent(), groundE);
+		manager.addComponentToEntity(new RenderComponent(ground), groundE);
 	
 		
 		

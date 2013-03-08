@@ -27,15 +27,24 @@ public class PlayerMoveSystem  extends BaseSystem{
 			PhysicsComponent physics = (PhysicsComponent) ent.getComponentOfType(PhysicsComponent.class);
 			
 			Body body = physics.getBody();
-			body.setLinearDamping(0.5f);
+		
+			body.setLinearDamping(4.5f);
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-				body.applyForce(new Vec2(-100.0f, 0.0f), body.getPosition());
+				body.applyForce(new Vec2(-500.0f, 0.0f), body.getPosition());
 				System.out.println("hello");
 			}
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-				body.applyForce(new Vec2(100.0f, 0.0f), body.getPosition());
+				body.applyForce(new Vec2(500.0f, 0.0f), body.getPosition());
 			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+				body.applyForce(new Vec2(0.0f, 500.0f), body.getPosition());
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+				body.applyForce(new Vec2(0.0f, -500.0f), body.getPosition());
+			}
+			
 			
 			
 		}
