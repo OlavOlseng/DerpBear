@@ -203,7 +203,7 @@ public class Eiriktest extends BaseGame {
 		manager.addComponentToEntity(new PlayerComponent(), empty);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
-
+		
 	
 		
 		

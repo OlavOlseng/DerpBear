@@ -105,7 +105,7 @@ public class MothertruckerTest extends BaseGame{
 			Entity empty = factory.createEmptyEntity();
 			manager.addComponentToEntity(new TransformComponent(), empty);
 			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(12*x/ps, 6*x/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), empty);
-			manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
+		//	manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 			
 		}
 	}
@@ -118,9 +118,9 @@ public class MothertruckerTest extends BaseGame{
 			renderSystem.update(dt);
 			ss.update(dt);
 			
-//			world.render(pipeline);
-//			ldr.render(pipeline);
-//			ldr.clear();
+			world.render(pipeline);
+			ldr.render(pipeline);
+			ldr.clear();
 			
 			pipeline.clear();
 	}

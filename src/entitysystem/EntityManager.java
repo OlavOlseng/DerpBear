@@ -85,6 +85,8 @@ public class EntityManager {
 			HashMap<Long, Component> componentMap = componentsByClass.get(types[i].getName());
 			if(componentMap != null)
 				components.add(componentMap);
+			else
+				components.add(new HashMap<Long,Component>());
 		}
 		
 		java.util.Collections.sort(components, new HashMapComparator());
