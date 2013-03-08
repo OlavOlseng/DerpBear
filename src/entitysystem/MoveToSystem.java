@@ -28,11 +28,14 @@ public class MoveToSystem extends BaseSystem{
 			MoveToComponent mtc = (MoveToComponent) e.getComponentOfType(moveToComp);
 			PhysicsComponent pc = (PhysicsComponent) e.getComponentOfType(physComp);
 			
+			System.out.println(pc.getBody().isAwake());
+			
 			if (mtc.shouldMove) {
 				pc.getBody().setLinearDamping(2.0f);
 				Vec2 target = mtc.getCurrentTarget();
 				Vec2 pos = pc.getBody().getPosition();
 				Vec2 dir = target.sub(pos);
+				
 				
 				if(Math.abs(dir.length()) < mtc.targetRadius) {
 					pc.getBody().setLinearDamping(4.3f);
@@ -44,6 +47,7 @@ public class MoveToSystem extends BaseSystem{
 						dir.normalize();
 						dir.mulLocal(mtc.force);
 						pc.getBody().applyForce(dir, pc.getBody().getPosition());
+						
 					}
 				}
 			}

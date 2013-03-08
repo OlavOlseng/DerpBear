@@ -106,13 +106,13 @@ public class MothertruckerTest extends BaseGame{
 		ls = new LookAtSystem(manager, factory);
 		
 		
-		Texture playerTex = ResourceManager.getTexture("PNG", "tileAtlas.png");
+		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
 		Sprite playerSprite = new Sprite(playerTex);
 		playerSprite.setSize(32, 32);
 		
 		
 		float ps = GameConstants.PIXELSCALE;
-		int boxes = 100;
+		int boxes = 10;
 //		ArrayList<MoveToComponent> moveList = new ArrayList<MoveToComponent>();
 		
 		for(int x = 0; x < 1280; x += 1280/boxes) {
@@ -120,7 +120,7 @@ public class MothertruckerTest extends BaseGame{
 			Entity empty = factory.createEmptyEntity();
 			
 			manager.addComponentToEntity(new TransformComponent(), empty);
-			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(rand.nextFloat()*1280/ps, rand.nextFloat()*720/ps), 0f), BodyFactory.createCircle(10.f + rand.nextFloat()*49, 16/ps)), empty);
+			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(rand.nextFloat()*1280/ps, rand.nextFloat()*720/ps), 0f), BodyFactory.createCircle(10.f + rand.nextFloat()*49, 20/ps)), empty);
 			manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 			
 			MoveToComponent k = new MoveToComponent(1000, 10, 100/ps);
@@ -146,7 +146,7 @@ public class MothertruckerTest extends BaseGame{
 			world.update(dt);
 			ss.update(dt);
 			ms.update(dt);
-			ls.update(dt);
+			//ls.update(dt);
 			
 			renderSystem.update(dt);
 			

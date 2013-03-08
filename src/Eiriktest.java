@@ -228,7 +228,7 @@ public class Eiriktest extends BaseGame {
 		for(int i = 0; i< 10; i++){
 		Entity chaser = factory.createEmptyEntity();
 		manager.addComponentToEntity(new TransformComponent(), chaser);
-		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2((float)i*10, 360.0f/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), chaser);
+		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2((float)i*10, 360.0f/ps), 0f), BodyFactory.createCircle(10.0f, 16/ps)), chaser);
 		manager.addComponentToEntity(new RenderComponent(playerSprite), chaser);
 		ChaseComponent chase = new ChaseComponent();
 		chase.setTarget(empty);

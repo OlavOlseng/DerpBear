@@ -34,7 +34,7 @@ public class ChaseSystem extends BaseSystem {
 			dir.x = trans.x - bodypos.x*GameConstants.PIXELSCALE;
 			dir.y = trans.y - bodypos.y * GameConstants.PIXELSCALE;
 			dir.normalize();
-			dir.mulLocal(300.0f);
+			dir.mulLocal(100.0f);
 			body.setLinearDamping(4.5f);
 			body.applyForce(dir, bodypos);
 			
