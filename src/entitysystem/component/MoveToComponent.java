@@ -10,7 +10,16 @@ public class MoveToComponent extends Component {
 	private ArrayList<Vec2> targets;
 	private Vec2 currentTarget;
 	
-	public MoveToComponent(){
+	public float force;
+	public float maxSpeed;
+	public float targetRadius;
+	
+	public MoveToComponent(float force, float maxSpeed, float targetRadius){
+		
+		this.force = force;
+		this.maxSpeed = maxSpeed;
+		this.targetRadius = targetRadius;
+		
 		shouldMove = false;
 		targets = new ArrayList<Vec2>();
 		currentTarget = null;

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
@@ -59,7 +60,7 @@ public class MothertruckerTest extends BaseGame{
 	dbDebugDraw dbgDraw;
 	
 	public MothertruckerTest() {
-		super(30,1280,720);
+		super(60,1280,720);
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -111,21 +112,26 @@ public class MothertruckerTest extends BaseGame{
 		
 		
 		float ps = GameConstants.PIXELSCALE;
-		int boxes = 20;
+		int boxes = 100;
 //		ArrayList<MoveToComponent> moveList = new ArrayList<MoveToComponent>();
 		
 		for(int x = 0; x < 1280; x += 1280/boxes) {
+			Random rand = new Random();
 			Entity empty = factory.createEmptyEntity();
+			
 			manager.addComponentToEntity(new TransformComponent(), empty);
-			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(0/ps, 360.0f/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), empty);
+			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(rand.nextFloat()*1280/ps, rand.nextFloat()*720/ps), 0f), BodyFactory.createCircle(10.f + rand.nextFloat()*49, 16/ps)), empty);
 			manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 			
-			MoveToComponent k = new MoveToComponent();
+			MoveToComponent k = new MoveToComponent(1000, 10, 100/ps);
 			LookAtComponent l = new LookAtComponent();
 			ArrayList<Vec2> ts = new ArrayList<Vec2>();
 			
-			ts.add(new Vec2((float)x/ps, (float)360/ps));
-			l.lookAt(x, 360.0f);
+			float xx = rand.nextFloat()*1280;
+			float yy = rand.nextFloat()*720;
+			
+			ts.add(new Vec2(xx/ps, yy/ps));
+			l.lookAt(xx, yy);
 			k.setTargets(ts);
 			
 			manager.addComponentToEntity(l, empty);

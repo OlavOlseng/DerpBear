@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.jbox2d.common.Vec2;
 
+import util.GameConstants;
+
 import entitysystem.component.MoveToComponent;
 import entitysystem.component.PhysicsComponent;
 
@@ -11,6 +13,7 @@ public class MoveToSystem extends BaseSystem{
 	
 	Class physComp = PhysicsComponent.class;
 	Class moveToComp = MoveToComponent.class;
+	
 	
 	public MoveToSystem(EntityManager entityManager, EntityFactory entityFactory) {
 		super(entityManager, entityFactory);
@@ -25,21 +28,23 @@ public class MoveToSystem extends BaseSystem{
 			MoveToComponent mtc = (MoveToComponent) e.getComponentOfType(moveToComp);
 			PhysicsComponent pc = (PhysicsComponent) e.getComponentOfType(physComp);
 			
-			pc.getBody().setLinearDamping(1.5f);
 			if (mtc.shouldMove) {
+				pc.getBody().setLinearDamping(2.0f);
 				Vec2 target = mtc.getCurrentTarget();
 				Vec2 pos = pc.getBody().getPosition();
 				Vec2 dir = target.sub(pos);
 				
-				if(Math.abs(dir.length()) < 1.0f) {
+				if(Math.abs(dir.length()) < mtc.targetRadius) {
+					pc.getBody().setLinearDamping(4.3f);
 					mtc.goToNextTarget();
-					pc.getBody().setLinearVelocity(new Vec2(0.0f, 0.0f));
 				}
 				else 
 				{
-					dir.normalize();
-					dir.mulLocal(1000);
-					pc.getBody().applyForce(dir, pc.getBody().getPosition());
+					if(pc.getBody().getLinearVelocity().length() < mtc.maxSpeed) {
+						dir.normalize();
+						dir.mulLocal(mtc.force);
+						pc.getBody().applyForce(dir, pc.getBody().getPosition());
+					}
 				}
 			}
 		}
