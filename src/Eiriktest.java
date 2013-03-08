@@ -42,7 +42,9 @@ import core.BaseGame;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
+import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
+import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
 import entitysystem.component.TransformComponent;
 
@@ -83,6 +85,7 @@ public class Eiriktest extends BaseGame {
 	Sprite sprite;
 	TileGridRenderer ground;
 	RenderSystem renderSystem;
+	PlayerMoveSystem playerMoveSystem;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -99,7 +102,10 @@ public class Eiriktest extends BaseGame {
 	@Override
 	public void setup() {
 		// TODO Auto-generated method stub
-		
+		Long a = (long) 2;
+		Long b = (long) 2;
+		System.out.println(a == b);
+				
 		world  = new GameWorld();
 		ldr = new LineDrawer(100000);
 		ldr.setDepth(DepthLevel.TOP_LVL.getDepth());
@@ -194,8 +200,9 @@ public class Eiriktest extends BaseGame {
 		RenderComponent renderComponent = new RenderComponent(playerSprite);
 		manager.addComponentToEntity(renderComponent, empty);
 		manager.addComponentToEntity(new TransformComponent(), empty);
+		manager.addComponentToEntity(new PlayerComponent(), empty);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
-		
+		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 
 	
 		
