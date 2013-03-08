@@ -38,6 +38,11 @@ public class PhysicsComponent extends Component {
 		}
 	}
 	
+	public Body getBody() {
+		return body;
+	}
+	
+	
 	@Override 
 	public void delete() {
 		body.getWorld().destroyBody(body);
