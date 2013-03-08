@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
@@ -40,6 +41,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 
 import core.BaseGame;
+import entitysystem.ChaseSystem;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
@@ -47,7 +49,9 @@ import entitysystem.LookAtSystem;
 import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
 import entitysystem.ScenerySystem;
+import entitysystem.component.ChaseComponent;
 import entitysystem.component.LookAtComponent;
+import entitysystem.component.MoveToComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
@@ -93,6 +97,7 @@ public class Eiriktest extends BaseGame {
 	PlayerMoveSystem playerMoveSystem;
 	ScenerySystem physicsSystem;
 	LookAtSystem lookAtSystem;
+	ChaseSystem chaseSystem;
 	public static final float PIXELSCALE = 32/2;
 	
 	GameWorld world;
@@ -217,12 +222,31 @@ public class Eiriktest extends BaseGame {
 		manager.addComponentToEntity(new TransformComponent(), groundE);
 		manager.addComponentToEntity(new RenderComponent(ground), groundE);
 		
+		float ps = GameConstants.PIXELSCALE;
+		
+		
+		for(int i = 0; i< 10; i++){
+		Entity chaser = factory.createEmptyEntity();
+		manager.addComponentToEntity(new TransformComponent(), chaser);
+		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2((float)i*10, 360.0f/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), chaser);
+		manager.addComponentToEntity(new RenderComponent(playerSprite), chaser);
+		ChaseComponent chase = new ChaseComponent();
+		chase.setTarget(empty);
+		manager.addComponentToEntity(chase, chaser);
+		
+		
+		}
+		
+		
+		
+		
+		
 		
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 		physicsSystem = new ScenerySystem(manager,factory);
 		lookAtSystem = new LookAtSystem(manager, factory);
-		
+		chaseSystem = new ChaseSystem(manager, factory);
 		
 		
 		//player = new Entity(graphicsComponent, physicsComponent)
@@ -247,6 +271,7 @@ public class Eiriktest extends BaseGame {
 			
 			world.update(dt);
 			playerMoveSystem.update(dt);
+			chaseSystem.update(dt);
 			lookAtSystem.update(dt);
 			physicsSystem.update(dt);
 			world.render(pipeline);
