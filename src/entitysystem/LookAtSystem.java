@@ -16,12 +16,11 @@ public class LookAtSystem extends BaseSystem {
 
 	public LookAtSystem(EntityManager entityManager, EntityFactory entityFactory) {
 		super(entityManager, entityFactory);
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
 	public void update(float dt) {
-		// TODO Auto-generated method stub
 		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(LookAtComponent.class,TransformComponent.class);
 		
 		for(Entity ent:entities){
@@ -34,11 +33,9 @@ public class LookAtSystem extends BaseSystem {
 			float dy = trans.y - target.y;
 			float angle;
 			if (dx < 0) {
-				
 				angle = (float)Math.atan(dy/dx) + 3.14f/2;
 				
 		    }else{
-		    	
 		    	angle = (float)Math.atan(dy/dx) - 3.14f/2;
 		    }
 			

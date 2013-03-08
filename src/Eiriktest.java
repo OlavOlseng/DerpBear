@@ -211,15 +211,17 @@ public class Eiriktest extends BaseGame {
 		manager.addComponentToEntity(new LookAtComponent(), empty);
 		manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 		manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(100.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), 0f), BodyFactory.createBox(10.0f, 16.0f/GameConstants.PIXELSCALE, 16.0f/GameConstants.PIXELSCALE)), empty);
-		renderSystem = new RenderSystem(manager, factory, pipeline);
-		playerMoveSystem = new PlayerMoveSystem(manager, factory);
-		physicsSystem = new ScenerySystem(manager,factory);
-		lookAtSystem = new LookAtSystem(manager, factory);
+		
 		
 		Entity groundE = factory.createEmptyEntity();
 		manager.addComponentToEntity(new TransformComponent(), groundE);
 		manager.addComponentToEntity(new RenderComponent(ground), groundE);
 		
+		
+		renderSystem = new RenderSystem(manager, factory, pipeline);
+		playerMoveSystem = new PlayerMoveSystem(manager, factory);
+		physicsSystem = new ScenerySystem(manager,factory);
+		lookAtSystem = new LookAtSystem(manager, factory);
 		
 		
 		
