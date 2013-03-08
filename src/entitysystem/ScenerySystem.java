@@ -38,7 +38,10 @@ public class ScenerySystem extends BaseSystem{
 			t.y = b.getPosition().y * ps;
 			t.orientation = b.getAngle();
 			b.setAngularVelocity(3);
-			b.applyLinearImpulse(new Vec2((600/GameConstants.PIXELSCALE -b.getPosition().x),(450/GameConstants.PIXELSCALE - b.getPosition().y)), b.getPosition());
+			Vec2 force = new Vec2((600/GameConstants.PIXELSCALE -b.getPosition().x),(450/GameConstants.PIXELSCALE - b.getPosition().y));
+			force.normalize();
+			force.mulLocal(1000*dt);
+			b.applyLinearImpulse(force, b.getPosition());
 		}
 	}
 }

@@ -100,7 +100,7 @@ public class MothertruckerTest extends BaseGame{
 		
 		
 		float ps = GameConstants.PIXELSCALE;
-		int boxes = 1000;
+		int boxes = 200;
 		for(int x = -boxes/2; x < boxes/2; x++) {
 			Entity empty = factory.createEmptyEntity();
 			manager.addComponentToEntity(new TransformComponent(), empty);
