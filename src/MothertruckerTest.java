@@ -31,9 +31,11 @@ import world.dbDebugDraw;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
+import entitysystem.LookAtSystem;
 import entitysystem.MoveToSystem;
 import entitysystem.RenderSystem;
 import entitysystem.ScenerySystem;
+import entitysystem.component.LookAtComponent;
 import entitysystem.component.MoveToComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.RenderComponent;
@@ -50,6 +52,7 @@ public class MothertruckerTest extends BaseGame{
 	ScenerySystem ss;
 	RenderSystem renderSystem;
 	MoveToSystem ms;
+	LookAtSystem ls;
 	
 	GameWorld world;
 	LineDrawer ldr;
@@ -99,6 +102,8 @@ public class MothertruckerTest extends BaseGame{
 		ss = new ScenerySystem(manager, factory);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		ms = new MoveToSystem(manager, factory);
+		ls = new LookAtSystem(manager, factory);
+		
 		
 		Texture playerTex = ResourceManager.getTexture("PNG", "tileAtlas.png");
 		Sprite playerSprite = new Sprite(playerTex);
@@ -116,11 +121,14 @@ public class MothertruckerTest extends BaseGame{
 			manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 			
 			MoveToComponent k = new MoveToComponent();
+			LookAtComponent l = new LookAtComponent();
 			ArrayList<Vec2> ts = new ArrayList<Vec2>();
 			
 			ts.add(new Vec2((float)x/ps, (float)360/ps));
+			l.lookAt(x, 360.0f);
 			k.setTargets(ts);
 			
+			manager.addComponentToEntity(l, empty);
 			manager.addComponentToEntity(k, empty);
 		}
 	}
@@ -132,6 +140,8 @@ public class MothertruckerTest extends BaseGame{
 			world.update(dt);
 			ss.update(dt);
 			ms.update(dt);
+			ls.update(dt);
+			
 			renderSystem.update(dt);
 			
 			world.render(pipeline);
