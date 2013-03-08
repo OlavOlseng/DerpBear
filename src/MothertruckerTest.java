@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.jbox2d.callbacks.DebugDraw;
 import org.jbox2d.common.Vec2;
@@ -30,8 +31,10 @@ import world.dbDebugDraw;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
+import entitysystem.MoveToSystem;
 import entitysystem.RenderSystem;
 import entitysystem.ScenerySystem;
+import entitysystem.component.MoveToComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.RenderComponent;
 import entitysystem.component.TransformComponent;
@@ -43,14 +46,17 @@ public class MothertruckerTest extends BaseGame{
 	LineDrawer lineDrawer;
 	Pipeline pipeline;
 	Node rootNode;
+	
 	ScenerySystem ss;
 	RenderSystem renderSystem;
+	MoveToSystem ms;
+	
 	GameWorld world;
 	LineDrawer ldr;
 	dbDebugDraw dbgDraw;
 	
 	public MothertruckerTest() {
-		super(60,1280,720);
+		super(30,1280,720);
 		init();
 		// TODO Auto-generated constructor stub
 	}
@@ -92,7 +98,7 @@ public class MothertruckerTest extends BaseGame{
 		EntityFactory factory = new EntityFactory(manager);
 		ss = new ScenerySystem(manager, factory);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
-		
+		ms = new MoveToSystem(manager, factory);
 		
 		Texture playerTex = ResourceManager.getTexture("PNG", "tileAtlas.png");
 		Sprite playerSprite = new Sprite(playerTex);
@@ -100,23 +106,33 @@ public class MothertruckerTest extends BaseGame{
 		
 		
 		float ps = GameConstants.PIXELSCALE;
-		int boxes = 200;
-		for(int x = -boxes/2; x < boxes/2; x++) {
+		int boxes = 20;
+//		ArrayList<MoveToComponent> moveList = new ArrayList<MoveToComponent>();
+		
+		for(int x = 0; x < 1280; x += 1280/boxes) {
 			Entity empty = factory.createEmptyEntity();
 			manager.addComponentToEntity(new TransformComponent(), empty);
-			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(12*x/ps, 6*x/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), empty);
-		//	manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
+			manager.addComponentToEntity(new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(0/ps, 360.0f/ps), 0f), BodyFactory.createBox(10.0f, 16/ps, 16/ps)), empty);
+			manager.addComponentToEntity(new RenderComponent(playerSprite), empty);
 			
+			MoveToComponent k = new MoveToComponent();
+			ArrayList<Vec2> ts = new ArrayList<Vec2>();
+			
+			ts.add(new Vec2((float)x/ps, (float)360/ps));
+			k.setTargets(ts);
+			
+			manager.addComponentToEntity(k, empty);
 		}
 	}
 	
 	@Override
 	public void onTick(float dt) {
 			
+		
 			world.update(dt);
-			
-			renderSystem.update(dt);
 			ss.update(dt);
+			ms.update(dt);
+			renderSystem.update(dt);
 			
 			world.render(pipeline);
 			ldr.render(pipeline);
