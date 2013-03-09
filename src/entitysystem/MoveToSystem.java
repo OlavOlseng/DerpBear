@@ -28,8 +28,6 @@ public class MoveToSystem extends BaseSystem{
 			MoveToComponent mtc = (MoveToComponent) e.getComponentOfType(moveToComp);
 			PhysicsComponent pc = (PhysicsComponent) e.getComponentOfType(physComp);
 			
-			System.out.println(pc.getBody().isAwake());
-			
 			if (mtc.shouldMove) {
 				pc.getBody().setLinearDamping(2.0f);
 				Vec2 target = mtc.getCurrentTarget();
