@@ -6,9 +6,6 @@ public class ChaseComponent extends Component {
 
 	
 		private Entity target;
-		public ChaseComponent(){
-			
-		}
 		
 		public void setTarget(Entity target){
 			this.target = target;

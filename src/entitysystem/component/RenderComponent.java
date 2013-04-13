@@ -6,7 +6,7 @@ import rendering.Sprite;
 
 public class RenderComponent extends Component {
 	private Node node;
-	public RenderComponent(Node sprite){
+	public RenderComponent( Node sprite){
 		this.node = sprite;
 	}
 	
