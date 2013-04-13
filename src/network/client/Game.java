@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import rendering.MatrixUtil;
 import rendering.Pipeline;
+import util.GLWorkerManager;
 import util.GameConstants;
 import core.BaseGame;
 import entitysystem.EntityFactory;
@@ -49,6 +50,8 @@ public class Game extends BaseGame{
 	@Override
 	public void onTick(float dt) {
 		renderSystem.update(dt);
+		GLWorkerManager.invokeAllJobs();
+		pipeline.clear();
 		
 	}
 

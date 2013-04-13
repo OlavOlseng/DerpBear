@@ -23,11 +23,13 @@ public class RenderSystem extends BaseSystem {
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentsOfClass(RenderComponent.class, TransformComponent.class);
 		for(Entity ent : ents){
 			RenderComponent rc = (RenderComponent) ent.getComponentOfType(RenderComponent.class);
-			TransformComponent tc = (TransformComponent) ent.getComponentOfType(TransformComponent.class);
-			Node n = rc.getNode();
-			n.setPosition(tc.getTransform().getX(), tc.getTransform().getY());
-			n.setOrientation(tc.getTransform().getOrientation());
-			n.render(pipeline);
+			if(rc.isReady()){
+				TransformComponent tc = (TransformComponent) ent.getComponentOfType(TransformComponent.class);
+				Node n = rc.getNode();
+				n.setPosition(tc.getTransform().getX(), tc.getTransform().getY());
+				n.setOrientation(tc.getTransform().getOrientation());
+				n.render(pipeline);
+			}
 		}
 		
 	}

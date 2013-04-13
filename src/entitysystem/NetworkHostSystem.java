@@ -1,5 +1,6 @@
 package entitysystem;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -66,7 +67,6 @@ public class NetworkHostSystem extends BaseSystem {
 				didChangeList.clear();
 				for(Syncable comp: components){
 					if(comp.didChange()){
-						System.out.println("didChange");
 						didChangeList.add(comp);
 					}
 				}
@@ -86,7 +86,7 @@ public class NetworkHostSystem extends BaseSystem {
 		for (Entity entity: ents){
 				NetworkComponent networkComponent =  (NetworkComponent) entity.getComponentOfType(NetworkComponent.class);
 				ArrayList<Syncable> components = networkComponent.getSyncableComponents();
-				System.out.println("sending all");
+				
 				try {
 					target.sendObjects(components);
 				} catch (IOException e) {

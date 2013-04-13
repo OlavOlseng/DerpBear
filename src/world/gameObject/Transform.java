@@ -75,4 +75,26 @@ public class Transform implements Serializable, Syncable {
 		this.didChange = false;
 		return oldValue;
 	}
+
+	@Override
+	public Object sync(Object object) {
+		Transform remoteObject = (Transform)object;
+		this.setX(remoteObject.getX());
+		this.setY(remoteObject.getY());
+		this.setOrientation(remoteObject.getOrientation());
+		this.setDepth(remoteObject.getDepth());
+		
+		return this;
+		
+	}
+
+	@Override
+	public String toString() {
+		return "Transform [x=" + x + ", y=" + y + ", orientation="
+				+ orientation + ", depth=" + depth 
+				+ "]";
+	}
+	
+	
+	
 }

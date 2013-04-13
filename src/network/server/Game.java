@@ -1,6 +1,7 @@
 package network.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import network.server.Connection;
 
@@ -9,7 +10,12 @@ import org.lwjgl.util.vector.Vector2f;
 
 import rendering.MatrixUtil;
 import rendering.Pipeline;
+import rendering.Tile;
+import rendering.TileGrid;
+import rendering.TileType;
 import util.GameConstants;
+import world.gameobject.RenderPropertyName;
+import world.gameobject.RenderingMethod;
 import core.BaseGame;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
@@ -42,9 +48,37 @@ public class Game extends BaseGame{
 		factory = new EntityFactory(manager);
 
 		Entity groundE = factory.createEmptyEntity();
+		
+		
+		TileGrid grid =  new TileGrid(50, 50);
+		
+		for(int x = 0; x<50; x++){
+			for (int y = 0; y<50;y++){
+				grid.setTile(x, y, new Tile(TileType.DIRT));
+			}
+			
+		}
+		
+	
+		grid.setTile(5, 5, new Tile(TileType.GRASS));
+		grid.setTile(5, 6, new Tile(TileType.GRASS));
+		grid.setTile(4, 5, new Tile(TileType.GRASS));
+		grid.setTile(5, 4, new Tile(TileType.GRASS));
+		grid.setTile(6, 5, new Tile(TileType.GRASS));
+		
 		TransformComponent comp = new TransformComponent();
 		manager.addComponentToEntity(comp, groundE);
-		manager.addComponentToEntity(new NetworkComponent(comp), groundE);
+		
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put(RenderPropertyName.TEXTURE.getName(), "testAtlas.png");
+		params.put(RenderPropertyName.TILES_X.getName(), 2);
+		params.put(RenderPropertyName.TILES_Y.getName(), 2);
+		params.put(RenderPropertyName.TILE_GRID.getName(), grid);
+		
+		RenderComponent renderComp = new RenderComponent(RenderingMethod.TILE_GRID_RENDERER, params);
+		
+		manager.addComponentToEntity(renderComp, groundE);
+		manager.addComponentToEntity(new NetworkComponent(comp,renderComp), groundE);
 		networkSystem = new NetworkHostSystem(manager,factory,this.connections,100);
 		
 	}
