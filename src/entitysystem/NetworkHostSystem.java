@@ -15,16 +15,18 @@ public class NetworkHostSystem extends BaseSystem {
 	
 	private ArrayList<Connection> connections;
 	private Long updateFrequency;
+	//Used to keep track of how many connections the system is aware of
+	private int numberOfConnections;
 	/**
-	 * @param connection - A list of client connections
+	 * @param connection - A list of  initial client connections
 	 * @param updateFrequency - How often updates will be queried and sent
 	 */
-	public NetworkHostSystem(EntityManager entityManager, EntityFactory entityFactory, final long updateFrequency) {
+	public NetworkHostSystem(EntityManager entityManager, EntityFactory entityFactory, final ArrayList<Connection> connections, final long updateFrequency) {
 		super(entityManager, entityFactory);
+		this.connections = connections;
+		this.numberOfConnections = connections.size();
 		this.updateFrequency = updateFrequency;
-		this.connections = new ArrayList<Connection>();
 		new Timer(true).scheduleAtFixedRate(new TimerTask() {
-			
 			
 			@Override
 			public void run() {
@@ -33,18 +35,24 @@ public class NetworkHostSystem extends BaseSystem {
 		}, 0, updateFrequency);
 	}
 
-	public void addConnection(Connection connection){
-		sendAllComponents(connection);
-		connections.add(connection);
-	}
+	
 	//Only used to avoid unnecessary allocs
 	private ArrayList<Syncable> listCache = new ArrayList<Syncable>();
+	
 	/**
 	 * Syncs game state. Used internaly. Should not be called unless you know what you are doing
 	 */
 	@Override
 	public void update(float dt) {
-		
+		//True if there are new connections since last tick
+		if(connections.size() >  numberOfConnections){
+			int newConnections =  connections.size() - numberOfConnections;
+			for(int i = numberOfConnections; i < connections.size(); i++){
+				sendAllComponents(connections.get(i));
+			}
+			numberOfConnections = connections.size();
+			
+		}
 		sendChangedComponents();
 		
 	}
@@ -65,7 +73,6 @@ public class NetworkHostSystem extends BaseSystem {
 				if(didChangeList.size() > 0){
 					for (Connection connection: connections){
 						try {
-							
 							connection.sendObjects(didChangeList);
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -74,18 +81,19 @@ public class NetworkHostSystem extends BaseSystem {
 				}
 		}
 	}
-	
 	private void sendAllComponents(Connection target){
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentOfClass(NetworkComponent.class);
 		for (Entity entity: ents){
 				NetworkComponent networkComponent =  (NetworkComponent) entity.getComponentOfType(NetworkComponent.class);
 				ArrayList<Syncable> components = networkComponent.getSyncableComponents();
+				System.out.println("sending all");
 				try {
-					System.out.println("sending all!");
 					target.sendObjects(components);
 				} catch (IOException e) {
+					
 					e.printStackTrace();
-				}		
+				}
+		
 		}
 		
 	}

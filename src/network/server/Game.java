@@ -27,10 +27,12 @@ public class Game extends BaseGame{
 	private EntityFactory factory;
 	private Pipeline pipeline;
 	private NetworkHostSystem networkSystem;
+	private ArrayList<Connection> connections;
 	
-	public Game() {
+	
+	public Game(ArrayList<Connection> connections) {
 		super(60);
-
+		this.connections = connections;
 		init(false);
 	}
 
@@ -43,15 +45,17 @@ public class Game extends BaseGame{
 		TransformComponent comp = new TransformComponent();
 		manager.addComponentToEntity(comp, groundE);
 		manager.addComponentToEntity(new NetworkComponent(comp), groundE);
-		networkSystem = new NetworkHostSystem(manager,factory,100);
-		
-		
+		networkSystem = new NetworkHostSystem(manager,factory,this.connections,100);
 		
 	}
 
 	@Override
 	public void onTick(float dt) {
-		
+		//Stop gameworld while no clients are connected
+		if(connections.size() > 0){
+			
+			
+		}
 		
 	}
 
