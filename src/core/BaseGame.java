@@ -25,7 +25,11 @@ public abstract class BaseGame{
 	}
 
 	
-
+	/**
+	 * Creates a window and a valid opengl context.
+	 * Calls {@link #setup()} 
+	 * Starts the main loop
+	 */
 	public void init(){
 		try {
 			dm = new DisplayMode(screenWidth,screenHeight);
@@ -102,7 +106,15 @@ public abstract class BaseGame{
 		this.clearColor = clearColor;
 	}
 
-	
+	/**
+	 * Called after {@link #init()}. Init game state and load resources here.
+	 * 
+	 */
 	public abstract void setup();
+	/**
+	 * Called once every frame. Put game logic and rendering in this method
+	 * 
+	 * @param dt time since last tick
+	 */
 	public abstract void onTick(float dt);
 }

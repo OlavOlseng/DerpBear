@@ -23,6 +23,7 @@ public class LookAtSystem extends BaseSystem {
 	public void update(float dt) {
 		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(LookAtComponent.class,TransformComponent.class);
 		
+		
 		for(Entity ent:entities){
 			Transform trans = ((TransformComponent) ent.getComponentOfType(TransformComponent.class)).getTransform();
 			LookAtComponent lookAt = (LookAtComponent) ent.getComponentOfType(LookAtComponent.class);
