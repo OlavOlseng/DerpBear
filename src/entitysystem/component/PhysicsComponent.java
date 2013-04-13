@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
+import org.jbox2d.dynamics.contacts.ContactEdge;
 
 import world.GameWorld;
 
@@ -44,7 +45,8 @@ public class PhysicsComponent extends Component {
 	}
 	
 	public void fillContacts() {
-		//TODO implement
+		ContactEdge l = body.getContactList();
+		l.contact.getFixtureA().getUserData();
 	}
 	
 	@Override 
