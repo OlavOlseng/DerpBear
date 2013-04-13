@@ -15,7 +15,6 @@ public class MoveToComponent extends Component {
 	public float targetRadius;
 	
 	public MoveToComponent(float force, float maxSpeed, float targetRadius){
-		
 		this.force = force;
 		this.maxSpeed = maxSpeed;
 		this.targetRadius = targetRadius;

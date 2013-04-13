@@ -43,6 +43,9 @@ public class PhysicsComponent extends Component {
 		return body;
 	}
 	
+	public void fillContacts() {
+		//TODO implement
+	}
 	
 	@Override 
 	public void delete() {

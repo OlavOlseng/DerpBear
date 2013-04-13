@@ -38,6 +38,7 @@ public class EntityManager {
 			components = new HashMap<Long, Component>();
 			componentsByClass.put(component.getClass().getName(), components);
 		}
+		component.setOwnerEntity(entity);
 		components.put(entity.getEID(), component);
 	}
 	
