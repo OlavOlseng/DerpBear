@@ -1,6 +1,6 @@
 package entitysystem.component;
 
-public class DamageComponent {
+public class DamageComponent extends Component{
 	
 	private int damageAmount;
 	

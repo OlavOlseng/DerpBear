@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.contacts.ContactEdge;
 
 import world.GameWorld;
 
@@ -32,9 +31,9 @@ public class PhysicsComponent extends Component {
 	}
 	
 	private void createBody(GameWorld w) {
-		this.body = w.getPhysWorld().createBody(bDef);
-		this.body.setAngularDamping(2.6f);
-		//TODO maybe set userdata
+		body = w.getPhysWorld().createBody(bDef);
+		body.setAngularDamping(2.2f);
+		body.setUserData(this);
 		for(FixtureDef def : fixtureDefs) {
 			body.createFixture(def);
 		}
@@ -44,13 +43,9 @@ public class PhysicsComponent extends Component {
 		return body;
 	}
 	
-	public void fillContacts() {
-		ContactEdge l = body.getContactList();
-		l.contact.getFixtureA().getUserData();
-	}
-	
 	@Override 
 	public void delete() {
+		body.setUserData(null);
 		body.getWorld().destroyBody(body);
 	}
 }

@@ -57,10 +57,12 @@ public class EntityManager {
 	
 	public void removeEntity(Entity entity){
 		for(HashMap<Long, Component> components : componentsByClass.values()){
-			
-			if(components.get(entity.getEID()) != null){
+			Component c = components.get(entity.getEID());
+			if(c != null){
+				c.delete();
 				components.remove(entity.getEID());
 			}
+			entities.remove(entity.getEID());
 		}
 		
 	}
@@ -115,6 +117,9 @@ public class EntityManager {
 	
 			return o1.size() - o2.size();
 		}
-		
+	}
+	
+	public int getEntityCount() {
+		return entities.size();
 	}
 }
