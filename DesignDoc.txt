@@ -1,0 +1,30 @@
+Hva vi vil:
+	
+	Ammunisjon
+	Skyte prosjektiler
+	Sprettende prosjektiler
+	Sprengende prosjektiler
+	Bomber/Granater
+	Energi våpen/Flammekastere
+	Ting som dør
+	Ting som udør
+	Dører
+	Nøkler/Døråpnere
+	Powerups/Powerdowns
+	Dot effects
+	Loot
+	Inventory (Alla Skyrim)
+	Medkits
+	Permaskavanker/-boosts.
+	
+	Inventory system
+	Entity status system
+	
+	Grunnmechanics:
+		
+		A->B levels.
+		Tar med deg alt fra level til level. Ikke refill mellom hver level.
+		Gradvis vanskeligere pr. level.
+		Lootdrevet system, hvor ammo/healthkits teller. Alt har vekt. En makscap, gradvis saktere bevegelseover 80%. Alla elder scrolls.
+		Skavanker/boosts tas med videre. (miste armer, bein) (kjappe joggesko).
+		Klassebasert (Tank, doktor, gønnemann, sverdmann) osv.

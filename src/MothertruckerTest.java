@@ -106,13 +106,13 @@ public class MothertruckerTest extends BaseGame{
 		ls = new LookAtSystem(manager, factory);
 		
 		
-		Texture playerTex = ResourceManager.getTexture("PNG", "player.png");
+		Texture playerTex = ResourceManager.getTexture("PNG", "tileAtlas.png");
 		Sprite playerSprite = new Sprite(playerTex);
 		playerSprite.setSize(32, 32);
 		
 		
 		float ps = GameConstants.PIXELSCALE;
-		int boxes = 10;
+		int boxes = 50;
 //		ArrayList<MoveToComponent> moveList = new ArrayList<MoveToComponent>();
 		
 		for(int x = 0; x < 1280; x += 1280/boxes) {

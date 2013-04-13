@@ -32,6 +32,7 @@ public class PhysicsComponent extends Component {
 	
 	private void createBody(GameWorld w) {
 		this.body = w.getPhysWorld().createBody(bDef);
+		this.body.setAngularDamping(2.6f);
 		//TODO maybe set userdata
 		for(FixtureDef def : fixtureDefs) {
 			body.createFixture(def);
