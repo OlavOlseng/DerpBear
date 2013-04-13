@@ -1,5 +1,7 @@
 package network;
 
-public class Syncable {
+public interface Syncable {
 
+	public boolean didChange();
 }
+

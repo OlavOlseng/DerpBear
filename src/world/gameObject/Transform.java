@@ -1,13 +1,18 @@
 package world.gameobject;
 
+import java.io.Serializable;
+
+import network.Syncable;
+
 import util.DepthLevel;
 
-public class Transform {
-	public float x, y, orientation;
-	public DepthLevel depth;
-	
+public class Transform implements Serializable, Syncable {
+	private float x, y, orientation;
+	private DepthLevel depth;
+	private boolean didChange;
 	public Transform() {
 		this(0,0,0, DepthLevel.TOP_LVL);
+		
 	}
 	
 	public Transform(float x, float y) {
@@ -23,5 +28,51 @@ public class Transform {
 		this.y = y;
 		this.orientation = orientation;
 		this.depth = dpt;
+		this.didChange = true;
+	}
+
+	
+	
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+		didChange = true;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+		didChange = true;
+	}
+
+	public float getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(float orientation) {
+		this.orientation = orientation;
+		didChange = true;
+	}
+
+	public DepthLevel getDepth() {
+		return depth;
+	}
+
+	public void setDepth(DepthLevel depth) {
+		this.depth = depth;
+		didChange = true;
+	}
+
+	@Override
+	public boolean didChange() {
+		boolean oldValue = this.didChange;
+		this.didChange = false;
+		return oldValue;
 	}
 }

@@ -31,8 +31,8 @@ public class ChaseSystem extends BaseSystem {
 			Entity target = chaseComp.getTarget();
 			Transform trans = ((TransformComponent)target.getComponentOfType(TransformComponent.class)).getTransform();
 			Vec2 bodypos = body.getPosition();
-			dir.x = trans.x - bodypos.x*GameConstants.PIXELSCALE;
-			dir.y = trans.y - bodypos.y * GameConstants.PIXELSCALE;
+			dir.x = trans.getX() - bodypos.x*GameConstants.PIXELSCALE;
+			dir.y = trans.getY() - bodypos.y * GameConstants.PIXELSCALE;
 			dir.normalize();
 			dir.mulLocal(100.0f);
 			body.setLinearDamping(4.5f);

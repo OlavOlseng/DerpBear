@@ -14,6 +14,7 @@ public class Client {
 		
 		try {
 			this.connection = new Connection("127.0.0.1", 1337);
+			System.out.println("connected!");
 			this.game = new Game(connection);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
