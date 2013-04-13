@@ -26,7 +26,7 @@ public class ResourceManager {
 		Texture texture = textures.get(name);
 		if(texture == null){
 			try {
-				texture = TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream("res\\" + name));
+				texture = TextureLoader.getTexture(format, ResourceLoader.getResourceAsStream("res\\" + name),true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

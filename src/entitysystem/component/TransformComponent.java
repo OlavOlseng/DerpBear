@@ -1,5 +1,6 @@
 package entitysystem.component;
 
+import java.io.Console;
 import java.io.Serializable;
 
 import network.Syncable;
@@ -21,6 +22,18 @@ public class TransformComponent extends Component implements Syncable, Serializa
 	public boolean didChange() {
 		return transform.didChange();
 	}
+
+	@Override
+	public Object sync(Object object) {
+		TransformComponent remoteObject = (TransformComponent)object;
+		transform.sync(remoteObject.getTransform());
+		System.out.println(this.transform);
+		return this;
+	}
+	public String toString(){
+		return this.transform.toString();
+	}
+	
 	
 	
 }

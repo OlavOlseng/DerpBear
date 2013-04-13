@@ -1,8 +1,10 @@
 package entitysystem.component;
 
+import java.io.Serializable;
+
 import entitysystem.Entity;
 
-public class Component {
+public class Component implements Serializable {
 	protected Entity owner;
 	
 	public void setOwnerEntity(Entity ent) {

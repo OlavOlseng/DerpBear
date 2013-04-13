@@ -46,11 +46,33 @@ public class NetworkClientSystem extends BaseSystem{
 		try {
 			components = connection.readObjects();
 		} catch (IOException e) {
-			
 			e.printStackTrace();
 		}
 		
-		System.out.println(components);
+		
+		
+		for(Syncable syncable :components){
+			Component component = (Component)syncable;
+			Entity entity = component.getOwnerEntity();
+			EntityManager manager = getEntityManager();
+			//Check if any of the components belong to a new entity
+			if(!manager.hasEntity(entity)){
+				//if so add the entity to the entitymanager
+				getEntityManager().addEntity(entity);
+			}
+			//Check if the entity has this component
+			if(manager.getComponentOfClassForEntity(component.getClass(), entity) == null){
+				//if true, add the component to the entity
+				manager.addComponentToEntity(component, entity);
+			}
+			
+			syncable.sync(component);
+			
+			
+			
+		}
+		
+		
 		
 	}
 }

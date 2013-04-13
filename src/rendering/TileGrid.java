@@ -1,6 +1,8 @@
 package rendering;
 
-public class TileGrid {
+import java.io.Serializable;
+
+public class TileGrid implements Serializable {
 
 	private Tile[] grid;
 	private int tilesX;

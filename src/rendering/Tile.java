@@ -1,6 +1,8 @@
 package rendering;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
 
 	private TileType type;
 	public Tile(TileType type){
