@@ -23,5 +23,8 @@ public class Entity  {
 		return entityManager.getComponentOfClassForEntity(type, this);
 	}
 	
+	public String toString(){
+		return "" + this.eid;
+	}
 	
 }

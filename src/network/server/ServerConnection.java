@@ -36,6 +36,7 @@ public class ServerConnection {
 			
 			while(true){
 				Socket socket = null;
+				System.out.println("Running on " + address +":" + port);
 				try {
 					socket = server.accept();
 				} catch (IOException e) {

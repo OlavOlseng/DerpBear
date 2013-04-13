@@ -44,7 +44,6 @@ public class Game extends BaseGame{
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		networkSystem = new NetworkClientSystem(manager,factory,connection,100);
 		
-		
 	}
 
 	@Override

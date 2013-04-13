@@ -32,9 +32,9 @@ public class ScenerySystem extends BaseSystem{
 			Transform t = ((TransformComponent) (ent.getComponentOfType(TransformComponent.class))).getTransform();
 			Body b = ((PhysicsComponent) (ent.getComponentOfType(phyComp))).getBody();
 			
-			t.x = b.getPosition().x * ps;
-			t.y = b.getPosition().y * ps;
-			t.orientation = b.getAngle();
+			t.setX(b.getPosition().x * ps);
+			t.setY(b.getPosition().y * ps);
+			t.setOrientation(b.getAngle());
 		}
 	}
 }

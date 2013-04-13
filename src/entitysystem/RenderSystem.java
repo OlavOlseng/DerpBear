@@ -25,8 +25,8 @@ public class RenderSystem extends BaseSystem {
 			RenderComponent rc = (RenderComponent) ent.getComponentOfType(RenderComponent.class);
 			TransformComponent tc = (TransformComponent) ent.getComponentOfType(TransformComponent.class);
 			Node n = rc.getNode();
-			n.setPosition(tc.getTransform().x, tc.getTransform().y);
-			n.setOrientation(tc.getTransform().orientation);
+			n.setPosition(tc.getTransform().getX(), tc.getTransform().getY());
+			n.setOrientation(tc.getTransform().getOrientation());
 			n.render(pipeline);
 		}
 		

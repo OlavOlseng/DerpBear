@@ -10,17 +10,12 @@ import entitysystem.component.RenderComponent;
 
 public class Server implements ConnectionListener {
 	private ArrayList<Connection> connections;
-	
+	private Game game;
 	public Server(){
 		
 		ServerConnection conn = new ServerConnection(this);
 		connections = new ArrayList<Connection>();
-		
-		PlayerComponent playerC = new PlayerComponent();
-		Component test = playerC;
-		System.out.println(test.getClass());
-		
-		
+		this.game = new Game(connections);
 		try {
 			conn.listen("127.0.0.1", 1337);
 		} catch (IOException e) {
@@ -31,6 +26,7 @@ public class Server implements ConnectionListener {
 	}
 	@Override
 	public void clientReceived(Socket socket) {
+		System.out.println("Client connected!");
 		connections.add(new Connection(socket));
 	}
 	

@@ -30,8 +30,8 @@ public class LookAtSystem extends BaseSystem {
 			
 			Vec2 target = lookAt.getTarget();
 			
-			float dx = trans.x - target.x;
-			float dy = trans.y - target.y;
+			float dx = trans.getX() - target.x;
+			float dy = trans.getY() - target.y;
 			float angle;
 			if (dx < 0) {
 				angle = (float)Math.atan(dy/dx) + 3.14f/2;
@@ -45,7 +45,7 @@ public class LookAtSystem extends BaseSystem {
 				Body body = physics.getBody();
 				body.setTransform(body.getPosition(),angle);
 			}
-			trans.orientation = angle;
+			trans.setOrientation(angle);
 			
 			
 	}

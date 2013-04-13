@@ -1,6 +1,8 @@
 package util;
 
-public enum DepthLevel {
+import java.io.Serializable;
+
+public enum DepthLevel implements Serializable {
 	TOP_LVL(0.0f), 
 	ACTOR_LVL(0.2f),
 	DECAL_LVL(0.4f),

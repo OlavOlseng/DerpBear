@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import entitysystem.component.Component;
 
+import network.Syncable;
 import network.server.Connection;
 
 public class NetworkClientSystem extends BaseSystem{
@@ -28,26 +29,28 @@ public class NetworkClientSystem extends BaseSystem{
 			
 			@Override
 			public void run() {
-				ArrayList<Component> components  = null;
-				try {
-					components = connection.readObjects();
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				}
-				
-				System.out.println(components);
+				System.out.println("client");
+				update(updateFrequency);
 			}
 		}, 0, updateFrequency);
 	}
 
 	/**
 	 * 
-	 * Not used. The class uses a private thread for updates
+	 * Syncs game state. Used internaly. Should not be called unless you know what you are doing
 	 */
 	@Override
 	public void update(float dt) {
 		System.out.println(dt);
+		ArrayList<Syncable> components  = null;
+		try {
+			components = connection.readObjects();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		System.out.println(components);
 		
 	}
 }

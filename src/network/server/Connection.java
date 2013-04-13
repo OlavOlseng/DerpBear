@@ -8,6 +8,8 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import network.Syncable;
+
 import entitysystem.component.Component;
 
 public class Connection {
@@ -38,11 +40,11 @@ public class Connection {
 	 * @return {@link ArrayList} of components that needs an update
 	 * @throws IOException
 	 */
-	public ArrayList<Component> readObjects() throws IOException{
+	public ArrayList<Syncable> readObjects() throws IOException{
 		
 		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 		try {
-			return (ArrayList<Component>) in.readObject();
+			return (ArrayList<Syncable>) in.readObject();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,7 +58,7 @@ public class Connection {
 	 * @param objects - A {@link ArrayList} of components that has changed
 	 * @throws IOException
 	 */
-	public void sendObjects(ArrayList<Component> objects) throws IOException{
+	public void sendObjects(ArrayList<Syncable> objects) throws IOException{
 		
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		out.writeObject(objects);
