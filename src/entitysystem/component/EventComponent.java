@@ -17,10 +17,10 @@ public abstract class EventComponent extends Component{
 		evt.setOwner(this);
 	}
 	
-	public void fireEvents() {
+	public void fireEvents(float dt) {
 		ArrayList<Event> toBeRemoved = new ArrayList<Event>();
 		for(Event e : events) {
-			e.fire();
+			e.fire(dt);
 		}
 		for(Event e : toBeRemoved) {
 			events.remove(e);

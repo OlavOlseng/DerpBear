@@ -21,7 +21,7 @@ public class EventSystem extends BaseSystem{
 			StatusComponent sc =(StatusComponent)getEntityManager().getComponentOfClassForEntity(StatusComponent.class, e);
 			if(sc != null && !sc.isAlive()) {
 				DeathEventComponent dec = (DeathEventComponent)getEntityManager().getComponentOfClassForEntity(DeathEventComponent.class, e);
-				dec.fireEvents();
+				dec.fireEvents(dt);
 			}
 		}
 	}

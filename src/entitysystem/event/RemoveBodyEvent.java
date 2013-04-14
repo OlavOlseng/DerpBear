@@ -7,11 +7,10 @@ public class RemoveBodyEvent extends Event {
 
 	public RemoveBodyEvent() {
 		super(true);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void onFire() {
+	public void onFire(float dt) {
 		Entity ent = owner.getOwnerEntity();
 		PhysicsComponent pc = (PhysicsComponent)(ent.getEntityManager().getComponentOfClassForEntity(PhysicsComponent.class, ent));
 		if(pc != null) {

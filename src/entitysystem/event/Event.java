@@ -10,7 +10,12 @@ public abstract class Event {
 	protected Component owner;
 	protected boolean oneShot;
 	protected ArrayList<Event> subEvents;
-
+	
+	
+	/**
+	 * 
+	 * @param oneShot, event will only fire once
+	 */
 	public Event(boolean oneShot) {
 		this.oneShot = oneShot;
 		subEvents = new ArrayList<Event>();
@@ -28,7 +33,6 @@ public abstract class Event {
 		this.subEvents.add(e);
 	}
 
-
 	public void resetEvent() {
 		triggered = false;
 		for (Event e : subEvents) {
@@ -39,11 +43,11 @@ public abstract class Event {
 	/**
 	 * This method triggers the event
 	 */
-	public void fire() {
+	public void fire(float dt) {
 		if(!triggered){
-			onFire();
+			onFire(dt);
 			for (Event e : subEvents) {
-				e.fire();
+				e.fire(dt);
 			}
 		}
 		if (oneShot) {
@@ -54,6 +58,6 @@ public abstract class Event {
 	/**
 	 * This method is called when the event is fired;
 	 */
-	public abstract void onFire();
+	public abstract void onFire(float dt);
 
 }
