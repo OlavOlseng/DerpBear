@@ -2,14 +2,6 @@ package world.gameobject;
 
 public class Damage {
 	
-	enum DamageType {
-		NORMAL, 
-		ARMOR_PIERCING,
-		FIRE,
-		POISION,
-		ELECTRICAL;
-	}
-	
 	private DamageType type;
 	private int amount;
 	

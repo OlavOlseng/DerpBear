@@ -31,7 +31,9 @@ public class CollisionSystem extends BaseSystem{
 			if(!c.isTouching()){
 				continue;
 			}
-
+			
+			//This section takes damage collisions into consideration.
+			
 			PhysicsComponent a = (PhysicsComponent)(c.getFixtureA().getBody().getUserData());
 			PhysicsComponent b = (PhysicsComponent)(c.getFixtureB().getBody().getUserData());
 
@@ -45,13 +47,13 @@ public class CollisionSystem extends BaseSystem{
 			StatusComponent scb = (StatusComponent)(getEntityManager().getComponentOfClassForEntity(statusComp, entB));
 
 			if(dca != null && scb != null) {
-				scb.takeDamage(dca.getDamageAmount());
+				scb.takeDamage(dca.getDamage());
 				if(!scb.isAlive()) {
 					toBeRemoved.add(entB);
 				}
 			}
 			if(dcb != null && sca != null) {
-				sca.takeDamage(dcb.getDamageAmount());
+				sca.takeDamage(dcb.getDamage());
 				if(!sca.isAlive()) {
 					toBeRemoved.add(entA);
 				}

@@ -32,6 +32,8 @@ import util.GameConstants;
 import world.BodyFactory;
 import world.GameWorld;
 import world.dbDebugDraw;
+import world.gameobject.Damage;
+import world.gameobject.DamageType;
 import entitysystem.CollisionSystem;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
@@ -39,7 +41,7 @@ import entitysystem.EntityManager;
 import entitysystem.LookAtSystem;
 import entitysystem.MoveToSystem;
 import entitysystem.RenderSystem;
-import entitysystem.ScenerySystem;
+import entitysystem.PhysicsSystem;
 import entitysystem.component.DamageComponent;
 import entitysystem.component.LookAtComponent;
 import entitysystem.component.MoveToComponent;
@@ -58,7 +60,7 @@ public class MothertruckerTest extends BaseGame{
 	Pipeline pipeline;
 	Node rootNode;
 
-	ScenerySystem ss;
+	PhysicsSystem ss;
 	RenderSystem renderSystem;
 	MoveToSystem ms;
 	LookAtSystem ls;
@@ -105,9 +107,8 @@ public class MothertruckerTest extends BaseGame{
 
 	public void test() {
 		//ADDING ZE COMPONENT
-
 		
-		ss = new ScenerySystem(manager, factory);
+		ss = new PhysicsSystem(manager, factory);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		ms = new MoveToSystem(manager, factory);
 		ls = new LookAtSystem(manager, factory);
@@ -149,7 +150,7 @@ public class MothertruckerTest extends BaseGame{
 			manager.addComponentToEntity(l, empty);
 			manager.addComponentToEntity(k, empty);
 
-			DamageComponent dc = new DamageComponent(100);
+			DamageComponent dc = new DamageComponent(new Damage(DamageType.NORMAL, 100));
 
 			manager.addComponentToEntity(dc, empty);
 		}
@@ -176,7 +177,7 @@ public class MothertruckerTest extends BaseGame{
 			manager.addComponentToEntity(l, empty);
 			manager.addComponentToEntity(k, empty);
 
-			StatusComponent sc = new StatusComponent(100, 50, 0);
+			StatusComponent sc = new StatusComponent(100, 50, 0, 0, 0, 0);
 
 			manager.addComponentToEntity(sc, empty);
 		}
