@@ -25,7 +25,6 @@ public class CollisionSystem extends BaseSystem{
 	public void update(float dt) {
 
 		ArrayList<Contact> contacts = ch.getContacts();
-		ArrayList<Entity> toBeRemoved = new ArrayList<Entity>();
 
 		for (Contact c : contacts) {
 			if(!c.isTouching()){
@@ -48,20 +47,10 @@ public class CollisionSystem extends BaseSystem{
 
 			if(dca != null && scb != null) {
 				scb.takeDamage(dca.getDamage());
-				if(!scb.isAlive()) {
-					toBeRemoved.add(entB);
-				}
 			}
 			if(dcb != null && sca != null) {
 				sca.takeDamage(dcb.getDamage());
-				if(!sca.isAlive()) {
-					toBeRemoved.add(entA);
-				}
 			}
 		}
-		for (Entity e : toBeRemoved) {
-			getEntityManager().removeEntity(e);
-		}
-		toBeRemoved.clear();
 	}
 }

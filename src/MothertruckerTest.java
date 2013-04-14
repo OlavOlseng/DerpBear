@@ -38,17 +38,20 @@ import entitysystem.CollisionSystem;
 import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
+import entitysystem.EventSystem;
 import entitysystem.LookAtSystem;
 import entitysystem.MoveToSystem;
 import entitysystem.RenderSystem;
 import entitysystem.PhysicsSystem;
 import entitysystem.component.DamageComponent;
+import entitysystem.component.DeathEventComponent;
 import entitysystem.component.LookAtComponent;
 import entitysystem.component.MoveToComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.RenderComponent;
 import entitysystem.component.StatusComponent;
 import entitysystem.component.TransformComponent;
+import entitysystem.event.RemoveBodyEvent;
 
 
 public class MothertruckerTest extends BaseGame{
@@ -65,6 +68,8 @@ public class MothertruckerTest extends BaseGame{
 	MoveToSystem ms;
 	LookAtSystem ls;
 	CollisionSystem cs;
+	EventSystem es;
+	
 	GameWorld world;
 	LineDrawer ldr;
 	dbDebugDraw dbgDraw;
@@ -113,6 +118,7 @@ public class MothertruckerTest extends BaseGame{
 		ms = new MoveToSystem(manager, factory);
 		ls = new LookAtSystem(manager, factory);
 		cs = new CollisionSystem(manager, factory, world.getContactHandler());
+		es = new EventSystem(manager, factory);
 		
 		Texture playerTex = ResourceManager.getTexture("PNG", "tileAtlas.png");
 		Sprite playerSprite = new Sprite(playerTex);
@@ -120,10 +126,12 @@ public class MothertruckerTest extends BaseGame{
 		
 		float ps = GameConstants.PIXELSCALE;
 		
-		int boxes = 2000;
+		int boxes = 1000;
 		int bullets = 3;
 		
 		//		ArrayList<MoveToComponent> moveList = new ArrayList<MoveToComponent>();
+		
+		//Create bullets
 		for(int x = 0; x < 1280; x += 1280/bullets) {
 			Random rand = new Random();
 			Entity empty = factory.createEmptyEntity();
@@ -151,10 +159,11 @@ public class MothertruckerTest extends BaseGame{
 			manager.addComponentToEntity(k, empty);
 
 			DamageComponent dc = new DamageComponent(new Damage(DamageType.NORMAL, 100));
-
+			
 			manager.addComponentToEntity(dc, empty);
 		}
-
+		
+		//Create boxes
 		for(int x = 0; x < boxes; x += 1) {
 //		for(int x = 0; x < 1280; x += 1280/boxes) {
 			Random rand = new Random();
@@ -176,10 +185,13 @@ public class MothertruckerTest extends BaseGame{
 
 			manager.addComponentToEntity(l, empty);
 			manager.addComponentToEntity(k, empty);
-
+			
+			DeathEventComponent dec = new DeathEventComponent();
+			dec.addEvent(new RemoveBodyEvent());
 			StatusComponent sc = new StatusComponent(100, 50, 0, 0, 0, 0);
 
 			manager.addComponentToEntity(sc, empty);
+			manager.addComponentToEntity(dec, empty);
 		}
 	}
 	
@@ -192,7 +204,8 @@ public class MothertruckerTest extends BaseGame{
 		ms.update(dt);
 		ls.update(dt);
 		cs.update(dt);
-
+		es.update(dt);
+		
 		renderSystem.update(dt);
 //---------DEGUB DRAW-------
 //		world.render(pipeline);
