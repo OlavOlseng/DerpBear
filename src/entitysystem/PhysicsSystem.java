@@ -13,11 +13,11 @@ import world.gameobject.Transform;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.TransformComponent;
 
-public class ScenerySystem extends BaseSystem{
+public class PhysicsSystem extends BaseSystem{
 
 	Class phyComp = PhysicsComponent.class;
 	
-	public ScenerySystem(EntityManager entityManager,
+	public PhysicsSystem(EntityManager entityManager,
 			EntityFactory entityFactory) {
 		super(entityManager, entityFactory);
 		
