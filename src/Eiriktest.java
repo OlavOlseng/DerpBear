@@ -48,7 +48,7 @@ import entitysystem.EntityManager;
 import entitysystem.LookAtSystem;
 import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
-import entitysystem.ScenerySystem;
+import entitysystem.PhysicsSystem;
 import entitysystem.component.ChaseComponent;
 import entitysystem.component.LookAtComponent;
 import entitysystem.component.MoveToComponent;
@@ -95,7 +95,7 @@ public class Eiriktest extends BaseGame {
 	TileGridRenderer ground;
 	RenderSystem renderSystem;
 	PlayerMoveSystem playerMoveSystem;
-	ScenerySystem physicsSystem;
+	PhysicsSystem physicsSystem;
 	LookAtSystem lookAtSystem;
 	ChaseSystem chaseSystem;
 	public static final float PIXELSCALE = 32/2;
@@ -244,7 +244,7 @@ public class Eiriktest extends BaseGame {
 		
 		renderSystem = new RenderSystem(manager, factory, pipeline);
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
-		physicsSystem = new ScenerySystem(manager,factory);
+		physicsSystem = new PhysicsSystem(manager,factory);
 		lookAtSystem = new LookAtSystem(manager, factory);
 		chaseSystem = new ChaseSystem(manager, factory);
 		

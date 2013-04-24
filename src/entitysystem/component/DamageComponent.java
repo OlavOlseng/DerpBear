@@ -1,14 +1,16 @@
 package entitysystem.component;
 
-public class DamageComponent {
+import world.gameobject.Damage;
+
+public class DamageComponent extends Component{
 	
-	private int damageAmount;
+	private Damage dmg;
 	
-	public DamageComponent(int damageAmount) {
-		this.damageAmount = damageAmount;
+	public DamageComponent(Damage object) {
+		dmg = object;
 	}
 	
-	public int getDamageAmount() {
-		return this.damageAmount;
+	public Damage getDamage() {
+		return dmg;
 	}
 }
