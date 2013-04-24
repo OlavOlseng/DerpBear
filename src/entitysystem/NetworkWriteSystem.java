@@ -3,8 +3,11 @@ package entitysystem;
 import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.sun.corba.se.impl.orbutil.concurrent.Sync;
 
 import entitysystem.component.Component;
 import entitysystem.component.NetworkComponent;
@@ -12,21 +15,24 @@ import entitysystem.component.NetworkComponent;
 import network.Syncable;
 import network.server.Connection;
 
-public class NetworkHostSystem extends BaseSystem {
+public class NetworkWriteSystem extends BaseSystem {
 	
 	private ArrayList<Connection> connections;
 	private Long updateFrequency;
 	//Used to keep track of how many connections the system is aware of
 	private int numberOfConnections;
+	private boolean isHost;
 	/**
-	 * @param connection - A list of  initial client connections
-	 * @param updateFrequency - How often updates will be queried and sent
+	 * @param  connection - A list of  initial client connections
+	 * @param  updateFrequency - How often updates will be queried and sent
+	 * @param  isHost - Is the system running as client or host?(Ugly solution)
 	 */
-	public NetworkHostSystem(EntityManager entityManager, EntityFactory entityFactory, final ArrayList<Connection> connections, final long updateFrequency) {
+	public NetworkWriteSystem(EntityManager entityManager, EntityFactory entityFactory, final ArrayList<Connection> connections, final long updateFrequency, boolean isHost) {
 		super(entityManager, entityFactory);
 		this.connections = connections;
 		this.numberOfConnections = connections.size();
 		this.updateFrequency = updateFrequency;
+		this.isHost = isHost;
 		new Timer(true).scheduleAtFixedRate(new TimerTask() {
 			
 			@Override
@@ -37,8 +43,7 @@ public class NetworkHostSystem extends BaseSystem {
 	}
 
 	
-	//Only used to avoid unnecessary allocs
-	private ArrayList<Syncable> listCache = new ArrayList<Syncable>();
+
 	
 	/**
 	 * Syncs game state. Used internaly. Should not be called unless you know what you are doing
@@ -57,26 +62,37 @@ public class NetworkHostSystem extends BaseSystem {
 		sendChangedComponents();
 		
 	}
-	
+	private ArrayList<Connection> disconectedClients = new ArrayList<Connection>();
 	private void sendChangedComponents(){
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentOfClass(NetworkComponent.class);
 		for (Entity entity: ents){
 				NetworkComponent networkComponent =  (NetworkComponent) entity.getComponentOfType(NetworkComponent.class);
-				ArrayList<Syncable> components = networkComponent.getSyncableComponents();
-				ArrayList<Syncable> didChangeList = listCache;
-				didChangeList.clear();
-				for(Syncable comp: components){
-					if(comp.didChange()){
-						didChangeList.add(comp);
-					}
+				List<Syncable> didChangeList;
+				if(isHost){
+					didChangeList = networkComponent.getReadyHostWriteSyncables();
+					
+				}else{
+					didChangeList = networkComponent.getReadyClientWriteSyncables();
+					
 				}
+				
 				if(didChangeList.size() > 0){
 					for (Connection connection: connections){
 						try {
 							connection.sendObjects(didChangeList);
+							
 						} catch (IOException e) {
-							e.printStackTrace();
+							System.out.println("Client disconected");
+							disconectedClients.add(connection);
 						}
+					}
+					
+					networkComponent.clear();
+					if(disconectedClients.size() > 0){
+						for (Connection connection: disconectedClients){
+							connections.remove(connection);
+						}
+						disconectedClients.clear();
 					}
 				}
 		}
@@ -85,13 +101,21 @@ public class NetworkHostSystem extends BaseSystem {
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentOfClass(NetworkComponent.class);
 		for (Entity entity: ents){
 				NetworkComponent networkComponent =  (NetworkComponent) entity.getComponentOfType(NetworkComponent.class);
-				ArrayList<Syncable> components = networkComponent.getSyncableComponents();
+				List<Syncable> components;
+				if(isHost){
+					components = networkComponent.getAllHostWriteSyncables();
+				}else{
+					components = networkComponent.getAllClientWriteSyncables();
+					
+				}
 				
 				try {
-					target.sendObjects(components);
-				} catch (IOException e) {
 					
-					e.printStackTrace();
+					target.sendObjects(components);
+					
+				} catch (IOException e) {
+					System.out.println("Client disconected");
+					connections.remove(target);
 				}
 		
 		}

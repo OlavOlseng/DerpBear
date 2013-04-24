@@ -30,6 +30,7 @@ public class ScenerySystem extends BaseSystem{
 		
 		for (Entity ent : l) {
 			Transform t = ((TransformComponent) (ent.getComponentOfType(TransformComponent.class))).getTransform();
+			
 			Body b = ((PhysicsComponent) (ent.getComponentOfType(phyComp))).getBody();
 			
 			t.setX(b.getPosition().x * ps);

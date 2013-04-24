@@ -6,14 +6,16 @@ import java.io.Serializable;
 import network.Syncable;
 import world.gameobject.Transform;
 
-public class TransformComponent extends Component implements Syncable, Serializable {
-	
+public class TransformComponent extends Component implements Syncable,
+		Serializable {
+
 	Transform transform;
+
 	public TransformComponent() {
 		transform = new Transform();
-		
+
 	}
-	
+
 	public Transform getTransform() {
 		return transform;
 	}
@@ -25,15 +27,16 @@ public class TransformComponent extends Component implements Syncable, Serializa
 
 	@Override
 	public Object sync(Object object) {
-		TransformComponent remoteObject = (TransformComponent)object;
+	
+		TransformComponent remoteObject = (TransformComponent) object;
 		transform.sync(remoteObject.getTransform());
-		System.out.println(this.transform);
+
 		return this;
 	}
-	public String toString(){
+
+	public String toString() {
+		
 		return this.transform.toString();
 	}
-	
-	
-	
+
 }

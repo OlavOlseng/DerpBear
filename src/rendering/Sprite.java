@@ -1,5 +1,7 @@
 package rendering;
 
+import java.io.Console;
+import java.io.Serializable;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -13,61 +15,21 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL13.*;
 
-import org.newdawn.slick.opengl.Texture;
 
-public class Sprite extends Node {
-	private Shader shader;
+
+public class Sprite extends Node implements Serializable {
+	private transient Shader shader;
 	private Texture texture;
 	
-	private Buffer vertexBuffer;
-	private Buffer texCoordBuffer;
-	private FloatBuffer mvpBuffer;
+	private transient Buffer vertexBuffer;
+	private transient Buffer texCoordBuffer;
+	private transient FloatBuffer mvpBuffer;
 	private Matrix4f mvp;
 	
 	public Sprite(Texture texture){
 		
-		setWidth(2);
-		setHeight(2);
-		
-		texture.bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
-		mvp = new Matrix4f();
-		mvpBuffer = BufferUtils.createFloatBuffer(16);
-		
-		
-		shader = ResourceManager.getShader("sprite2DShader");
-		shader.bindAttribute(Attribute.COORD2D);
-		shader.bindAttribute(Attribute.TEXCOOR2D);
-		shader.bindUniform(Uniform.MVP);
-		shader.bindUniform(Uniform.DEPTH);
 		this.texture = texture;
-		texture.bind();
-		FloatBuffer vertices = BufferUtils.createFloatBuffer(12);
-		vertices.put(-1).put(-1);
-		vertices.put(1).put(-1);
-		vertices.put(-1).put(1);
-		vertices.put(-1).put(1);
-		vertices.put(1).put(-1);
-		vertices.put(1).put(1);
 		
-		FloatBuffer texCoords = BufferUtils.createFloatBuffer(12);
-		texCoords.put(0).put(0);
-		texCoords.put(1).put(0);
-		texCoords.put(0).put(1);
-		texCoords.put(0).put(1);
-		texCoords.put(1).put(0);
-		texCoords.put(1).put(1);
-		
-		
-		vertices.flip();
-		texCoords.flip();
-		
-		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT, 2);
-		texCoordBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT, 2);
-		vertexBuffer.setData(vertices);
-		texCoordBuffer.setData(texCoords);
 	}
 	
 	
@@ -96,5 +58,52 @@ public class Sprite extends Node {
 		
 		
 		
+		
 	}
+	
+	@Override
+	public void init() {
+		texture.bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+		mvp = new Matrix4f();
+		mvpBuffer = BufferUtils.createFloatBuffer(16);
+		
+		
+		shader = ResourceManager.getShader("sprite2DShader");
+		shader.bindAttribute(Attribute.COORD2D);
+		shader.bindAttribute(Attribute.TEXCOOR2D);
+		shader.bindUniform(Uniform.MVP);
+		shader.bindUniform(Uniform.DEPTH);
+		
+		texture.bind();
+		FloatBuffer vertices = BufferUtils.createFloatBuffer(12);
+		vertices.put(-1).put(-1);
+		vertices.put(1).put(-1);
+		vertices.put(-1).put(1);
+		vertices.put(-1).put(1);
+		vertices.put(1).put(-1);
+		vertices.put(1).put(1);
+		
+		FloatBuffer texCoords = BufferUtils.createFloatBuffer(12);
+		texCoords.put(0).put(0);
+		texCoords.put(1).put(0);
+		texCoords.put(0).put(1);
+		texCoords.put(0).put(1);
+		texCoords.put(1).put(0);
+		texCoords.put(1).put(1);
+		
+		
+		vertices.flip();
+		texCoords.flip();
+		
+		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT, 2);
+		texCoordBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_FLOAT, 2);
+		vertexBuffer.setData(vertices);
+		texCoordBuffer.setData(texCoords);
+		
+	}
+	
+	
 }

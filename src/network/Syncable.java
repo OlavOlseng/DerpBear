@@ -14,5 +14,7 @@ public interface Syncable {
 	 */
 	public Object sync(Object object);
 	
+	
+	
 }
 

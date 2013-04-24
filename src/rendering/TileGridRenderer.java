@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL15.*;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import java.io.Serializable;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -16,46 +17,26 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 import org.newdawn.slick.opengl.Texture;
 
-public class TileGridRenderer extends Node {
+import rendering.models.GridModelListener;
+import rendering.models.TileGridModel;
+
+public class TileGridRenderer extends Node implements GridModelListener, Serializable {
 
 	private TileAtlas tileAtlas;
-	private TileGrid grid;
-	private Shader shader;
-	private Buffer vertexBuffer;
-	private Buffer texCoordBuffer;
-	private FloatBuffer mvpBuffer;
+	private TileGridModel grid;
+	private transient Shader shader;
+	private transient Buffer vertexBuffer;
+	private transient Buffer texCoordBuffer;
+	private transient FloatBuffer mvpBuffer;
 	private Matrix4f mvp;
 	private int[] vertices;
-	private IntBuffer internalVertexBuffer;
+	private transient IntBuffer internalVertexBuffer;
 	
 	
-	public TileGridRenderer(TileAtlas tileAtlas, TileGrid grid){
+	public TileGridRenderer(TileAtlas tileAtlas, TileGridModel grid){
 		this.tileAtlas = tileAtlas;
-		this.grid = grid;
+		this.grid = grid;	
 		
-		tileAtlas.bind();
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		
-		mvp = new Matrix4f();
-		mvpBuffer = BufferUtils.createFloatBuffer(16);
-		shader = ResourceManager.getShader("tileGridShader");
-		
-		shader.bindUniform(Uniform.MVP);
-		shader.bindUniform(Uniform.DEPTH);
-		shader.bindUniform(Uniform.STEP_SIZE_X);
-		shader.bindUniform(Uniform.STEP_SIZE_Y);
-		shader.bindUniform(Uniform.TILES_Y);
-		shader.bindAttribute(Attribute.COORD3D);
-		
-		internalVertexBuffer = BufferUtils.createIntBuffer(grid.getNumTiles()*3*6);
-		vertices = new int[grid.getNumTiles()*3*6];
-		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_INT, 3);
-		updateGridMesh();
-		this.width = grid.getNumTilesX();
-		this.height = grid.getNumTilesY();
-		
-			
 	}
 	
 	public void updateGridMesh(){
@@ -83,9 +64,7 @@ public class TileGridRenderer extends Node {
 		
 		internalVertexBuffer.put(vertices);
 		internalVertexBuffer.flip();
-		vertexBuffer.setData(internalVertexBuffer);
-		
-		
+		vertexBuffer.setData(internalVertexBuffer);		
 	}
 	
 	public void render(Pipeline pipeline){
@@ -110,11 +89,39 @@ public class TileGridRenderer extends Node {
 		glUniform1f(shader.getUniform(Uniform.TILES_Y), tileAtlas.getTilesY());
 		glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.getSize());
 
+	}
+
+	@Override
+	public void gridChanged(int x, int y, Tile oldTile, Tile newTile) {
+		this.updateGridMesh();
+		
+	}
+
+	@Override
+	public void init() {
+		
+		grid.addGridChangeListener(this);
+		tileAtlas.bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+		mvp = new Matrix4f();
+		mvpBuffer = BufferUtils.createFloatBuffer(16);
+		shader = ResourceManager.getShader("tileGridShader");
+		
+		shader.bindUniform(Uniform.MVP);
+		shader.bindUniform(Uniform.DEPTH);
+		shader.bindUniform(Uniform.STEP_SIZE_X);
+		shader.bindUniform(Uniform.STEP_SIZE_Y);
+		shader.bindUniform(Uniform.TILES_Y);
+		shader.bindAttribute(Attribute.COORD3D);
+		
+		internalVertexBuffer = BufferUtils.createIntBuffer(grid.getNumTiles()*3*6);
+		vertices = new int[grid.getNumTiles()*3*6];
+		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, GL_INT, 3);
 		
 		
-		
-		
-		
+		updateGridMesh();
 		
 	}
 	

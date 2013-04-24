@@ -12,65 +12,42 @@ import rendering.Pipeline;
 import rendering.ResourceManager;
 import rendering.Sprite;
 import rendering.TileAtlas;
-import rendering.TileGrid;
 import rendering.TileGridRenderer;
+import rendering.models.TileGridModel;
 import util.GLWorker;
 import world.gameobject.RenderPropertyName;
 import world.gameobject.RenderingMethod;
 
 public class RenderComponent extends Component implements Serializable, Syncable {
-	private transient Node node;
-	private RenderingMethod renderMetod;
-	private HashMap<String, Object> rendererParameters;
+	private Node node;
 	private boolean ready;
 	private boolean didChange;
+	private boolean needsInit = true;
 	/**
-	 * @deprecated 
+	 * 
 	 * @param sprite - node to be rendered
 	 */
 	public RenderComponent( Node sprite){
 		this.node = sprite;
-		ready = true;
+		ready = false;
+		needsInit = true;
 		
 	}
 	
-	public RenderComponent(RenderingMethod renderer, HashMap<String, Object> parameters){
-		this.renderMetod = renderer;
-		this.rendererParameters = parameters;
-		didChange = true;
-		ready = false;
-	}
-	
 	public void init(){
-		switch (this.renderMetod) {
-		case TILE_GRID_RENDERER: 
-			final String textureName = (String) this.rendererParameters.get(RenderPropertyName.TEXTURE.getName());
-			final Integer tilesX = (Integer) this.rendererParameters.get(RenderPropertyName.TILES_X.getName());
-			final Integer tilesY = (Integer) this.rendererParameters.get(RenderPropertyName.TILES_Y.getName());
-			GLWorker.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					TileAtlas atlas = new TileAtlas(ResourceManager.getTexture("PNG", textureName), tilesX, tilesY);
-					TileGrid grid = (TileGrid) rendererParameters.get(RenderPropertyName.TILE_GRID.getName());
-					TileGridRenderer renderer = new TileGridRenderer(atlas, grid);
-					renderer.setSize(50*64, 50*64);
-					node = renderer;
-					ready = true;
-				}
-			});
-			break;
-
-		default:
-			break;
-		}
-	}
-	public RenderingMethod getRenderMetod() {
-		return renderMetod;
+		GLWorker.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				node.init();
+				ready = true;
+				
+			}
+		});
+		
+		
 	}
 
-	public Object getRendererParameters() {
-		return rendererParameters;
-	}
 	
 	public Node getNode(){
 		return this.node;
@@ -84,15 +61,17 @@ public class RenderComponent extends Component implements Serializable, Syncable
 	@Override
 	public boolean didChange() {
 		if(didChange){
+			
 			didChange = false;
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
 	public Object sync(Object object) {
-		init();
+		if(needsInit)
+			init();
 		return this;
 	}
 }

@@ -1,5 +1,7 @@
 package network.client;
 
+import java.util.ArrayList;
+
 import network.server.Connection;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -12,7 +14,9 @@ import util.GameConstants;
 import core.BaseGame;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
-import entitysystem.NetworkClientSystem;
+import entitysystem.InputSystem;
+import entitysystem.NetworkReadSystem;
+import entitysystem.NetworkWriteSystem;
 import entitysystem.RenderSystem;
 
 public class Game extends BaseGame{
@@ -21,8 +25,10 @@ public class Game extends BaseGame{
 	private EntityFactory factory;
 	private Pipeline pipeline;
 	private RenderSystem renderSystem;
-	private NetworkClientSystem networkSystem;
+	private NetworkReadSystem networkReadSystem;
+	private NetworkWriteSystem networkWriteSystem;
 	private Connection connection;
+	private InputSystem inputSystem;
 	
 	
 	public Game(Connection connection) {
@@ -41,15 +47,19 @@ public class Game extends BaseGame{
 		Matrix4f view = new Matrix4f();
 		view.translate(new Vector2f(0.0f,0.0f));
 		pipeline.setViewMatrix(view);
-		
+		ArrayList<Connection> conn = new ArrayList<Connection>();
+		conn.add(connection);
 		renderSystem = new RenderSystem(manager, factory, pipeline);
-		networkSystem = new NetworkClientSystem(manager,factory,connection,100);
-		
+		networkReadSystem = new NetworkReadSystem(manager,factory,conn,100);
+		networkWriteSystem = new NetworkWriteSystem(manager, factory, conn, 100, false);
+		inputSystem = new InputSystem(manager, factory);
 	}
 
 	@Override
 	public void onTick(float dt) {
+		
 		renderSystem.update(dt);
+		inputSystem.update(dt);
 		GLWorkerManager.invokeAllJobs();
 		pipeline.clear();
 		

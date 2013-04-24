@@ -22,7 +22,7 @@ public class PlayerMoveSystem  extends BaseSystem{
 
 	@Override
 	public void update(float dt) {
-		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class, LookAtComponent.class);
+		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class);
 		
 		for(Entity ent:entities){
 			PhysicsComponent physics = (PhysicsComponent) ent.getComponentOfType(PhysicsComponent.class);
@@ -31,7 +31,6 @@ public class PlayerMoveSystem  extends BaseSystem{
 			body.setLinearDamping(4.5f);
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
 				body.applyForce(new Vec2(-500.0f, 0.0f), body.getPosition());
-				System.out.println("hello");
 			}
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){

@@ -38,7 +38,7 @@ public class EntityManager {
 	}
 	
 	public boolean hasEntity(Entity entity){
-		
+
 		return entities.get(entity.getEID()) != null;
 		
 	}

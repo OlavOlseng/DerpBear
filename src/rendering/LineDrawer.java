@@ -28,36 +28,10 @@ public class LineDrawer extends Node {
 	private Matrix4f mvp;
 	private FloatBuffer mvpBuffer;
 	private Shader shader;
+	private int initialSize;
 	public LineDrawer(int initialSize){
-		vertices = new ArrayList<Float>(initialSize*4);
-		colors = new ArrayList<Float>(initialSize*6);
-		internalVertexBuffer = BufferUtils.createFloatBuffer(initialSize*4);
-		internalColorBuffer = BufferUtils.createFloatBuffer(initialSize*6);
-		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT, 2);
-		colorBuffer = new Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT, 3);
 		
-		for(int i = 0;i<internalVertexBuffer.capacity(); i++){
-			
-			internalVertexBuffer.put(0.0f);
-		}
-		
-		for(int i = 0; i< internalColorBuffer.capacity(); i++){
-			internalColorBuffer.put(0.0f);
-		}
-		internalVertexBuffer.flip();
-		internalColorBuffer.flip();
-		vertexBuffer.setData(internalVertexBuffer);
-		colorBuffer.setData(internalColorBuffer);
-		
-		shader = ResourceManager.getShader("lineShader");
-		shader.bindAttribute(Attribute.COLOR3D);
-		shader.bindAttribute(Attribute.COORD2D);
-		shader.bindUniform(Uniform.MVP);
-		shader.bindUniform(Uniform.DEPTH);
-		
-		mvp = new Matrix4f();
-		mvpBuffer = BufferUtils.createFloatBuffer(16);
-		
+		this.initialSize = initialSize;
 	
 		
 	}
@@ -147,6 +121,39 @@ public class LineDrawer extends Node {
 		
 		
 		
+		
+	}
+
+	@Override
+	public void init() {
+		vertices = new ArrayList<Float>(initialSize*4);
+		colors = new ArrayList<Float>(initialSize*6);
+		internalVertexBuffer = BufferUtils.createFloatBuffer(initialSize*4);
+		internalColorBuffer = BufferUtils.createFloatBuffer(initialSize*6);
+		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT, 2);
+		colorBuffer = new Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT, 3);
+		
+		for(int i = 0;i<internalVertexBuffer.capacity(); i++){
+			
+			internalVertexBuffer.put(0.0f);
+		}
+		
+		for(int i = 0; i< internalColorBuffer.capacity(); i++){
+			internalColorBuffer.put(0.0f);
+		}
+		internalVertexBuffer.flip();
+		internalColorBuffer.flip();
+		vertexBuffer.setData(internalVertexBuffer);
+		colorBuffer.setData(internalColorBuffer);
+		
+		shader = ResourceManager.getShader("lineShader");
+		shader.bindAttribute(Attribute.COLOR3D);
+		shader.bindAttribute(Attribute.COORD2D);
+		shader.bindUniform(Uniform.MVP);
+		shader.bindUniform(Uniform.DEPTH);
+		
+		mvp = new Matrix4f();
+		mvpBuffer = BufferUtils.createFloatBuffer(16);
 		
 	}
 	

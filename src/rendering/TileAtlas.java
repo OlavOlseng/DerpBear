@@ -1,8 +1,10 @@
 package rendering;
 
-import org.newdawn.slick.opengl.Texture;
+import java.io.Serializable;
 
-public class TileAtlas {
+
+
+public class TileAtlas implements Serializable{
 
 	private int tilesY;
 	private int tilesX;
@@ -10,11 +12,7 @@ public class TileAtlas {
 	public TileAtlas(Texture texture,int tilesX, int tilesY){
 		this.tilesX = tilesX;
 		this.tilesY = tilesY;
-		this.texture = texture;
-		
-		
-		
-		
+		this.texture = texture;	
 	}
 	
 	public void bind(){
@@ -26,6 +24,9 @@ public class TileAtlas {
 	
 	public int getTilesX() {
 		return tilesX;
+	}
+	public Texture getTexture(){
+		return this.texture;
 	}
 	
 	

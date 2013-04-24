@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 import network.Syncable;
 
@@ -58,7 +59,7 @@ public class Connection {
 	 * @param objects - A {@link ArrayList} of components that has changed
 	 * @throws IOException
 	 */
-	public void sendObjects(ArrayList<Syncable> objects) throws IOException{
+	public void sendObjects(List<Syncable> objects) throws IOException{
 		
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		out.writeObject(objects);

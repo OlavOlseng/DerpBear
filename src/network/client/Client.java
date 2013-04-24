@@ -3,7 +3,7 @@ package network.client;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import entitysystem.NetworkClientSystem;
+import entitysystem.NetworkReadSystem;
 
 import network.server.Connection;
 

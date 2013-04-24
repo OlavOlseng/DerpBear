@@ -69,9 +69,9 @@ import rendering.Sprite;
 import rendering.SpriteBatch;
 import rendering.Tile;
 import rendering.TileAtlas;
-import rendering.TileGrid;
 import rendering.TileGridRenderer;
 import rendering.TileType;
+import rendering.models.TileGridModel;
 import util.DepthLevel;
 import util.GameConstants;
 import world.BodyFactory;
@@ -165,7 +165,7 @@ public class Eiriktest extends BaseGame {
 		
 		TileAtlas tileAtlas = new TileAtlas(atlas, 2, 2);
 		
-		TileGrid grid =  new TileGrid(50, 50);
+		TileGridModel grid =  new TileGridModel(50, 50);
 		
 		for(int x = 0; x<50; x++){
 			for (int y = 0; y<50;y++){

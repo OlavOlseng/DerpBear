@@ -1,5 +1,6 @@
 package rendering;
 
+import java.io.Serializable;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -9,7 +10,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Node {
+public abstract class Node implements Serializable {
 	
 	private Vector2f position;
 	private Vector3f scale;
@@ -31,11 +32,12 @@ public class Node {
 		this.width = 1;
 		this.height = 1;
 		
-		children = new LinkedList<Node>();
-		
-		
+		children = new LinkedList<Node>();	
 	}
 	
+	
+	public abstract void init();
+		
 	public void addChild(Node child){
 		children.add(child);
 	}
