@@ -9,19 +9,28 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
+import world.gameobject.Transform;
+
 import network.Syncable;
 
 public class InputComponent extends Component implements Syncable,
-		Serializable, Iterable<Integer> {
+		Serializable{
 
 	private transient List<Integer> keyBoardInput;
 	private transient boolean didChange;
+	private transient int inputReadCursor;
 
 	public InputComponent() {
 
 		keyBoardInput = Collections.synchronizedList(new ArrayList<Integer>());
 	}
 
+	/**
+	 * Appends a key to the input buffer
+	 * @param key - Key to be appended
+	 */
 	public void addKeyBoardInput(int key) {
 
 		keyBoardInput.add(key);
@@ -29,9 +38,28 @@ public class InputComponent extends Component implements Syncable,
 
 	}
 
+	/**
+	 * Checks if there is any unprocessed keys in the buffer
+	 * @return - True if there is any unprocessed keys in the buffer. False otherwise.
+	 */
+	public boolean hasNext(){
+		
+		return inputReadCursor < keyBoardInput.size();
+	}
+	
+	/**
+	 * Get the next unprocessed key in the buffer.
+	 * @return - unprocessed key from the buffer.
+	 */
+	public int getNextKey(){
+		return keyBoardInput.get(inputReadCursor++);
+		
+	}
+	
+	
 	
 	private void addKeyBoardInputs(List<Integer> keys) {
-		synchronized (keys) {
+		synchronized (this.keyBoardInput) {
 			this.keyBoardInput.addAll(keys);
 		}
 
@@ -39,30 +67,18 @@ public class InputComponent extends Component implements Syncable,
 
 	@Override
 	public boolean didChange() {
-		if (didChange) {
-			didChange = false;
-			return true;
-		}
-		return false;
+		
+		return didChange;
 	}
 
 	@Override
-	public Object sync(Object object) {
+	public Object onRead(Object object) {
 		
 		InputComponent remote = (InputComponent) object;
 		this.addKeyBoardInputs(remote.keyBoardInput);
-		if(this.keyBoardInput.size() > 0)
-			System.out.println(this.keyBoardInput);
-
 		return null;
 	}
 
-	@Override
-	public Iterator<Integer> iterator() {
-
-		return this.iterator();
-
-	}
 	
 	private void writeObject(ObjectOutputStream oos) throws IOException {
 			oos.defaultWriteObject();
@@ -70,7 +86,6 @@ public class InputComponent extends Component implements Syncable,
 	}
 	
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-			   
 			    ois.defaultReadObject();
 			    if(keyBoardInput != null){
 				    synchronized (keyBoardInput) {
@@ -80,6 +95,13 @@ public class InputComponent extends Component implements Syncable,
 			    	this.keyBoardInput = Collections.synchronizedList((List<Integer>) ois.readObject());
 			    }
 
+	}
+
+	@Override
+	public Object onWrite(Object object) {
+		didChange = false;
+		this.keyBoardInput.clear();
+		return this;
 	}
 	
 }

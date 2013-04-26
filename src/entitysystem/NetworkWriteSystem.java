@@ -65,21 +65,28 @@ public class NetworkWriteSystem extends BaseSystem {
 	private ArrayList<Connection> disconectedClients = new ArrayList<Connection>();
 	private void sendChangedComponents(){
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentOfClass(NetworkComponent.class);
+		List<Syncable> didChangeList = new ArrayList<Syncable>();
 		for (Entity entity: ents){
 				NetworkComponent networkComponent =  (NetworkComponent) entity.getComponentOfType(NetworkComponent.class);
-				List<Syncable> didChangeList;
 				if(isHost){
-					didChangeList = networkComponent.getReadyHostWriteSyncables();
+					didChangeList.addAll(networkComponent.getReadyHostWriteSyncables());
 					
 				}else{
-					didChangeList = networkComponent.getReadyClientWriteSyncables();
+					didChangeList.addAll(networkComponent.getReadyClientWriteSyncables());
 					
 				}
-				
+				networkComponent.clear();
+		}
+		
 				if(didChangeList.size() > 0){
+					System.out.println(didChangeList);
 					for (Connection connection: connections){
 						try {
+							
 							connection.sendObjects(didChangeList);
+							for(Syncable syncable: didChangeList){
+								syncable.onWrite(syncable);
+							}
 							
 						} catch (IOException e) {
 							System.out.println("Client disconected");
@@ -87,7 +94,8 @@ public class NetworkWriteSystem extends BaseSystem {
 						}
 					}
 					
-					networkComponent.clear();
+				
+				
 					if(disconectedClients.size() > 0){
 						for (Connection connection: disconectedClients){
 							connections.remove(connection);
@@ -95,7 +103,7 @@ public class NetworkWriteSystem extends BaseSystem {
 						disconectedClients.clear();
 					}
 				}
-		}
+		
 	}
 	private void sendAllComponents(Connection target){
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentOfClass(NetworkComponent.class);
@@ -112,6 +120,10 @@ public class NetworkWriteSystem extends BaseSystem {
 				try {
 					
 					target.sendObjects(components);
+					for(Syncable syncable: components){
+						syncable.onWrite(syncable);
+					}
+					networkComponent.clear();
 					
 				} catch (IOException e) {
 					System.out.println("Client disconected");

@@ -9,10 +9,20 @@ public interface Syncable {
 	
 	/**
 	 * The receivers uses this method to sync its properties with the server side object
-	 * @param object - the server side object. Should always be the same type as the implementer.
+	 * @param object - the remote object. Should always be the same type as the implementer.
 	 * @return should return itself
 	 */
-	public Object sync(Object object);
+	public Object onRead(Object object);
+	
+	
+	/**
+	 * The receivers uses this method to sync its properties with the server side object
+	 * @param object - the object that was written. Should always be the same type as the implementer.
+	 * @return should return itself
+	 */
+	public Object onWrite(Object object);
+	
+	
 	
 	
 	

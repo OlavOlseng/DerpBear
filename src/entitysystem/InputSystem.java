@@ -21,8 +21,11 @@ public class InputSystem extends BaseSystem {
 		
 			InputComponent inputComp =  (InputComponent)entity.getComponentOfType(InputComponent.class);
 			//test
-			if(Keyboard.isKeyDown(Keyboard.KEY_A))
-				inputComp.addKeyBoardInput(1);
+			
+			while(Keyboard.next()){
+				inputComp.addKeyBoardInput(Keyboard.getEventKey());
+			}
+		
 		}
 	}
 

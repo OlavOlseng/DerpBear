@@ -60,18 +60,20 @@ public class RenderComponent extends Component implements Serializable, Syncable
 
 	@Override
 	public boolean didChange() {
-		if(didChange){
-			
-			didChange = false;
-			return true;
-		}
-		return false;
+	
+		return didChange;
 	}
 
 	@Override
-	public Object sync(Object object) {
+	public Object onRead(Object object) {
 		if(needsInit)
 			init();
 		return this;
+	}
+
+	@Override
+	public Object onWrite(Object object) {
+		didChange = false;
+		return null;
 	}
 }

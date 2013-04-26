@@ -29,13 +29,14 @@ public class PhysicsSystem extends BaseSystem{
 		float ps = GameConstants.PIXELSCALE;
 		
 		for (Entity ent : l) {
-			Transform t = ((TransformComponent) (ent.getComponentOfType(TransformComponent.class))).getTransform();
+			TransformComponent t = ((TransformComponent) (ent.getComponentOfType(TransformComponent.class)));
 			
 			Body b = ((PhysicsComponent) (ent.getComponentOfType(phyComp))).getBody();
-			
 			t.setX(b.getPosition().x * ps);
 			t.setY(b.getPosition().y * ps);
 			t.setOrientation(b.getAngle());
+			
+			
 		}
 	}
 }

@@ -6,7 +6,7 @@ import network.Syncable;
 
 import util.DepthLevel;
 
-public class Transform implements Serializable, Syncable {
+public class Transform implements Serializable{
 	private float x, y, orientation;
 	private DepthLevel depth;
 	private boolean didChange;
@@ -28,7 +28,6 @@ public class Transform implements Serializable, Syncable {
 		this.y = y;
 		this.orientation = orientation;
 		this.depth = dpt;
-		this.didChange = true;
 	}
 
 	
@@ -39,7 +38,6 @@ public class Transform implements Serializable, Syncable {
 
 	public void setX(float x) {
 		this.x = x;
-		didChange = true;
 	}
 
 	public float getY() {
@@ -48,7 +46,6 @@ public class Transform implements Serializable, Syncable {
 
 	public void setY(float y) {
 		this.y = y;
-		didChange = true;
 	}
 
 	public float getOrientation() {
@@ -57,7 +54,6 @@ public class Transform implements Serializable, Syncable {
 
 	public void setOrientation(float orientation) {
 		this.orientation = orientation;
-		didChange = true;
 	}
 
 	public DepthLevel getDepth() {
@@ -66,26 +62,6 @@ public class Transform implements Serializable, Syncable {
 
 	public void setDepth(DepthLevel depth) {
 		this.depth = depth;
-		didChange = true;
-	}
-
-	@Override
-	public boolean didChange() {
-		boolean oldValue = this.didChange;
-		this.didChange = false;
-		return oldValue;
-	}
-
-	@Override
-	public Object sync(Object object) {
-		Transform remoteObject = (Transform)object;
-		this.setX(remoteObject.getX());
-		this.setY(remoteObject.getY());
-		this.setOrientation(remoteObject.getOrientation());
-		this.setDepth(remoteObject.getDepth());
-		
-		return this;
-		
 	}
 
 	@Override

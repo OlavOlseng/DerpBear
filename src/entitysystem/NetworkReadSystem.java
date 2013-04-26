@@ -52,7 +52,7 @@ public class NetworkReadSystem extends BaseSystem{
 			}
 			
 			
-			
+			System.out.println(components);
 			for(Syncable syncable :components){
 				Component component = (Component)syncable;
 				Entity entity = component.getOwnerEntity();
@@ -66,12 +66,12 @@ public class NetworkReadSystem extends BaseSystem{
 				//Check if the entity has this component
 				if(manager.getComponentOfClassForEntity(component.getClass(), entity) == null){
 					//if true, add the component to the entity
-					((Syncable)component).sync(component);
+					((Syncable)component).onRead(component);
 					manager.addComponentToEntity(component, entity);
 					
 				}
 				
-				((Syncable)manager.getComponentOfClassForEntity(component.getClass(), entity)).sync(component);
+				((Syncable)manager.getComponentOfClassForEntity(component.getClass(), entity)).onRead(component);
 				
 				
 				

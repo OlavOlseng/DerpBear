@@ -7,6 +7,7 @@ import org.jbox2d.dynamics.Body;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import entitysystem.component.InputComponent;
 import entitysystem.component.LookAtComponent;
 import entitysystem.component.PhysicsComponent;
 import entitysystem.component.PlayerComponent;
@@ -22,31 +23,44 @@ public class PlayerMoveSystem  extends BaseSystem{
 
 	@Override
 	public void update(float dt) {
-		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class);
+		ArrayList<Entity> entities = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PhysicsComponent.class, PlayerComponent.class, InputComponent.class);
 		
 		for(Entity ent:entities){
 			PhysicsComponent physics = (PhysicsComponent) ent.getComponentOfType(PhysicsComponent.class);
-			Body body = physics.getBody();
+			InputComponent input = (InputComponent)ent.getComponentOfType(InputComponent.class);
+			
 		
+			
+			
+			
+			Body body = physics.getBody();
+			
 			body.setLinearDamping(4.5f);
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-				body.applyForce(new Vec2(-500.0f, 0.0f), body.getPosition());
+			while(input.hasNext()){
+				int key = input.getNextKey();
+				if(key == Keyboard.KEY_LEFT){
+				
+				
+					body.applyLinearImpulse(new Vec2(-50.0f, 0.0f), body.getPosition());
+					
+				}
+				
+				if(key == Keyboard.KEY_RIGHT){
+					body.applyLinearImpulse(new Vec2(50.0f, 0.0f), body.getPosition());
+				}
+				
+				if(key == Keyboard.KEY_UP){
+					body.applyLinearImpulse(new Vec2(0.0f, 50.0f), body.getPosition());
+				}
+				if(key == Keyboard.KEY_DOWN){
+					body.applyLinearImpulse(new Vec2(0.0f, -50.0f), body.getPosition());
+				}
+			
 			}
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-				body.applyForce(new Vec2(500.0f, 0.0f), body.getPosition());
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
-				body.applyForce(new Vec2(0.0f, 500.0f), body.getPosition());
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
-				body.applyForce(new Vec2(0.0f, -500.0f), body.getPosition());
-			}
 			
 			
-			LookAtComponent lookAt =  (LookAtComponent) ent.getComponentOfType(LookAtComponent.class);
-			lookAt.lookAt(Mouse.getX(), Mouse.getY());
+			
 			
 			
 		}

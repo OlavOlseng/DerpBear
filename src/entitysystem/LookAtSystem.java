@@ -25,7 +25,7 @@ public class LookAtSystem extends BaseSystem {
 		
 		
 		for(Entity ent:entities){
-			Transform trans = ((TransformComponent) ent.getComponentOfType(TransformComponent.class)).getTransform();
+			TransformComponent trans = ((TransformComponent) ent.getComponentOfType(TransformComponent.class));
 			LookAtComponent lookAt = (LookAtComponent) ent.getComponentOfType(LookAtComponent.class);
 			
 			Vec2 target = lookAt.getTarget();

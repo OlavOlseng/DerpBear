@@ -123,18 +123,23 @@ public class NetworkComponent extends Component implements Syncable, Serializabl
 
 	@Override
 	public boolean didChange() {
-		if(didChange){
-			didChange = false;
-			return true;
-		}
-		return false;
+		
+		return didChange;
 	}
 
 
 	@Override
-	public Object sync(Object object) {
+	public Object onRead(Object object) {
 	
 		
-		return null;
+		return this;
+	}
+
+
+	@Override
+	public Object onWrite(Object object) {
+		didChange = false;
+		clear();
+		return this;
 	}
 }

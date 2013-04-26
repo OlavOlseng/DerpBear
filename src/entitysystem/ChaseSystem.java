@@ -29,7 +29,7 @@ public class ChaseSystem extends BaseSystem {
 			ChaseComponent chaseComp = (ChaseComponent) chaser.getComponentOfType(ChaseComponent.class);
 			Body body = ((PhysicsComponent)chaser.getComponentOfType(PhysicsComponent.class)).getBody();
 			Entity target = chaseComp.getTarget();
-			Transform trans = ((TransformComponent)target.getComponentOfType(TransformComponent.class)).getTransform();
+			TransformComponent  trans = ((TransformComponent)target.getComponentOfType(TransformComponent.class));
 			Vec2 bodypos = body.getPosition();
 			dir.x = trans.getX() - bodypos.x*GameConstants.PIXELSCALE;
 			dir.y = trans.getY() - bodypos.y * GameConstants.PIXELSCALE;

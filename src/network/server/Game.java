@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import network.server.Connection;
 
+import org.jbox2d.common.Vec2;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -23,6 +24,8 @@ import rendering.models.TextureModel;
 import rendering.models.TileGridModel;
 import util.DepthLevel;
 import util.GameConstants;
+import world.BodyFactory;
+import world.GameWorld;
 import world.gameobject.RenderPropertyName;
 import world.gameobject.RenderingMethod;
 import core.BaseGame;
@@ -31,9 +34,13 @@ import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
 import entitysystem.NetworkReadSystem;
 import entitysystem.NetworkWriteSystem;
+import entitysystem.PhysicsSystem;
+import entitysystem.PlayerMoveSystem;
 import entitysystem.RenderSystem;
 import entitysystem.component.InputComponent;
 import entitysystem.component.NetworkComponent;
+import entitysystem.component.PhysicsComponent;
+import entitysystem.component.PlayerComponent;
 import entitysystem.component.RenderComponent;
 import entitysystem.component.TransformComponent;
 
@@ -44,9 +51,11 @@ public class Game extends BaseGame{
 	private Pipeline pipeline;
 	private NetworkWriteSystem networkWriteSystem;
 	private NetworkReadSystem networkReadSystem;
-	
+	private PlayerMoveSystem playerMoveSystem;
+	private GameWorld world;
 	private ArrayList<Connection> connections;
-	TransformComponent trans;
+	private PhysicsSystem physicsSystem;
+
 	
 	public Game(ArrayList<Connection> connections) {
 		super(60);
@@ -58,6 +67,11 @@ public class Game extends BaseGame{
 	public void setup() {
 		manager = new EntityManager();
 		factory = new EntityFactory(manager);
+		world  = new GameWorld();
+		physicsSystem = new PhysicsSystem(manager, factory);
+		
+		
+		
 		//begin ground entity
 		{
 			Entity groundE = factory.createEmptyEntity();
@@ -84,7 +98,7 @@ public class Game extends BaseGame{
 			groundRenderer.setScale(50, 50);
 			
 			TransformComponent transform = new TransformComponent();
-			transform.getTransform().setDepth(DepthLevel.BACKGROUND_LVL);
+			transform.setDepth(DepthLevel.BACKGROUND_LVL);
 			RenderComponent renderComp = new RenderComponent(groundRenderer);
 			manager.addComponentToEntity(transform, groundE);
 			manager.addComponentToEntity(renderComp, groundE);
@@ -105,28 +119,34 @@ public class Game extends BaseGame{
 			Entity playerE = manager.createEntity();
 	
 			
-		    trans = new TransformComponent();
-		    trans.getTransform().setX(100);
-			trans.getTransform().setY(100);
+		    TransformComponent trans = new TransformComponent();
+		    trans.setX(100);
+			trans.setY(100);
 			RenderComponent sprite = new RenderComponent(new Sprite(new Texture(new TextureModel("player.png"))));
 			sprite.getNode().setScale(20, 20);
 			InputComponent input = new InputComponent();
+			PlayerComponent player = new PlayerComponent();
+			PhysicsComponent physics = new PhysicsComponent(world, BodyFactory.createDynamicBodyDef(new Vec2(100.0f/GameConstants.PIXELSCALE, 100.0f/GameConstants.PIXELSCALE), 0f), BodyFactory.createBox(10.0f, 16.0f/GameConstants.PIXELSCALE, 16.0f/GameConstants.PIXELSCALE));
 			manager.addComponentToEntity(trans, playerE);
 			manager.addComponentToEntity(sprite, playerE);
 			manager.addComponentToEntity(input, playerE);
+			manager.addComponentToEntity(player, playerE);
+			manager.addComponentToEntity(physics, playerE);
 			NetworkComponent network = new NetworkComponent();
 			network.addSyncable(trans, true, false);
 			network.addSyncable(sprite, true, false);
 			network.addSyncable(input, false, true);
 			network.addSyncable(network, true, false);
+			network.addSyncable(player, true, false);
 			manager.addComponentToEntity(network, playerE);
 			
 			
 
 		}
 		//end player entity
-		networkWriteSystem = new NetworkWriteSystem(manager,factory,this.connections,100, true);
-		networkReadSystem = new NetworkReadSystem(manager, factory, this.connections, 100);
+		networkWriteSystem = new NetworkWriteSystem(manager,factory,this.connections,16, true);
+		networkReadSystem = new NetworkReadSystem(manager, factory, this.connections, 1);
+		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 	}
 
 	@Override
@@ -135,6 +155,9 @@ public class Game extends BaseGame{
 		
 		if(connections.size() > 0){
 		//	trans.getTransform().setX(trans.getTransform().getX() +10*dt);
+			playerMoveSystem.update(dt);
+			world.update(dt);
+			physicsSystem.update(dt);
 			
 		}
 		
