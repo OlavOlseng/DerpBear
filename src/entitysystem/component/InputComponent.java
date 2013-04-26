@@ -22,6 +22,7 @@ public class InputComponent extends Component implements Syncable,
 	private transient boolean didChange;
 	private transient int inputReadCursor;
 
+	private boolean ready;
 	public InputComponent() {
 
 		keyBoardInput = Collections.synchronizedList(new ArrayList<Integer>());
@@ -75,8 +76,11 @@ public class InputComponent extends Component implements Syncable,
 	public Object onRead(Object object) {
 		
 		InputComponent remote = (InputComponent) object;
-		this.addKeyBoardInputs(remote.keyBoardInput);
-	
+		
+		if(ready)
+			this.addKeyBoardInputs(remote.keyBoardInput);
+		
+		ready = true;
 		return null;
 	}
 
@@ -103,10 +107,12 @@ public class InputComponent extends Component implements Syncable,
 	@Override
 	public Object onWrite(Object object) {
 		didChange = false;
+		ready = true;
 		synchronized (keyBoardInput) {
 			
 			this.keyBoardInput.clear();
 		}
+		
 		
 		return this;
 	}
