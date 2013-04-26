@@ -74,7 +74,7 @@ public class NetworkReadSystem extends BaseSystem{
 						//if true, add the component to the entity
 						((Syncable)component).onRead(component);
 						manager.addComponentToEntity(component, entity);
-						
+						continue;
 					}
 					
 					((Syncable)manager.getComponentOfClassForEntity(component.getClass(), entity)).onRead(component);
