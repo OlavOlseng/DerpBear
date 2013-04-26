@@ -47,11 +47,11 @@ public class Game extends BaseGame{
 		Matrix4f view = new Matrix4f();
 		view.translate(new Vector2f(0.0f,0.0f));
 		pipeline.setViewMatrix(view);
-		ArrayList<Connection> conn = new ArrayList<Connection>();
-		conn.add(connection);
+		
 		renderSystem = new RenderSystem(manager, factory, pipeline);
-		networkReadSystem = new NetworkReadSystem(manager,factory,conn,1);
-		networkWriteSystem = new NetworkWriteSystem(manager, factory, conn, 16, false);
+		networkReadSystem = new NetworkReadSystem(manager,factory,connection);
+		networkWriteSystem = new NetworkWriteSystem(manager, factory, 16, false);
+		networkWriteSystem.addConnection(connection);
 		inputSystem = new InputSystem(manager, factory);
 	}
 

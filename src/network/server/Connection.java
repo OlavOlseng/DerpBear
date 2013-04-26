@@ -16,9 +16,22 @@ import entitysystem.component.Component;
 public class Connection {
 
 	private Socket socket;
-	
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
 	public Connection(Socket socket){
 		this.socket = socket;
+		try {
+			out = new ObjectOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+		
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -30,7 +43,10 @@ public class Connection {
 	 * @throws IOException
 	 */
 	public Connection(String addr, int port) throws UnknownHostException, IOException{
-		this.socket = new Socket(addr, port);
+		this(new Socket(addr, port));
+		
+		
+		
 	
 	}
 	
@@ -41,16 +57,18 @@ public class Connection {
 	 * @return {@link ArrayList} of components that needs an update
 	 * @throws IOException
 	 */
-	public ArrayList<Syncable> readObjects() throws IOException{
+	public List<Syncable> readObjects() throws IOException{
 		
-		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+		
+		List<Syncable> syncables = null;
+
 		try {
-			return (ArrayList<Syncable>) in.readObject();
+			syncables = (List<Syncable>) in.readObject();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		}
-		return null;
+		
+		return syncables;
 	}
 	
 	
@@ -61,8 +79,9 @@ public class Connection {
 	 */
 	public void sendObjects(List<Syncable> objects) throws IOException{
 		
-		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		
 		out.writeObject(objects);
+		out.reset();
 	}
 	
 }

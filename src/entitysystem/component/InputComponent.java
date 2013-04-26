@@ -32,7 +32,7 @@ public class InputComponent extends Component implements Syncable,
 	 * @param key - Key to be appended
 	 */
 	public void addKeyBoardInput(int key) {
-
+	
 		keyBoardInput.add(key);
 		didChange = true;
 
@@ -67,7 +67,7 @@ public class InputComponent extends Component implements Syncable,
 
 	@Override
 	public boolean didChange() {
-		
+		System.out.println(didChange);
 		return didChange;
 	}
 
@@ -76,6 +76,7 @@ public class InputComponent extends Component implements Syncable,
 		
 		InputComponent remote = (InputComponent) object;
 		this.addKeyBoardInputs(remote.keyBoardInput);
+	
 		return null;
 	}
 
@@ -87,7 +88,9 @@ public class InputComponent extends Component implements Syncable,
 	
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
 			    ois.defaultReadObject();
+				
 			    if(keyBoardInput != null){
+			    
 				    synchronized (keyBoardInput) {
 				    	this.keyBoardInput = Collections.synchronizedList((List<Integer>) ois.readObject());
 					}
@@ -100,7 +103,11 @@ public class InputComponent extends Component implements Syncable,
 	@Override
 	public Object onWrite(Object object) {
 		didChange = false;
-		this.keyBoardInput.clear();
+		synchronized (keyBoardInput) {
+			
+			this.keyBoardInput.clear();
+		}
+		
 		return this;
 	}
 	

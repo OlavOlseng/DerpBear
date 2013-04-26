@@ -38,6 +38,7 @@ public class PlayerMoveSystem  extends BaseSystem{
 			body.setLinearDamping(4.5f);
 			while(input.hasNext()){
 				int key = input.getNextKey();
+				
 				if(key == Keyboard.KEY_LEFT){
 				
 				

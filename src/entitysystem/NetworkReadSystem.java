@@ -3,6 +3,7 @@ package entitysystem;
 import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,26 +14,31 @@ import network.server.Connection;
 
 public class NetworkReadSystem extends BaseSystem{
 
-	private ArrayList<Connection> connections;
-	private long updateFrequency;
+	private Connection client;
+	
 	
 	/**
 	 * The network system will start its own private thread for listening.
 	 * @param connection a connection to the server
 	 * @param updateFrequency how often the socket will be read
 	 */
-	public NetworkReadSystem(EntityManager entityManager, EntityFactory entityFactory, final ArrayList<Connection> connections, final long updateFrequency){
+	public NetworkReadSystem(EntityManager entityManager, EntityFactory entityFactory, Connection client){
 		super(entityManager, entityFactory);
-		this.connections = connections;
-		this.updateFrequency = updateFrequency;
-		new Timer(true).scheduleAtFixedRate(new TimerTask() {
+		this.client = client;
+		
+		Thread readThread = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
+				while(true){
+					update(0);
+				}
 				
-				update(updateFrequency);
 			}
-		}, 0, updateFrequency);
+		});
+		readThread.setName("Read thread");
+		readThread.start();
+		
 	}
 
 	/**
@@ -42,39 +48,39 @@ public class NetworkReadSystem extends BaseSystem{
 	@Override
 	public void update(float dt) {
 	
-		for(Connection connection: connections){
-			ArrayList<Syncable> components  = null;
-			try {
-				components = connection.readObjects();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-			
-			
-			System.out.println(components);
-			for(Syncable syncable :components){
-				Component component = (Component)syncable;
-				Entity entity = component.getOwnerEntity();
-				EntityManager manager = getEntityManager();
-				entity.setEntityManager(manager);
-				//Check if any of the components belong to a new entity
-				if(!manager.hasEntity(entity)){
-					//if so add the entity to the entitymanager
-					getEntityManager().addEntity(entity);
+				
+				List<Syncable> components  = null;
+				try {
+					components = client.readObjects();
+					System.out.println(components);
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.exit(-1);
+					return;
 				}
-				//Check if the entity has this component
-				if(manager.getComponentOfClassForEntity(component.getClass(), entity) == null){
-					//if true, add the component to the entity
-					((Syncable)component).onRead(component);
-					manager.addComponentToEntity(component, entity);
+				
+				for(Syncable syncable :components){
+					Component component = (Component)syncable;
+					Entity entity = component.getOwnerEntity();
+					EntityManager manager = getEntityManager();
+					entity.setEntityManager(manager);
+					//Check if any of the components belong to a new entity
+					if(!manager.hasEntity(entity)){
+						//if so add the entity to the entitymanager
+						getEntityManager().addEntity(entity);
+					}
+					//Check if the entity has this component
+					if(manager.getComponentOfClassForEntity(component.getClass(), entity) == null){
+						//if true, add the component to the entity
+						((Syncable)component).onRead(component);
+						manager.addComponentToEntity(component, entity);
+						
+					}
 					
-				}
+					((Syncable)manager.getComponentOfClassForEntity(component.getClass(), entity)).onRead(component);
+					
 				
-				((Syncable)manager.getComponentOfClassForEntity(component.getClass(), entity)).onRead(component);
-				
-				
-				
+			}
 				
 				
 				
@@ -82,6 +88,6 @@ public class NetworkReadSystem extends BaseSystem{
 			
 			
 			
-		}
-	}
+		
+	
 }

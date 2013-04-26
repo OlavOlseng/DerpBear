@@ -2,6 +2,7 @@ package network.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,14 +54,15 @@ public class Game extends BaseGame{
 	private NetworkReadSystem networkReadSystem;
 	private PlayerMoveSystem playerMoveSystem;
 	private GameWorld world;
-	private ArrayList<Connection> connections;
+	private List<Connection> connections;
 	private PhysicsSystem physicsSystem;
 
 	
-	public Game(ArrayList<Connection> connections) {
+	public Game() {
 		super(60);
-		this.connections = connections;
+		this.connections = new ArrayList<Connection>();
 		init(false);
+		
 	}
 
 	@Override
@@ -140,15 +142,21 @@ public class Game extends BaseGame{
 			network.addSyncable(player, true, false);
 			manager.addComponentToEntity(network, playerE);
 			
-			
+			networkWriteSystem = new NetworkWriteSystem(manager,factory,16, true);
 
 		}
 		//end player entity
-		networkWriteSystem = new NetworkWriteSystem(manager,factory,this.connections,16, true);
-		networkReadSystem = new NetworkReadSystem(manager, factory, this.connections, 1);
+		
 		playerMoveSystem = new PlayerMoveSystem(manager, factory);
 	}
 
+	
+	public void addClient(Connection connection){
+		
+		 new NetworkReadSystem(manager, factory, connection);
+		 networkWriteSystem.addConnection(connection);
+		this.connections.add(connection);
+	}
 	@Override
 	public void onTick(float dt) {
 		//Stop gameworld while no clients are connected
