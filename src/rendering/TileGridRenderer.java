@@ -75,11 +75,13 @@ public class TileGridRenderer extends Node implements GridModelListener, Seriali
 		tileAtlas.bind();
 		
 		vertexBuffer.bindTo(shader.getAttribute(Attribute.COORD3D));	
+		;
+		
 		
 		mvpBuffer.clear();
-		Matrix4f projection = pipeline.getProjectionMatrix();
 		Matrix4f modelMatrix = getModelMatrix();
-		Matrix4f.mul(projection, modelMatrix, mvp);
+		Matrix4f.mul(pipeline.getWorldTransForm(), modelMatrix, modelMatrix);
+		Matrix4f.mul(pipeline.getViewXProjectionMatrix(), modelMatrix, mvp);
 		mvp.store(mvpBuffer);
 		mvpBuffer.flip();
 		glUniform1f(shader.getUniform(Uniform.DEPTH), getDepth());

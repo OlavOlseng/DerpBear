@@ -59,6 +59,7 @@ public abstract class BaseGame implements Runnable{
 			try {
 				dm = new DisplayMode(screenWidth,screenHeight);
 				Display.setDisplayMode(dm);
+				Display.setResizable(true);
 				Display.create();
 				GL11.glViewport(0, 0, screenWidth, screenHeight);
 			} catch (LWJGLException e) {
@@ -87,6 +88,8 @@ public abstract class BaseGame implements Runnable{
 				Display.sync(fps);
 			}
 			
+			
+				
 		}
 		exit();
 	}
@@ -140,4 +143,5 @@ public abstract class BaseGame implements Runnable{
 	 * @param dt time since last tick
 	 */
 	public abstract void onTick(float dt);
+	
 }

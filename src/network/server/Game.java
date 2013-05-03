@@ -24,6 +24,7 @@ import rendering.TileType;
 import rendering.models.TextureModel;
 import rendering.models.TileGridModel;
 import util.DepthLevel;
+import util.DungeonGenerator;
 import util.GameConstants;
 import world.BodyFactory;
 import world.GameWorld;
@@ -78,22 +79,18 @@ public class Game extends BaseGame{
 		{
 			Entity groundE = factory.createEmptyEntity();
 			
+			Tile[][] testRoom = new DungeonGenerator().generateRoom(5, 20, 2,System.currentTimeMillis());
+			TileGridModel grid =  new TileGridModel(testRoom.length, testRoom.length);
 			
-			TileGridModel grid =  new TileGridModel(50, 50);
-			
-			for(int x = 0; x<50; x++){
-				for (int y = 0; y<50;y++){
-					grid.setTile(x, y, new Tile(TileType.DIRT));
+			for(int x = 0; x<testRoom.length; x++){
+				for (int y = 0; y<testRoom.length;y++){
+					grid.setTile(x, y, testRoom[y][x]);
 				}
 				
 			}
 			
-		
-			grid.setTile(5, 5, new Tile(TileType.GRASS));
-			grid.setTile(5, 6, new Tile(TileType.GRASS));
-			grid.setTile(4, 5, new Tile(TileType.GRASS));
-			grid.setTile(5, 4, new Tile(TileType.GRASS));
-			grid.setTile(6, 5, new Tile(TileType.GRASS));
+			
+			
 			
 			TileAtlas atlas = new TileAtlas(new rendering.Texture(new TextureModel("testAtlas.png")), 2, 2);
 			TileGridRenderer groundRenderer = new TileGridRenderer(atlas, grid);

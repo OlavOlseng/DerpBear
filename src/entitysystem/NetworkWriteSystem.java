@@ -69,7 +69,7 @@ public class NetworkWriteSystem extends BaseSystem {
 	 */
 	@Override
 	public void update(float dt) {
-		// True if there are new connections since last tick
+		
 
 		sendChangedComponents();
 
@@ -105,7 +105,7 @@ public class NetworkWriteSystem extends BaseSystem {
 		synchronized (lock) {
 
 			if (didChangeList.size() > 0) {
-				System.out.println(didChangeList);
+			
 				for (final Connection connection : connections) {
 					tasks.add(threadPool.submit(new Runnable() {
 

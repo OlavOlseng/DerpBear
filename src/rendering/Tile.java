@@ -13,5 +13,9 @@ public class Tile implements Serializable {
 		return type;
 	}
 	
+	public String toString(){
+		return ""+type.ordinal();
+	}
+	
 	
 }
