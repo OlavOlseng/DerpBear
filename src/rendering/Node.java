@@ -131,6 +131,7 @@ public abstract class Node implements Serializable {
 	}
 	
 	protected Matrix4f oldWorldTransForm = new Matrix4f();
+	protected Matrix4f origionalWorldTransform = new Matrix4f();
 	public void render(Pipeline pipeline){
 		
 		if(pipeline.getNodeNeedsUpdate()){
@@ -143,22 +144,20 @@ public abstract class Node implements Serializable {
 		}
 		
 		
-		Matrix4f worldTransform = pipeline.getWorldTransForm();
 		
+		Matrix4f worldTransform = pipeline.getWorldTransForm();
+		Matrix4f.load(worldTransform, origionalWorldTransform);
 		Matrix4f.mul(worldTransform,getModelMatrix() , worldTransform);
 		Matrix4f.load(worldTransform, oldWorldTransForm);
 		for (Node node : children){
 			//System.out.println(worldTransform);
 			node.render(pipeline);
-			
 		//	System.out.println(oldWorldTransForm);
 			Matrix4f.load(oldWorldTransForm, worldTransform);
 			
 		}
-		
-		
 		pipeline.setNodeNeedsUpdate(didChange);
-		
+		Matrix4f.load(origionalWorldTransform, worldTransform);
 	}
 	
 	public boolean getDidChange() {

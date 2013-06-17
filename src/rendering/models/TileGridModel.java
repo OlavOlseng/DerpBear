@@ -40,7 +40,7 @@ public class TileGridModel implements Serializable {
 		fireChangeEvent(x, y, old, tile);
 		
 	}
-	public Tile getTile(int x,int y,Tile tile){
+	public Tile getTile(int x,int y){
 		return grid[grid.length - (x + y*tilesX) -1];
 	}
 	public TileType getTypeAt(int x,int y){

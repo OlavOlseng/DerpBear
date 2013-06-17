@@ -35,7 +35,8 @@ public class TileGridRenderer extends Node implements GridModelListener, Seriali
 	
 	public TileGridRenderer(TileAtlas tileAtlas, TileGridModel grid){
 		this.tileAtlas = tileAtlas;
-		this.grid = grid;	
+		this.grid = grid;
+		
 		
 	}
 	
@@ -106,6 +107,11 @@ public class TileGridRenderer extends Node implements GridModelListener, Seriali
 		tileAtlas.bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		
+		int tileSize = tileAtlas.getTexture().getWidth()/tileAtlas.getTilesX();
+		
+		this.setWidth(tileSize);
+		this.setHeight(tileSize);
 		
 		mvp = new Matrix4f();
 		mvpBuffer = BufferUtils.createFloatBuffer(16);

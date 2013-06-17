@@ -77,8 +77,6 @@ public class InputComponent extends Component implements Syncable,
 	public Object onRead(Object object) {
 		
 		InputComponent remote = (InputComponent) object;
-		System.out.println("durr");
-		System.out.println(ready);
 		if(ready)
 			this.addKeyBoardInputs(remote.keyBoardInput);
 		else

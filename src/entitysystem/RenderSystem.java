@@ -25,6 +25,7 @@ public class RenderSystem extends BaseSystem {
 
 	@Override
 	public void update(float dt) {
+	
 		ArrayList<Entity> ents = getEntityManager().getAllEntitiesPossesingComponentsOfClass(RenderComponent.class, TransformComponent.class);
 	
 		ArrayList<Entity> players = getEntityManager().getAllEntitiesPossesingComponentsOfClass(PlayerComponent.class, TransformComponent.class);
@@ -40,16 +41,20 @@ public class RenderSystem extends BaseSystem {
 		
 			
 		}
+	
 		for(Entity ent : ents){
 			
 			RenderComponent rc = (RenderComponent) ent.getComponentOfType(RenderComponent.class);
 			if(rc.isReady()){
 				TransformComponent tc = (TransformComponent) ent.getComponentOfType(TransformComponent.class);
-				Node n = rc.getNode();	
-				n.setPosition(tc.getX(), tc.getY());
-				n.setOrientation(tc.getOrientation());
-				n.setDepth(tc.getDepth().getDepth());
-				n.render(pipeline);
+				
+				for(Node n: rc){
+					n.setPosition(tc.getX(), tc.getY());
+					n.setOrientation(tc.getOrientation());
+					n.setDepth(tc.getDepth().getDepth());
+					n.render(pipeline);
+				}
+				
 				
 			}
 		}

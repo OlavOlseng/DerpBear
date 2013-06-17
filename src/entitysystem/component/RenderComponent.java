@@ -1,7 +1,9 @@
 package entitysystem.component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.Renderer;
 
@@ -18,8 +20,8 @@ import util.GLWorker;
 import world.gameobject.RenderPropertyName;
 import world.gameobject.RenderingMethod;
 
-public class RenderComponent extends Component implements Serializable, Syncable {
-	private Node node;
+public class RenderComponent extends Component implements Serializable, Syncable, Iterable<Node> {
+	private ArrayList<Node> nodes;
 	private boolean ready;
 	private boolean didChange;
 	private boolean needsInit = true;
@@ -27,8 +29,12 @@ public class RenderComponent extends Component implements Serializable, Syncable
 	 * 
 	 * @param sprite - node to be rendered
 	 */
-	public RenderComponent( Node sprite){
-		this.node = sprite;
+	public RenderComponent( Node ...nodes){
+		this.nodes = new ArrayList<Node>();
+		for(int i = 0; i < nodes.length; i++){
+			this.nodes.add(nodes[i]);
+			
+		}
 		ready = false;
 		needsInit = true;
 		
@@ -39,18 +45,17 @@ public class RenderComponent extends Component implements Serializable, Syncable
 			
 			@Override
 			public void run() {
-				node.init();
+				for(Node node:nodes){
+					node.init();
+				}
 				ready = true;
 				
 			}
 		});
-		
-		
 	}
-
 	
-	public Node getNode(){
-		return this.node;
+	public ArrayList<Node> getNodes(){
+		return this.nodes;
 	}
 
 	
@@ -75,5 +80,10 @@ public class RenderComponent extends Component implements Serializable, Syncable
 	public Object onWrite(Object object) {
 		didChange = false;
 		return null;
+	}
+
+	@Override
+	public Iterator<Node> iterator() {
+		return nodes.iterator();
 	}
 }

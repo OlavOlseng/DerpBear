@@ -7,17 +7,23 @@ import network.server.Connection;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
+import rendering.LineDrawer;
 import rendering.MatrixUtil;
 import rendering.Pipeline;
+import util.DepthLevel;
 import util.GLWorkerManager;
 import util.GameConstants;
 import core.BaseGame;
+import entitysystem.Entity;
 import entitysystem.EntityFactory;
 import entitysystem.EntityManager;
 import entitysystem.InputSystem;
 import entitysystem.NetworkReadSystem;
 import entitysystem.NetworkWriteSystem;
 import entitysystem.RenderSystem;
+import entitysystem.component.NetworkComponent;
+import entitysystem.component.RenderComponent;
+import entitysystem.component.TransformComponent;
 
 public class Game extends BaseGame{
 
@@ -29,6 +35,7 @@ public class Game extends BaseGame{
 	private NetworkWriteSystem networkWriteSystem;
 	private Connection connection;
 	private InputSystem inputSystem;
+	private LineDrawer lineDrawer;
 	
 	
 	public Game(Connection connection) {
@@ -53,6 +60,9 @@ public class Game extends BaseGame{
 		networkWriteSystem = new NetworkWriteSystem(manager, factory, 16, false);
 		networkWriteSystem.addConnection(connection);
 		inputSystem = new InputSystem(manager, factory);
+		
+		
+
 	}
 
 	@Override
@@ -62,6 +72,8 @@ public class Game extends BaseGame{
 		inputSystem.update(dt);
 		GLWorkerManager.invokeAllJobs();
 		pipeline.clear();
+		
+		
 		
 	}
 

@@ -58,7 +58,7 @@ public class TransformComponent extends Component implements Syncable,
 	@Override
 	public boolean didChange() {
 	
-		return !(oldTransform.getX() == transform.getX() && transform.getY() == oldTransform.getY());
+		return !(oldTransform.getX() == transform.getX() && transform.getY() == oldTransform.getY() && oldTransform.getOrientation() == transform.getOrientation());
 	}
 
 	@Override
@@ -79,6 +79,7 @@ public class TransformComponent extends Component implements Syncable,
 	
 		oldTransform.setX(getX());
 		oldTransform.setY(getY());
+		oldTransform.setOrientation(getOrientation());
 		return this;
 	}
 

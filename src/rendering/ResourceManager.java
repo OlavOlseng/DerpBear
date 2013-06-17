@@ -15,7 +15,7 @@ public class ResourceManager {
 	public static Shader getShader(String name){
 		Shader shader = shaders.get(name);
 		if(shader == null){
-			shader = new Shader("res\\" +name);
+			shader = new Shader("res\\shaders\\" +name);
 			shaders.put(name, shader);
 		}
 		return shader;

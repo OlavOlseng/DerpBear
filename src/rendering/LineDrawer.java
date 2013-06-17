@@ -32,7 +32,8 @@ public class LineDrawer extends Node {
 	public LineDrawer(int initialSize){
 		
 		this.initialSize = initialSize;
-	
+		vertices = new ArrayList<Float>(initialSize*4);
+		colors = new ArrayList<Float>(initialSize*6);
 		
 	}
 	
@@ -126,8 +127,7 @@ public class LineDrawer extends Node {
 
 	@Override
 	public void init() {
-		vertices = new ArrayList<Float>(initialSize*4);
-		colors = new ArrayList<Float>(initialSize*6);
+		
 		internalVertexBuffer = BufferUtils.createFloatBuffer(initialSize*4);
 		internalColorBuffer = BufferUtils.createFloatBuffer(initialSize*6);
 		vertexBuffer = new Buffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW, GL_FLOAT, 2);

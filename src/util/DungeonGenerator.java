@@ -17,6 +17,17 @@ public class DungeonGenerator {
 		new DungeonGenerator().generateRoom(10, 5, 2,System.currentTimeMillis());
 	}
 
+	
+	
+	public void addWallsToRoom(Tile[][] tiles, TileType wallTile){
+		for (int i = 0; i < tiles.length; i++)
+			for (int j = 0; j < tiles[i].length; j++)
+				if(tiles[i][j].getType() == TileType.NONE){
+					tiles[i][j] = new Tile(wallTile);
+				}
+		
+		
+	}
 	public Tile[][] generateRoom(int base, int sides, int res, long seed) {
 
 		Tile[][] result = new Tile[base + sides * 2][base + sides * 2];
@@ -128,7 +139,7 @@ public class DungeonGenerator {
 			iy = -1;
 
 		delta_y = Math.abs(delta_y) << 1;
-		grid[y1][x1] = new Tile(TileType.GRASS);
+		grid[y1][x1] = new Tile(TileType.DIRT);
 
 		if (delta_x >= delta_y) {
 			// error may go below zero
@@ -144,7 +155,7 @@ public class DungeonGenerator {
 				error += delta_y;
 				x1 += ix;
 
-				grid[y1][x1] = new Tile(TileType.GRASS);
+				grid[y1][x1] = new Tile(TileType.DIRT);
 			}
 		} else {
 			// error may go below zero
@@ -160,7 +171,7 @@ public class DungeonGenerator {
 				error += delta_x;
 				y1 += iy;
 
-				grid[y1][x1] = new Tile(TileType.GRASS);
+				grid[y1][x1] = new Tile(TileType.DIRT);
 			}
 		}
 	}
@@ -191,7 +202,7 @@ public class DungeonGenerator {
 					
 				if(end < row.length){
 					for(int i = start; i < end; i++){
-						row[i] = new Tile(TileType.GRASS);
+						row[i] = new Tile(TileType.DIRT);
 					}
 				}
 				start = end;
